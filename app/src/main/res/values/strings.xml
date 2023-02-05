@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Утилизатус</string>
+    <string name="greetings">Привет!</string>
+    <string name="slogan">В твоих силах сделать планету чище и
+        светлее</string>
+    <string name="tip">Просто свайпни вверх!</string>
 </resources>
