@@ -74,4 +74,10 @@ dependencies {
     implementation("br.com.devsrsouza.compose.icons.android:simple-icons:1.0.0")
     implementation("br.com.devsrsouza.compose.icons.android:feather:1.0.0")
 
+    //Lottie
+    implementation "com.airbnb.android:lottie-compose:4.1.0"
+
+    //Code picker
+    implementation 'com.github.togisoft:jetpack_compose_country_code_picker:1.1.4'
+
 }

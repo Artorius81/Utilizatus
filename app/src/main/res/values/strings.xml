@@ -1,7 +1,19 @@
 <resources>
     <string name="app_name">Утилизатус</string>
-    <string name="greetings">Привет!</string>
+    <string name="greetings">Привет ;)</string>
     <string name="slogan">В твоих силах сделать планету чище и
-        светлее</string>
-    <string name="tip">Просто свайпни вверх!</string>
+        светлее! Так чего же ты ждёшь?</string>
+    <string name="enter">Войдите в аккаунт</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="login_type">По логину</string>
+    <string name="pass_type">По номеру</string>
+    <string name="phone">Номер телефона</string>
+    <string name="log_in">Войти</string>
+    <string name="next">Далее</string>
+    <string name="pass_forgot">Забыли пароль?</string>
+    <string name="no_code">Не пришёл код?</string>
+    <string name="enter_with">Войти с помощью</string>
+    <string name="registration">Зарегистрироваться</string>
+
 </resources>
