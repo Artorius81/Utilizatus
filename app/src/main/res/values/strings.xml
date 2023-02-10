@@ -15,5 +15,9 @@
     <string name="no_code">Не пришёл код?</string>
     <string name="enter_with">Войти с помощью</string>
     <string name="registration">Зарегистрироваться</string>
+    <string name="OTP">Введите код</string>
+    <string name="OTP_phone">Код отправлен на номер</string>
+    <string name="sort">Сортировка</string>
+    <string name="sort_description">Сканируйте предмет, чтобы узнать как именно стоит его сортировать</string>
 
 </resources>
