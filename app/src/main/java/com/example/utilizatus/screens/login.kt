@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.example.utilizatus.screens
 
 import android.annotation.SuppressLint
@@ -35,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.*
 import com.example.utilizatus.R
 import com.example.utilizatus.ui.theme.*
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.togitech.ccp.component.TogiCountryCodePicker
 import com.togitech.ccp.component.getFullPhoneNumber
 import compose.icons.FeatherIcons
@@ -109,8 +112,10 @@ fun LoginPage() {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
+@ExperimentalAnimationApi
+@ExperimentalPagerApi
 @SuppressLint("SuspiciousIndentation")
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun BottomSheet(selectedButton: Button, onButtonSelected: (Button) -> Unit) {
     val login = remember { mutableStateOf(TextFieldValue()) }
@@ -120,6 +125,7 @@ fun BottomSheet(selectedButton: Button, onButtonSelected: (Button) -> Unit) {
 
     val state = remember { mutableStateOf(selectedButton) }
     val type = remember { mutableStateOf(false) }
+    val OnBoard = remember { mutableStateOf(false) }
     val OTP = remember { mutableStateOf(false) }
     var showPassword by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -469,7 +475,7 @@ fun BottomSheet(selectedButton: Button, onButtonSelected: (Button) -> Unit) {
                             )
                             Spacer(modifier = Modifier.padding(15.dp))
                             Button(
-                                onClick = {},
+                                onClick = { OnBoard.value = true },
                                 colors = ButtonDefaults.buttonColors(backgroundColor = greenMain),
                                 shape = RoundedCornerShape(8.dp),
                                 modifier = Modifier
@@ -553,8 +559,14 @@ fun BottomSheet(selectedButton: Button, onButtonSelected: (Button) -> Unit) {
         sheetPeekHeight = 50.dp) {
         LoginPage()
     }
+    if (OnBoard.value) {
+        Box(modifier = Modifier.fillMaxSize().background(white)) {
+            OnboardingUi()
+        }
+    }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Buttons() {
     var selectedButton by remember { mutableStateOf(Button.First) }
