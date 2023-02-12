@@ -16,6 +16,6 @@
     <string name="enter_with">Войти с помощью</string>
     <string name="registration">Зарегистрироваться</string>
     <string name="OTP">Введите код</string>
-    <string name="OTP_phone">Код отправлен на номер</string>
+    <string name="OTP_phone">На ваш номер был отправлен СМС-код</string>
 
 </resources>

@@ -92,4 +92,6 @@ dependencies {
     //noinspection GradleDependency
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
 
+    //Toasty
+    implementation "com.github.tfaki:ComposableSweetToast:1.0.1"
 }

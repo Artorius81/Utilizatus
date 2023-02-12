@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -20,13 +19,6 @@ import com.example.utilizatus.R
 import com.example.utilizatus.ui.theme.greenMain
 import com.example.utilizatus.ui.theme.grey
 import com.example.utilizatus.ui.theme.white
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.utilizatus.model.Page
 
 @Composable
@@ -64,7 +56,7 @@ fun OnBoardingScreen(page: Page) {
             Row(modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center) {
-                Box(modifier = Modifier.width(300.dp), contentAlignment = Alignment.Center) {
+                Box(modifier = Modifier.width(350.dp), contentAlignment = Alignment.Center) {
                     Text(modifier = Modifier,
                         text = page.description,
                         style = MaterialTheme.typography.h4.copy(

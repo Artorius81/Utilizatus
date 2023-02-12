@@ -36,10 +36,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.*
 import com.example.utilizatus.R
+import com.example.utilizatus.notification.NotificationService
+import com.example.utilizatus.notification.OTPNumber
 import com.example.utilizatus.ui.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
 import com.togitech.ccp.component.TogiCountryCodePicker
-import com.togitech.ccp.component.getFullPhoneNumber
 import compose.icons.FeatherIcons
 import compose.icons.feathericons.*
 import kotlinx.coroutines.*
@@ -117,12 +119,19 @@ fun LoginPage() {
 @ExperimentalPagerApi
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun BottomSheet(selectedButton: Button, onButtonSelected: (Button) -> Unit) {
+fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSelected: (Button) -> Unit) {
     val login = remember { mutableStateOf(TextFieldValue()) }
     val password = remember { mutableStateOf(TextFieldValue()) }
+    var loginError by remember { mutableStateOf(false) }
+    var passwordError by remember { mutableStateOf(false) }
+    var logPassError by remember { mutableStateOf(false) }
+    var phoneError by remember { mutableStateOf(false) }
+    var OTPError by remember { mutableStateOf(false) }
+    var phoNumbError by remember { mutableStateOf(false) }
     val phoneNumber = rememberSaveable { mutableStateOf("") }
     val uriHandler = LocalUriHandler.current
 
+    val otpValue = remember { mutableStateOf("") }
     val state = remember { mutableStateOf(selectedButton) }
     val type = remember { mutableStateOf(false) }
     val OnBoard = remember { mutableStateOf(false) }
@@ -247,7 +256,12 @@ fun BottomSheet(selectedButton: Button, onButtonSelected: (Button) -> Unit) {
                                 )
                                 Spacer(modifier = Modifier.padding(41.dp))
                                 Button(
-                                    onClick = { OTP.value = true },
+                                    onClick = {
+                                        if (phoneNumber.value.isEmpty()) { phoneError = true }
+                                        if ((phoneNumber.value.length < 10) and (phoneNumber.value.isNotEmpty())) { phoNumbError = true }
+                                        else { OTP.value = true }
+                                        service.showNotification(OTPNumber.value)
+                                              },
                                     colors = ButtonDefaults.buttonColors(backgroundColor = greenMain),
                                     shape = RoundedCornerShape(8.dp),
                                     modifier = Modifier
@@ -309,25 +323,26 @@ fun BottomSheet(selectedButton: Button, onButtonSelected: (Button) -> Unit) {
                                     }
                                 }
                             } else {
-                                Text(text = stringResource(R.string.OTP),
-                                    style = MaterialTheme.typography.h4.copy(
-                                        color = black,
-                                        letterSpacing = 2.sp,
-                                        fontSize = 24.sp,
-                                        fontFamily = nunitoBold))
-                                phoneNumber.value = getFullPhoneNumber()
-                                val completeString = stringResource(R.string.OTP_phone) + " " + phoneNumber.value
-                                Text(completeString,
-                                    style = MaterialTheme.typography.h4.copy(
-                                        color = grey,
-                                        letterSpacing = 2.sp,
-                                        fontSize = 14.sp,
-                                        fontFamily = nunitoRegular))
-                                val otpValue = remember {
-                                    mutableStateOf("")
+                                Column(modifier = Modifier
+                                    .height(50.dp)
+                                    .fillMaxWidth()
+                                    .padding(start = 50.dp)) {
+                                    Text(text = stringResource(R.string.OTP),
+                                        style = MaterialTheme.typography.h4.copy(
+                                            color = black,
+                                            letterSpacing = 2.sp,
+                                            fontSize = 26.sp,
+                                            fontFamily = nunitoBold))
+                                    val completeString = stringResource(R.string.OTP_phone)
+                                    Text(completeString,
+                                        style = MaterialTheme.typography.h4.copy(
+                                            color = grey,
+                                            letterSpacing = 2.sp,
+                                            fontSize = 12.sp,
+                                            fontFamily = nunitoRegular))
                                 }
-                                
-                                Spacer(modifier = Modifier.padding(20.dp))
+
+                                Spacer(modifier = Modifier.padding(15.dp))
 
                                 OtpTextField(
                                     otpText = otpValue.value,
@@ -335,9 +350,11 @@ fun BottomSheet(selectedButton: Button, onButtonSelected: (Button) -> Unit) {
                                         otpValue.value = value
                                     }
                                 )
-                                Spacer(modifier = Modifier.padding(15.dp))
+                                Spacer(modifier = Modifier.padding(20.dp))
                                 Button(
-                                    onClick = { /*TODO*/ },
+                                    onClick = { if (OTPNumber.value == otpValue.value.toInt()) { OnBoard.value = true }
+                                                else { OTPError = true }
+                                              },
                                     colors = ButtonDefaults.buttonColors(backgroundColor = greenMain),
                                     shape = RoundedCornerShape(8.dp),
                                     modifier = Modifier
@@ -475,7 +492,11 @@ fun BottomSheet(selectedButton: Button, onButtonSelected: (Button) -> Unit) {
                             )
                             Spacer(modifier = Modifier.padding(15.dp))
                             Button(
-                                onClick = { OnBoard.value = true },
+                                onClick = { if (login.value.text.isEmpty() and password.value.text.isNotEmpty()) { loginError = true }
+                                            if (password.value.text.isEmpty() and login.value.text.isNotEmpty()) { passwordError = true }
+                                            if (password.value.text.isEmpty() and login.value.text.isEmpty()) { logPassError = true }
+                                            if (password.value.text.isNotEmpty() and login.value.text.isNotEmpty()) { OnBoard.value = true }
+                                          },
                                 colors = ButtonDefaults.buttonColors(backgroundColor = greenMain),
                                 shape = RoundedCornerShape(8.dp),
                                 modifier = Modifier
@@ -559,8 +580,40 @@ fun BottomSheet(selectedButton: Button, onButtonSelected: (Button) -> Unit) {
         sheetPeekHeight = 50.dp) {
         LoginPage()
     }
-    if (OnBoard.value) {
-        Box(modifier = Modifier.fillMaxSize().background(white)) {
+    if (loginError) {
+        loginError = false
+        SweetError(message = "Введите логин")
+    }
+    if (passwordError) {
+        passwordError = false
+        SweetError(message = "Введите пароль")
+    }
+    if (logPassError) {
+        logPassError = false
+        SweetError(message = "Неверный логин или пароль")
+    }
+    if (phoneError) {
+        phoneError = false
+        SweetError(message = "Введите номер телефона")
+    }
+    if (phoNumbError) {
+        phoNumbError = false
+        SweetError(message = "Неверный номер телефона")
+    }
+    if (OTPError) {
+        OTPError = false
+        SweetError(message = "Неверный СМС-код")
+    }
+    AnimatedVisibility(visible = OnBoard.value,
+        enter = scaleIn(
+            animationSpec = tween(
+                durationMillis = 50,
+                easing = LinearEasing)
+        )
+    ) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(white)) {
             OnboardingUi()
         }
     }
@@ -568,10 +621,10 @@ fun BottomSheet(selectedButton: Button, onButtonSelected: (Button) -> Unit) {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun Buttons() {
+fun Buttons(service: NotificationService) {
     var selectedButton by remember { mutableStateOf(Button.First) }
 
-    BottomSheet(selectedButton, onButtonSelected = { selectedButton = it })
+    BottomSheet(service, selectedButton, onButtonSelected = { selectedButton = it })
 
 }
 
@@ -629,12 +682,12 @@ private fun CharView(index: Int, text: String) {
     }
     Text(
         modifier = Modifier
-            .width(40.dp)
+            .width(50.dp)
             .border(
                 2.dp, when {
                     isFocused -> greenMain
                     else -> grey
-                }, RoundedCornerShape(8.dp)
+                }, RoundedCornerShape(14.dp)
             )
             .padding(2.dp),
         text = char,
