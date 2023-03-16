@@ -6,13 +6,15 @@
     <string name="enter">Войдите в аккаунт</string>
     <string name="login">Логин</string>
     <string name="password">Пароль</string>
+    <string name="reg_screen">Регистрация</string>
+    <string name="confirm_password">Подтвердите пароль</string>
     <string name="login_type">По логину</string>
     <string name="pass_type">По номеру</string>
     <string name="phone">Номер телефона</string>
     <string name="log_in">Войти</string>
     <string name="next">Далее</string>
     <string name="pass_forgot">Забыли пароль?</string>
-    <string name="no_code">Не пришёл код?</string>
+    <string name="no_code">Отправить код снова</string>
     <string name="enter_with">Войти с помощью</string>
     <string name="registration">Зарегистрироваться</string>
     <string name="OTP">Введите код</string>

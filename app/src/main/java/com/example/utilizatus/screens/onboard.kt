@@ -13,6 +13,7 @@ import com.example.utilizatus.R
 import com.example.utilizatus.ui.theme.UtilizatusTheme
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -36,7 +37,7 @@ import com.example.utilizatus.view.OnBoardingScreen
 @Composable
 fun OnboardingUi() {
 
-    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
+    val nunitoBold = FontFamily(Font(R.font.nunito_bold))
     val pagerState = rememberPagerState(3)
 
     Column {
@@ -58,17 +59,19 @@ fun OnboardingUi() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center) {
                 OutlinedButton(shape = RoundedCornerShape(8.dp), modifier = Modifier
-                    .padding(bottom = 46.dp),onClick = {}, colors = ButtonDefaults.outlinedButtonColors(backgroundColor = colorResource(
-                    id = R.color.greenMain), colorResource(id = R.color.white))) {
+                    .padding(bottom = 46.dp),
+                    onClick = {},
+                    border = BorderStroke(1.dp, greenMain),
+                ) {
 
                     Text(modifier = Modifier,
                         text = "Начать",
                         style = MaterialTheme.typography.h4.copy(
-                            color = white,
+                            color = greenMain,
                             letterSpacing = 2.sp,
                             textAlign = TextAlign.Center,
                             fontSize = 26.sp,
-                            fontFamily = nunitoRegular
+                            fontFamily = nunitoBold
                         )
                     )
                 }

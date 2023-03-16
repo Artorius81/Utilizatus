@@ -5,10 +5,7 @@ package com.example.utilizatus.screens
 import android.annotation.SuppressLint
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -18,11 +15,11 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -47,6 +44,7 @@ import compose.icons.feathericons.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+
 
 @Composable
 fun LottieAnim() {
@@ -114,7 +112,7 @@ fun LoginPage() {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class, ExperimentalComposeUiApi::class)
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @SuppressLint("SuspiciousIndentation")
@@ -122,22 +120,26 @@ fun LoginPage() {
 fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSelected: (Button) -> Unit) {
     val login = remember { mutableStateOf(TextFieldValue()) }
     val password = remember { mutableStateOf(TextFieldValue()) }
+    val password_check = remember { mutableStateOf(TextFieldValue()) }
     var loginError by remember { mutableStateOf(false) }
     var passwordError by remember { mutableStateOf(false) }
     var logPassError by remember { mutableStateOf(false) }
     var phoneError by remember { mutableStateOf(false) }
     var OTPError by remember { mutableStateOf(false) }
+    var registration = remember { mutableStateOf(false) }
     var phoNumbError by remember { mutableStateOf(false) }
-    val phoneNumber = rememberSaveable { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
     val uriHandler = LocalUriHandler.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    val otpValue = remember { mutableStateOf("") }
+    var otpValue by remember { mutableStateOf("") }
     val state = remember { mutableStateOf(selectedButton) }
     val type = remember { mutableStateOf(false) }
     val OnBoard = remember { mutableStateOf(false) }
     val OTP = remember { mutableStateOf(false) }
     var showPassword by remember { mutableStateOf(false) }
-    val keyboardController = LocalSoftwareKeyboardController.current
+    var showPassword_check by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
     BottomSheetScaffold(
@@ -159,212 +161,550 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                             .size(35.dp)
                             .fillMaxWidth())
                 }
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 40.dp),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally) {
-                    Row(modifier = Modifier
-                        .height(50.dp)) {
-                        Image(
-                            ImageVector.vectorResource(id = R.drawable.util_logo),
-                            contentDescription = "logo",
-                            modifier = Modifier
-                                .padding(top = 10.dp)
-                                .size(30.dp)
-                                .fillMaxWidth())
-                        Spacer(modifier = Modifier
-                            .padding(2.dp))
-                        Text(text = stringResource(R.string.app_name),
-                            style = MaterialTheme.typography.h4.copy(
-                                color = greenMain,
-                                letterSpacing = 2.sp,
-                                fontSize = 32.sp,
-                                fontFamily = nunitoRegular)
-                        )
-                    }
-                    Spacer(modifier = Modifier
-                        .padding(5.dp))
+                if (registration.value) {
                     Column(modifier = Modifier
-                        .fillMaxWidth(),
-                        verticalArrangement = Arrangement.Center,
+                        .fillMaxWidth()
+                        .padding(top = 40.dp),
+                        verticalArrangement = Arrangement.Top,
                         horizontalAlignment = Alignment.CenterHorizontally) {
-                        Row(modifier = Modifier) {
-                            TextButton(
-                                onClick = {
-                                    onButtonSelected(Button.First)
-                                    state.value = Button.First
-                                    type.value = false
-                                },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = if (state.value == Button.First) {
-                                    greenMain
-                                } else {
-                                    white
-                                }),
-                                shape = RoundedCornerShape(8.dp),
+                        Row(modifier = Modifier
+                            .height(50.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center) {
+                            Image(
+                                ImageVector.vectorResource(id = R.drawable.back),
+                                contentDescription = "back",
                                 modifier = Modifier
-                            ) {
-                                Text(text = stringResource(R.string.login_type),
-                                    style = MaterialTheme.typography.h4.copy(
-                                        color = if (state.value == Button.First) {
-                                            white
-                                        } else {
-                                            black },
-                                        letterSpacing = 2.sp,
-                                        fontSize = 14.sp,
-                                        fontFamily = nunitoRegular))
-                            }
+                                    .clickable { registration.value = false }
+                                    .padding(top = 10.dp)
+                                    .size(30.dp))
                             Spacer(modifier = Modifier
-                                .padding(30.dp))
-                            TextButton(
-                                onClick = {
-                                    onButtonSelected(Button.Second)
-                                    state.value = Button.Second
-                                    type.value = true
-                                },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = if (state.value == Button.Second) {
-                                    greenMain
-                                } else {
-                                    white
-                                }),
-                                shape = RoundedCornerShape(8.dp),
+                                .padding(20.dp))
+                            Image(
+                                ImageVector.vectorResource(id = R.drawable.util_logo),
+                                contentDescription = "logo",
                                 modifier = Modifier
-                            ) {
-                                Text(text = stringResource(R.string.pass_type),
-                                    style = MaterialTheme.typography.h4.copy(
-                                        color = if (state.value == Button.Second) {
-                                            white
-                                        } else {
-                                            black },
-                                        letterSpacing = 2.sp,
-                                        fontSize = 14.sp,
-                                        fontFamily = nunitoRegular))
+                                    .padding(top = 10.dp)
+                                    .size(30.dp)
+                                    .fillMaxWidth())
+                            Spacer(modifier = Modifier
+                                .padding(2.dp))
+                            Text(text = stringResource(R.string.app_name),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = greenMain,
+                                    letterSpacing = 2.sp,
+                                    fontSize = 32.sp,
+                                    fontFamily = nunitoRegular)
+                            )
+                        }
+                        Spacer(modifier = Modifier.padding(15.dp))
+                        TextField(
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                backgroundColor = white,
+                                textColor = greenMain,
+                                cursorColor = secGrey,
+                            ),
+                            textStyle = TextStyle(fontSize = 15.sp),
+                            value = login.value,
+                            singleLine = true,
+                            onValueChange = {
+                                login.value = it
+                            },
+                            modifier = Modifier
+                                .width(270.dp),
+                            leadingIcon = { Icon(imageVector = FeatherIcons.User, contentDescription = "Lock Icon") },
+                            placeholder = { Text(text = stringResource(R.string.login),
+                                fontFamily = nunitoRegular,
+                                fontSize = 15.sp,
+                                color = secGrey
+                            ) },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Email,
+                                imeAction = ImeAction.Done
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = { focusManager.clearFocus() }),
+                        )
+                        Spacer(modifier = Modifier
+                            .padding(15.dp))
+                        TextField(
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                backgroundColor = white,
+                                textColor = greenMain,
+                                cursorColor = secGrey,
+                            ),
+                            textStyle = TextStyle(fontSize = 15.sp),
+                            value = password.value,
+                            singleLine = true,
+                            onValueChange = {
+                                password.value = it
+                                password.value = it
+                            },
+                            modifier = Modifier
+                                .width(270.dp),
+                            leadingIcon = { Icon(imageVector = FeatherIcons.Lock, contentDescription = "Pass") },
+                            trailingIcon = { IconButton(onClick = { showPassword = !showPassword }) {
+                                Icon(imageVector = if (showPassword) FeatherIcons.EyeOff else FeatherIcons.Eye, contentDescription = "View") }
+                            },
+                            visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                            placeholder = { Text(text = stringResource(R.string.password),
+                                fontFamily = nunitoRegular,
+                                fontSize = 15.sp,
+                                color = secGrey
+                            ) },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Password,
+                                imeAction = ImeAction.Done
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = { focusManager.clearFocus() }),
+                        )
+                        Spacer(modifier = Modifier.padding(15.dp))
+                        TextField(
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                backgroundColor = white,
+                                textColor = greenMain,
+                                cursorColor = secGrey,
+                            ),
+                            textStyle = TextStyle(fontSize = 15.sp),
+                            value = password_check.value,
+                            singleLine = true,
+                            onValueChange = {
+                                password_check.value = it
+                                password_check.value = it
+                            },
+                            modifier = Modifier
+                                .width(270.dp),
+                            leadingIcon = { Icon(imageVector = FeatherIcons.Lock, contentDescription = "Pass") },
+                            trailingIcon = { IconButton(onClick = { showPassword_check = !showPassword_check }) {
+                                Icon(imageVector = if (showPassword_check) FeatherIcons.EyeOff else FeatherIcons.Eye, contentDescription = "View") }
+                            },
+                            visualTransformation = if (showPassword_check) VisualTransformation.None else PasswordVisualTransformation(),
+                            placeholder = { Text(text = stringResource(R.string.confirm_password),
+                                fontFamily = nunitoRegular,
+                                fontSize = 15.sp,
+                                color = secGrey
+                            ) },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Password,
+                                imeAction = ImeAction.Done
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = { focusManager.clearFocus() }),
+                        )
+                        Spacer(modifier = Modifier.padding(20.dp))
+                        OutlinedButton(
+                            onClick = {  },
+                            border = BorderStroke(1.dp, greenMain),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier
+                        ) {
+                            Text(text = stringResource(R.string.registration),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = greenMain,
+                                    letterSpacing = 2.sp,
+                                    fontSize = 22.sp,
+                                    fontFamily = nunitoRegular))
+                        }
+                        Spacer(modifier = Modifier.padding(33.dp))
+                        Column(modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.Bottom,
+                            horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(text = stringResource(R.string.enter_with),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = grey,
+                                    letterSpacing = 2.sp,
+                                    fontSize = 18.sp,
+                                    fontFamily = nunitoBold))
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(20.dp),
+                                horizontalArrangement = Arrangement.Center) {
+                                Image(
+                                    ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
+                                    contentDescription = "logo",
+                                    modifier = Modifier
+                                        .clickable { uriHandler.openUri("https://www.gosuslugi.ru/") }
+                                        .size(40.dp))
+                                Spacer(modifier = Modifier.padding(25.dp))
+                                Image(
+                                    ImageVector.vectorResource(id = R.drawable.vk_logo),
+                                    contentDescription = "logo",
+                                    modifier = Modifier
+                                        .clickable { uriHandler.openUri("https://vk.com/artorius81") }
+                                        .size(40.dp))
+                                Spacer(modifier = Modifier.padding(25.dp))
+                                Image(
+                                    ImageVector.vectorResource(id = R.drawable.ok_logo),
+                                    contentDescription = "logo",
+                                    modifier = Modifier
+                                        .clickable { uriHandler.openUri("https://ok.ru/") }
+                                        .size(40.dp))
                             }
                         }
-                        if (type.value) {
-                            if (!OTP.value) {
-                                TogiCountryCodePicker(
-                                    text = phoneNumber.value,
-                                    onValueChange = { phoneNumber.value = it },
-                                    unfocusedBorderColor = white,
-                                    modifier = Modifier
-                                        .width(315.dp),
-                                    focusedBorderColor = white,
-                                    cursorColor = secGrey,
-                                    bottomStyle = false, //  if true the text-field is below the country code selector at the top.
-                                    shape = RoundedCornerShape(8.dp)
-                                )
-                                Spacer(modifier = Modifier.padding(41.dp))
-                                Button(
+                    }
+                }
+                else {
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 40.dp),
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Row(modifier = Modifier
+                            .height(50.dp)) {
+                            Image(
+                                ImageVector.vectorResource(id = R.drawable.util_logo),
+                                contentDescription = "logo",
+                                modifier = Modifier
+                                    .padding(top = 10.dp)
+                                    .size(30.dp)
+                                    .fillMaxWidth())
+                            Spacer(modifier = Modifier
+                                .padding(2.dp))
+                            Text(text = stringResource(R.string.app_name),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = greenMain,
+                                    letterSpacing = 2.sp,
+                                    fontSize = 32.sp,
+                                    fontFamily = nunitoRegular)
+                            )
+                        }
+                        Spacer(modifier = Modifier
+                            .padding(5.dp))
+                        Column(modifier = Modifier
+                            .fillMaxWidth(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally) {
+                            Row(modifier = Modifier) {
+                                OutlinedButton(
                                     onClick = {
-                                        if (phoneNumber.value.isEmpty()) { phoneError = true }
-                                        if ((phoneNumber.value.length < 10) and (phoneNumber.value.isNotEmpty())) { phoNumbError = true }
-                                        else { OTP.value = true }
-                                        service.showNotification(OTPNumber.value)
-                                              },
-                                    colors = ButtonDefaults.buttonColors(backgroundColor = greenMain),
+                                        onButtonSelected(Button.First)
+                                        state.value = Button.First
+                                        type.value = false
+                                    },
+                                    //colors = ButtonDefaults.buttonColors(backgroundColor = if (state.value == Button.First) {
+                                    //    white
+                                    //} else {
+                                    //    white
+                                    //}),
+                                    border = if (state.value == Button.First) {
+                                        BorderStroke(1.dp, greenMain)
+                                    } else {
+                                        BorderStroke(0.dp, white) },
                                     shape = RoundedCornerShape(8.dp),
                                     modifier = Modifier
                                 ) {
-                                    Text(text = stringResource(R.string.next),
+                                    Text(text = stringResource(R.string.login_type),
                                         style = MaterialTheme.typography.h4.copy(
-                                            color = white,
-                                            letterSpacing = 4.sp,
-                                            fontSize = 28.sp,
-                                            fontFamily = nunitoRegular))
-                                }
-                                TextButton(
-                                    onClick = {},
-                                    interactionSource = NoRippleInteractionSource(),
-                                    colors = ButtonDefaults.buttonColors(backgroundColor = white),
-                                    modifier = Modifier
-                                ) {
-                                    Text(text = stringResource(R.string.registration),
-                                        style = MaterialTheme.typography.h4.copy(
-                                            color = greenMain,
+                                            color = if (state.value == Button.First) {
+                                                greenMain
+                                            } else {
+                                                black },
                                             letterSpacing = 2.sp,
                                             fontSize = 14.sp,
-                                            fontFamily = nunitoRegular))
-                                }
-                                Spacer(modifier = Modifier.padding(35.dp))
-                                Text(text = stringResource(R.string.enter_with),
-                                    style = MaterialTheme.typography.h4.copy(
-                                        color = grey,
-                                        letterSpacing = 2.sp,
-                                        fontSize = 18.sp,
-                                        fontFamily = nunitoBold))
-                                Column(modifier = Modifier.fillMaxWidth(),
-                                    verticalArrangement = Arrangement.Bottom,
-                                    horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Row(modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(20.dp),
-                                        horizontalArrangement = Arrangement.Center) {
-                                        Image(
-                                            ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
-                                            contentDescription = "logo",
-                                            modifier = Modifier
-                                                .clickable { uriHandler.openUri("https://www.gosuslugi.ru/") }
-                                                .size(40.dp))
-                                        Spacer(modifier = Modifier.padding(25.dp))
-                                        Image(
-                                            ImageVector.vectorResource(id = R.drawable.vk_logo),
-                                            contentDescription = "logo",
-                                            modifier = Modifier
-                                                .clickable { uriHandler.openUri("https://vk.com/artorius81") }
-                                                .size(40.dp))
-                                        Spacer(modifier = Modifier.padding(25.dp))
-                                        Image(
-                                            ImageVector.vectorResource(id = R.drawable.ok_logo),
-                                            contentDescription = "logo",
-                                            modifier = Modifier
-                                                .clickable { uriHandler.openUri("https://ok.ru/") }
-                                                .size(40.dp))
-                                    }
-                                }
-                            } else {
-                                Column(modifier = Modifier
-                                    .height(50.dp)
-                                    .fillMaxWidth()
-                                    .padding(start = 50.dp)) {
-                                    Text(text = stringResource(R.string.OTP),
-                                        style = MaterialTheme.typography.h4.copy(
-                                            color = black,
-                                            letterSpacing = 2.sp,
-                                            fontSize = 26.sp,
                                             fontFamily = nunitoBold))
-                                    val completeString = stringResource(R.string.OTP_phone)
-                                    Text(completeString,
+                                }
+                                Spacer(modifier = Modifier
+                                    .padding(30.dp))
+                                OutlinedButton(
+                                    onClick = {
+                                        onButtonSelected(Button.Second)
+                                        state.value = Button.Second
+                                        type.value = true
+                                    },
+                                    //colors = ButtonDefaults.buttonColors(backgroundColor = if (state.value == Button.Second) {
+                                    //    greenMain
+                                    //} else {
+                                    //    white
+                                    //}),
+                                    border = if (state.value == Button.Second) {
+                                        BorderStroke(1.dp, greenMain)
+                                    } else {
+                                        BorderStroke(0.dp, white) },
+                                    shape = RoundedCornerShape(8.dp),
+                                    modifier = Modifier
+                                ) {
+                                    Text(text = stringResource(R.string.pass_type),
+                                        style = MaterialTheme.typography.h4.copy(
+                                            color = if (state.value == Button.Second) {
+                                                greenMain
+                                            } else {
+                                                black },
+                                            letterSpacing = 2.sp,
+                                            fontSize = 14.sp,
+                                            fontFamily = nunitoBold))
+                                }
+                            }
+                            if (type.value) {
+                                if (!OTP.value) {
+                                    TogiCountryCodePicker(
+                                        text = phoneNumber,
+                                        onValueChange = { value ->
+                                            if (value.length <= 15) {
+                                                phoneNumber = value
+                                            } },
+                                        unfocusedBorderColor = white,
+                                        modifier = Modifier
+                                            .width(315.dp),
+                                        focusedBorderColor = white,
+                                        cursorColor = secGrey,
+                                        bottomStyle = false, //  if true the text-field is below the country code selector at the top.
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                                    Spacer(modifier = Modifier.padding(41.dp))
+                                    OutlinedButton(
+                                        onClick = {
+                                            if (phoneNumber.isEmpty()) { phoneError = true }
+                                            if ((phoneNumber.length < 10) and (phoneNumber.isNotEmpty())) { phoNumbError = true }
+                                            if (phoneNumber.length >= 10) { OTP.value = true; service.showNotification(OTPNumber.value)}
+                                        },
+                                        border = BorderStroke(1.dp, greenMain),
+                                        shape = RoundedCornerShape(8.dp),
+                                        modifier = Modifier
+                                    ) {
+                                        Text(text = stringResource(R.string.next),
+                                            style = MaterialTheme.typography.h4.copy(
+                                                color = greenMain,
+                                                letterSpacing = 2.sp,
+                                                fontSize = 28.sp,
+                                                fontFamily = nunitoBold))
+                                    }
+                                    TextButton(
+                                        onClick = { registration.value = true },
+                                        interactionSource = NoRippleInteractionSource(),
+                                        modifier = Modifier
+                                    ) {
+                                        Text(text = stringResource(R.string.registration),
+                                            style = MaterialTheme.typography.h4.copy(
+                                                color = greenMain,
+                                                letterSpacing = 2.sp,
+                                                fontSize = 14.sp,
+                                                fontFamily = nunitoRegular))
+                                    }
+                                    Spacer(modifier = Modifier.padding(35.dp))
+                                    Text(text = stringResource(R.string.enter_with),
                                         style = MaterialTheme.typography.h4.copy(
                                             color = grey,
                                             letterSpacing = 2.sp,
-                                            fontSize = 12.sp,
-                                            fontFamily = nunitoRegular))
-                                }
-
-                                Spacer(modifier = Modifier.padding(15.dp))
-
-                                OtpTextField(
-                                    otpText = otpValue.value,
-                                    onOtpTextChange = { value, otpInputFilled ->
-                                        otpValue.value = value
+                                            fontSize = 18.sp,
+                                            fontFamily = nunitoBold))
+                                    Column(modifier = Modifier.fillMaxWidth(),
+                                        verticalArrangement = Arrangement.Bottom,
+                                        horizontalAlignment = Alignment.CenterHorizontally) {
+                                        Row(modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(20.dp),
+                                            horizontalArrangement = Arrangement.Center) {
+                                            Image(
+                                                ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
+                                                contentDescription = "logo",
+                                                modifier = Modifier
+                                                    .clickable { uriHandler.openUri("https://www.gosuslugi.ru/") }
+                                                    .size(40.dp))
+                                            Spacer(modifier = Modifier.padding(25.dp))
+                                            Image(
+                                                ImageVector.vectorResource(id = R.drawable.vk_logo),
+                                                contentDescription = "logo",
+                                                modifier = Modifier
+                                                    .clickable { uriHandler.openUri("https://vk.com/artorius81") }
+                                                    .size(40.dp))
+                                            Spacer(modifier = Modifier.padding(25.dp))
+                                            Image(
+                                                ImageVector.vectorResource(id = R.drawable.ok_logo),
+                                                contentDescription = "logo",
+                                                modifier = Modifier
+                                                    .clickable { uriHandler.openUri("https://ok.ru/") }
+                                                    .size(40.dp))
+                                        }
                                     }
+                                } else {
+                                    Column(modifier = Modifier
+                                        .height(50.dp)
+                                        .fillMaxWidth()
+                                        .padding(start = 50.dp)) {
+                                        Text(text = stringResource(R.string.OTP),
+                                            style = MaterialTheme.typography.h4.copy(
+                                                color = black,
+                                                letterSpacing = 2.sp,
+                                                fontSize = 26.sp,
+                                                fontFamily = nunitoBold))
+                                        Text(text = stringResource(R.string.OTP_phone),
+                                            style = MaterialTheme.typography.h4.copy(
+                                                color = grey,
+                                                letterSpacing = 2.sp,
+                                                fontSize = 12.sp,
+                                                fontFamily = nunitoRegular))
+                                    }
+
+                                    Spacer(modifier = Modifier.padding(15.dp))
+
+                                    OtpTextField(
+                                        otpText = otpValue,
+                                        onOtpTextChange = { value, otpInputFilled ->
+                                            otpValue = value
+                                        }
+                                    )
+                                    Spacer(modifier = Modifier.padding(20.dp))
+                                    OutlinedButton(
+                                        onClick = {
+                                            if (otpValue.isEmpty()) {
+                                                OTPError = true
+                                            } else if (OTPNumber.value == otpValue.toInt() || OTPNumber.value_again == otpValue.toInt()) {
+                                                keyboardController?.hide()
+                                                OnBoard.value = true
+                                            }
+                                        },
+                                        border = BorderStroke(1.dp, greenMain),
+                                        shape = RoundedCornerShape(8.dp),
+                                        modifier = Modifier
+                                    ) {
+                                        Text(text = stringResource(R.string.log_in),
+                                            style = MaterialTheme.typography.h4.copy(
+                                                color = greenMain,
+                                                letterSpacing = 2.sp,
+                                                fontSize = 28.sp,
+                                                fontFamily = nunitoBold))
+                                    }
+                                    TextButton(
+                                        onClick = { service.showNotification(OTPNumber.value_again) },
+                                        interactionSource = NoRippleInteractionSource(),
+                                        modifier = Modifier
+                                    ) {
+                                        Text(text = stringResource(R.string.no_code),
+                                            style = MaterialTheme.typography.h4.copy(
+                                                color = greenMain,
+                                                letterSpacing = 2.sp,
+                                                fontSize = 14.sp,
+                                                fontFamily = nunitoRegular))
+                                    }
+                                    TextButton(
+                                        onClick = { registration.value = true },
+                                        interactionSource = NoRippleInteractionSource(),
+                                        modifier = Modifier
+                                    ) {
+                                        Text(text = stringResource(R.string.registration),
+                                            style = MaterialTheme.typography.h4.copy(
+                                                color = greenMain,
+                                                letterSpacing = 2.sp,
+                                                fontSize = 14.sp,
+                                                fontFamily = nunitoRegular))
+                                    }
+                                    Spacer(modifier = Modifier.padding(10.dp))
+                                    Text(text = stringResource(R.string.enter_with),
+                                        style = MaterialTheme.typography.h4.copy(
+                                            color = grey,
+                                            letterSpacing = 2.sp,
+                                            fontSize = 18.sp,
+                                            fontFamily = nunitoBold))
+                                    Column(modifier = Modifier.fillMaxWidth(),
+                                        verticalArrangement = Arrangement.Bottom,
+                                        horizontalAlignment = Alignment.CenterHorizontally) {
+                                        Row(modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(20.dp),
+                                            horizontalArrangement = Arrangement.Center) {
+                                            Image(
+                                                ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
+                                                contentDescription = "logo",
+                                                modifier = Modifier
+                                                    .clickable { uriHandler.openUri("https://www.gosuslugi.ru/") }
+                                                    .size(40.dp))
+                                            Spacer(modifier = Modifier.padding(25.dp))
+                                            Image(
+                                                ImageVector.vectorResource(id = R.drawable.vk_logo),
+                                                contentDescription = "logo",
+                                                modifier = Modifier
+                                                    .clickable { uriHandler.openUri("https://vk.com/artorius81") }
+                                                    .size(40.dp))
+                                            Spacer(modifier = Modifier.padding(25.dp))
+                                            Image(
+                                                ImageVector.vectorResource(id = R.drawable.ok_logo),
+                                                contentDescription = "logo",
+                                                modifier = Modifier
+                                                    .clickable { uriHandler.openUri("https://ok.ru/") }
+                                                    .size(40.dp))
+                                        }
+                                    }
+                                }
+                            } else {
+                                TextField(
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        backgroundColor = white,
+                                        textColor = greenMain,
+                                        cursorColor = secGrey,
+                                    ),
+                                    textStyle = TextStyle(fontSize = 15.sp),
+                                    value = login.value,
+                                    singleLine = true,
+                                    onValueChange = {
+                                        login.value = it
+                                    },
+                                    modifier = Modifier
+                                        .width(270.dp),
+                                    leadingIcon = { Icon(imageVector = FeatherIcons.User, contentDescription = "Lock Icon") },
+                                    placeholder = { Text(text = stringResource(R.string.login),
+                                        fontFamily = nunitoRegular,
+                                        fontSize = 15.sp,
+                                        color = secGrey
+                                    ) },
+                                    keyboardOptions = KeyboardOptions(
+                                        keyboardType = KeyboardType.Email,
+                                        imeAction = ImeAction.Done
+                                    ),
+                                    keyboardActions = KeyboardActions(
+                                        onDone = { focusManager.clearFocus() }),
                                 )
-                                Spacer(modifier = Modifier.padding(20.dp))
-                                Button(
-                                    onClick = { if (OTPNumber.value == otpValue.value.toInt()) { OnBoard.value = true }
-                                                else { OTPError = true }
-                                              },
-                                    colors = ButtonDefaults.buttonColors(backgroundColor = greenMain),
+                                Spacer(modifier = Modifier
+                                    .padding(15.dp))
+                                TextField(
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                                        backgroundColor = white,
+                                        textColor = greenMain,
+                                        cursorColor = secGrey,
+                                    ),
+                                    textStyle = TextStyle(fontSize = 15.sp),
+                                    value = password.value,
+                                    singleLine = true,
+                                    onValueChange = {
+                                        password.value = it
+                                        password.value = it
+                                    },
+                                    modifier = Modifier
+                                        .width(270.dp),
+                                    leadingIcon = { Icon(imageVector = FeatherIcons.Lock, contentDescription = "Pass") },
+                                    trailingIcon = { IconButton(onClick = { showPassword = !showPassword }) {
+                                        Icon(imageVector = if (showPassword) FeatherIcons.Eye else FeatherIcons.EyeOff, contentDescription = "View") }
+                                    },
+                                    visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                                    placeholder = { Text(text = stringResource(R.string.password),
+                                        fontFamily = nunitoRegular,
+                                        fontSize = 15.sp,
+                                        color = secGrey
+                                    ) },
+                                    keyboardOptions = KeyboardOptions(
+                                        keyboardType = KeyboardType.Password,
+                                        imeAction = ImeAction.Done
+                                    ),
+                                    keyboardActions = KeyboardActions(
+                                        onDone = { focusManager.clearFocus() }),
+                                )
+                                Spacer(modifier = Modifier.padding(15.dp))
+                                OutlinedButton(
+                                    onClick = { if (login.value.text.isEmpty() and password.value.text.isNotEmpty()) { loginError = true }
+                                        if (password.value.text.isEmpty() and login.value.text.isNotEmpty()) { passwordError = true }
+                                        if (password.value.text.isEmpty() and login.value.text.isEmpty()) { logPassError = true }
+                                        if (password.value.text.isNotEmpty() and login.value.text.isNotEmpty()) { OnBoard.value = true; keyboardController?.hide() }
+                                    },
+                                    border = BorderStroke(1.dp, greenMain),
                                     shape = RoundedCornerShape(8.dp),
                                     modifier = Modifier
                                 ) {
                                     Text(text = stringResource(R.string.log_in),
                                         style = MaterialTheme.typography.h4.copy(
-                                            color = white,
-                                            letterSpacing = 4.sp,
+                                            color = greenMain,
+                                            letterSpacing = 2.sp,
                                             fontSize = 28.sp,
-                                            fontFamily = nunitoRegular))
+                                            fontFamily = nunitoBold))
                                 }
                                 TextButton(
                                     onClick = {},
@@ -372,7 +712,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                     colors = ButtonDefaults.buttonColors(backgroundColor = white),
                                     modifier = Modifier
                                 ) {
-                                    Text(text = stringResource(R.string.no_code),
+                                    Text(text = stringResource(R.string.pass_forgot),
                                         style = MaterialTheme.typography.h4.copy(
                                             color = greenMain,
                                             letterSpacing = 2.sp,
@@ -380,7 +720,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                             fontFamily = nunitoRegular))
                                 }
                                 TextButton(
-                                    onClick = {},
+                                    onClick = { registration.value = true },
                                     interactionSource = NoRippleInteractionSource(),
                                     colors = ButtonDefaults.buttonColors(backgroundColor = white),
                                     modifier = Modifier
@@ -393,15 +733,15 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                             fontFamily = nunitoRegular))
                                 }
                                 Spacer(modifier = Modifier.padding(10.dp))
-                                Text(text = stringResource(R.string.enter_with),
-                                    style = MaterialTheme.typography.h4.copy(
-                                        color = grey,
-                                        letterSpacing = 2.sp,
-                                        fontSize = 18.sp,
-                                        fontFamily = nunitoBold))
                                 Column(modifier = Modifier.fillMaxWidth(),
                                     verticalArrangement = Arrangement.Bottom,
                                     horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text(text = stringResource(R.string.enter_with),
+                                        style = MaterialTheme.typography.h4.copy(
+                                            color = grey,
+                                            letterSpacing = 2.sp,
+                                            fontSize = 18.sp,
+                                            fontFamily = nunitoBold))
                                     Row(modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(20.dp),
@@ -427,147 +767,6 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                                 .clickable { uriHandler.openUri("https://ok.ru/") }
                                                 .size(40.dp))
                                     }
-                                }
-                            }
-                        } else {
-                            TextField(
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    backgroundColor = white,
-                                    textColor = greenMain,
-                                    cursorColor = secGrey,
-                                ),
-                                textStyle = TextStyle(fontSize = 15.sp),
-                                value = login.value,
-                                singleLine = true,
-                                onValueChange = {
-                                    login.value = it
-                                },
-                                modifier = Modifier
-                                    .width(270.dp),
-                                leadingIcon = { Icon(imageVector = FeatherIcons.User, contentDescription = "Lock Icon") },
-                                placeholder = { Text(text = stringResource(R.string.login),
-                                    fontFamily = nunitoRegular,
-                                    fontSize = 15.sp,
-                                    color = secGrey
-                                ) },
-                                keyboardOptions = KeyboardOptions(
-                                    keyboardType = KeyboardType.Email,
-                                    imeAction = ImeAction.Next
-                                ),
-                                keyboardActions = KeyboardActions(
-                                    onNext = { keyboardController?.hide() }),
-                            )
-                            Spacer(modifier = Modifier
-                                .padding(15.dp))
-                            TextField(
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    backgroundColor = white,
-                                    textColor = greenMain,
-                                    cursorColor = secGrey,
-                                ),
-                                textStyle = TextStyle(fontSize = 15.sp),
-                                value = password.value,
-                                singleLine = true,
-                                onValueChange = {
-                                    password.value = it
-                                },
-                                modifier = Modifier
-                                    .width(270.dp),
-                                leadingIcon = { Icon(imageVector = FeatherIcons.Lock, contentDescription = "Pass") },
-                                trailingIcon = { IconButton(onClick = { showPassword = !showPassword }) {
-                                    Icon(imageVector = if (showPassword) FeatherIcons.Eye else FeatherIcons.EyeOff, contentDescription = "View") }
-                                },
-                                visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-                                placeholder = { Text(text = stringResource(R.string.password),
-                                    fontFamily = nunitoRegular,
-                                    fontSize = 15.sp,
-                                    color = secGrey
-                                ) },
-                                keyboardOptions = KeyboardOptions(
-                                    keyboardType = KeyboardType.Password,
-                                    imeAction = ImeAction.Next
-                                ),
-                                keyboardActions = KeyboardActions(
-                                    onNext = { keyboardController?.show() }),
-                            )
-                            Spacer(modifier = Modifier.padding(15.dp))
-                            Button(
-                                onClick = { if (login.value.text.isEmpty() and password.value.text.isNotEmpty()) { loginError = true }
-                                            if (password.value.text.isEmpty() and login.value.text.isNotEmpty()) { passwordError = true }
-                                            if (password.value.text.isEmpty() and login.value.text.isEmpty()) { logPassError = true }
-                                            if (password.value.text.isNotEmpty() and login.value.text.isNotEmpty()) { OnBoard.value = true }
-                                          },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = greenMain),
-                                shape = RoundedCornerShape(8.dp),
-                                modifier = Modifier
-                            ) {
-                                Text(text = stringResource(R.string.log_in),
-                                    style = MaterialTheme.typography.h4.copy(
-                                        color = white,
-                                        letterSpacing = 4.sp,
-                                        fontSize = 28.sp,
-                                        fontFamily = nunitoRegular))
-                            }
-                            TextButton(
-                                onClick = {},
-                                interactionSource = NoRippleInteractionSource(),
-                                colors = ButtonDefaults.buttonColors(backgroundColor = white),
-                                modifier = Modifier
-                            ) {
-                                Text(text = stringResource(R.string.pass_forgot),
-                                    style = MaterialTheme.typography.h4.copy(
-                                        color = greenMain,
-                                        letterSpacing = 2.sp,
-                                        fontSize = 14.sp,
-                                        fontFamily = nunitoRegular))
-                            }
-                            TextButton(
-                                onClick = {},
-                                interactionSource = NoRippleInteractionSource(),
-                                colors = ButtonDefaults.buttonColors(backgroundColor = white),
-                                modifier = Modifier
-                            ) {
-                                Text(text = stringResource(R.string.registration),
-                                    style = MaterialTheme.typography.h4.copy(
-                                        color = greenMain,
-                                        letterSpacing = 2.sp,
-                                        fontSize = 14.sp,
-                                        fontFamily = nunitoRegular))
-                            }
-                            Spacer(modifier = Modifier.padding(10.dp))
-                            Column(modifier = Modifier.fillMaxWidth(),
-                                verticalArrangement = Arrangement.Bottom,
-                                horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text(text = stringResource(R.string.enter_with),
-                                    style = MaterialTheme.typography.h4.copy(
-                                        color = grey,
-                                        letterSpacing = 2.sp,
-                                        fontSize = 18.sp,
-                                        fontFamily = nunitoBold))
-                                Row(modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(20.dp),
-                                    horizontalArrangement = Arrangement.Center) {
-                                    Image(
-                                        ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
-                                        contentDescription = "logo",
-                                        modifier = Modifier
-                                            .clickable { uriHandler.openUri("https://www.gosuslugi.ru/") }
-                                            .size(40.dp))
-                                    Spacer(modifier = Modifier.padding(25.dp))
-                                    Image(
-                                        ImageVector.vectorResource(id = R.drawable.vk_logo),
-                                        contentDescription = "logo",
-                                        modifier = Modifier
-                                            .clickable { uriHandler.openUri("https://vk.com/artorius81") }
-                                            .size(40.dp))
-                                    Spacer(modifier = Modifier.padding(25.dp))
-                                    Image(
-                                        ImageVector.vectorResource(id = R.drawable.ok_logo),
-                                        contentDescription = "logo",
-                                        modifier = Modifier
-                                            .clickable { uriHandler.openUri("https://ok.ru/") }
-                                            .size(40.dp))
                                 }
                             }
                         }
@@ -582,27 +781,27 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
     }
     if (loginError) {
         loginError = false
-        SweetError(message = "Введите логин")
+        SweetError(message = "Введите логин", contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
     }
     if (passwordError) {
         passwordError = false
-        SweetError(message = "Введите пароль")
+        SweetError(message = "Введите пароль", contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
     }
     if (logPassError) {
         logPassError = false
-        SweetError(message = "Неверный логин или пароль")
+        SweetError(message = "Неверный логин или пароль", contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
     }
     if (phoneError) {
         phoneError = false
-        SweetError(message = "Введите номер телефона")
+        SweetError(message = "Введите номер телефона", contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
     }
     if (phoNumbError) {
         phoNumbError = false
-        SweetError(message = "Неверный номер телефона")
+        SweetError(message = "Неверный номер телефона", contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
     }
     if (OTPError) {
         OTPError = false
-        SweetError(message = "Неверный СМС-код")
+        SweetError(message = "Неверный СМС-код", contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
     }
     AnimatedVisibility(visible = OnBoard.value,
         enter = scaleIn(
