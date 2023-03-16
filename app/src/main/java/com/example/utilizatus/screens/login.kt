@@ -120,6 +120,8 @@ fun LoginPage() {
 fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSelected: (Button) -> Unit) {
     val login = remember { mutableStateOf(TextFieldValue()) }
     val password = remember { mutableStateOf(TextFieldValue()) }
+    val login_reg = remember { mutableStateOf(TextFieldValue()) }
+    val pass_reg = remember { mutableStateOf(TextFieldValue()) }
     val password_check = remember { mutableStateOf(TextFieldValue()) }
     var loginError by remember { mutableStateOf(false) }
     var passwordError by remember { mutableStateOf(false) }
@@ -142,6 +144,9 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
     val focusManager = LocalFocusManager.current
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
     BottomSheetScaffold(
         sheetContent = {
             Card(
@@ -175,7 +180,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                 ImageVector.vectorResource(id = R.drawable.back),
                                 contentDescription = "back",
                                 modifier = Modifier
-                                    .clickable { registration.value = false }
+                                    .clickable (indication = null, interactionSource = interactionSource) { registration.value = false }
                                     .padding(top = 10.dp)
                                     .size(30.dp))
                             Spacer(modifier = Modifier
@@ -205,10 +210,10 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                 cursorColor = secGrey,
                             ),
                             textStyle = TextStyle(fontSize = 15.sp),
-                            value = login.value,
+                            value = login_reg.value,
                             singleLine = true,
                             onValueChange = {
-                                login.value = it
+                                login_reg.value = it
                             },
                             modifier = Modifier
                                 .width(270.dp),
@@ -234,11 +239,11 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                 cursorColor = secGrey,
                             ),
                             textStyle = TextStyle(fontSize = 15.sp),
-                            value = password.value,
+                            value = pass_reg.value,
                             singleLine = true,
                             onValueChange = {
-                                password.value = it
-                                password.value = it
+                                pass_reg.value = it
+                                pass_reg.value = it
                             },
                             modifier = Modifier
                                 .width(270.dp),
@@ -295,6 +300,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                         Spacer(modifier = Modifier.padding(20.dp))
                         OutlinedButton(
                             onClick = {  },
+                            interactionSource = NoRippleInteractionSource(),
                             border = BorderStroke(1.dp, greenMain),
                             shape = RoundedCornerShape(8.dp),
                             modifier = Modifier
@@ -324,21 +330,21 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                     ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
                                     contentDescription = "logo",
                                     modifier = Modifier
-                                        .clickable { uriHandler.openUri("https://www.gosuslugi.ru/") }
+                                        .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://www.gosuslugi.ru/") }
                                         .size(40.dp))
                                 Spacer(modifier = Modifier.padding(25.dp))
                                 Image(
                                     ImageVector.vectorResource(id = R.drawable.vk_logo),
                                     contentDescription = "logo",
                                     modifier = Modifier
-                                        .clickable { uriHandler.openUri("https://vk.com/artorius81") }
+                                        .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://vk.com/artorius81") }
                                         .size(40.dp))
                                 Spacer(modifier = Modifier.padding(25.dp))
                                 Image(
                                     ImageVector.vectorResource(id = R.drawable.ok_logo),
                                     contentDescription = "logo",
                                     modifier = Modifier
-                                        .clickable { uriHandler.openUri("https://ok.ru/") }
+                                        .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://ok.ru/") }
                                         .size(40.dp))
                             }
                         }
@@ -382,11 +388,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                         state.value = Button.First
                                         type.value = false
                                     },
-                                    //colors = ButtonDefaults.buttonColors(backgroundColor = if (state.value == Button.First) {
-                                    //    white
-                                    //} else {
-                                    //    white
-                                    //}),
+                                    interactionSource = NoRippleInteractionSource(),
                                     border = if (state.value == Button.First) {
                                         BorderStroke(1.dp, greenMain)
                                     } else {
@@ -412,11 +414,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                         state.value = Button.Second
                                         type.value = true
                                     },
-                                    //colors = ButtonDefaults.buttonColors(backgroundColor = if (state.value == Button.Second) {
-                                    //    greenMain
-                                    //} else {
-                                    //    white
-                                    //}),
+                                    interactionSource = NoRippleInteractionSource(),
                                     border = if (state.value == Button.Second) {
                                         BorderStroke(1.dp, greenMain)
                                     } else {
@@ -459,6 +457,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                             if (phoneNumber.length >= 10) { OTP.value = true; service.showNotification(OTPNumber.value)}
                                         },
                                         border = BorderStroke(1.dp, greenMain),
+                                        interactionSource = NoRippleInteractionSource(),
                                         shape = RoundedCornerShape(8.dp),
                                         modifier = Modifier
                                     ) {
@@ -471,7 +470,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                     }
                                     TextButton(
                                         onClick = { registration.value = true },
-                                        interactionSource = NoRippleInteractionSource(),
+                                        interactionSource = interactionSource,
                                         modifier = Modifier
                                     ) {
                                         Text(text = stringResource(R.string.registration),
@@ -499,21 +498,21 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                                 ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
-                                                    .clickable { uriHandler.openUri("https://www.gosuslugi.ru/") }
+                                                    .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://www.gosuslugi.ru/") }
                                                     .size(40.dp))
                                             Spacer(modifier = Modifier.padding(25.dp))
                                             Image(
                                                 ImageVector.vectorResource(id = R.drawable.vk_logo),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
-                                                    .clickable { uriHandler.openUri("https://vk.com/artorius81") }
+                                                    .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://vk.com/artorius81") }
                                                     .size(40.dp))
                                             Spacer(modifier = Modifier.padding(25.dp))
                                             Image(
                                                 ImageVector.vectorResource(id = R.drawable.ok_logo),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
-                                                    .clickable { uriHandler.openUri("https://ok.ru/") }
+                                                    .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://ok.ru/") }
                                                     .size(40.dp))
                                         }
                                     }
@@ -553,8 +552,10 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                                 keyboardController?.hide()
                                                 OnBoard.value = true
                                             }
+                                            else { OTPError = true }
                                         },
                                         border = BorderStroke(1.dp, greenMain),
+                                        interactionSource = NoRippleInteractionSource(),
                                         shape = RoundedCornerShape(8.dp),
                                         modifier = Modifier
                                     ) {
@@ -607,21 +608,21 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                                 ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
-                                                    .clickable { uriHandler.openUri("https://www.gosuslugi.ru/") }
+                                                    .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://www.gosuslugi.ru/") }
                                                     .size(40.dp))
                                             Spacer(modifier = Modifier.padding(25.dp))
                                             Image(
                                                 ImageVector.vectorResource(id = R.drawable.vk_logo),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
-                                                    .clickable { uriHandler.openUri("https://vk.com/artorius81") }
+                                                    .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://vk.com/artorius81") }
                                                     .size(40.dp))
                                             Spacer(modifier = Modifier.padding(25.dp))
                                             Image(
                                                 ImageVector.vectorResource(id = R.drawable.ok_logo),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
-                                                    .clickable { uriHandler.openUri("https://ok.ru/") }
+                                                    .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://ok.ru/") }
                                                     .size(40.dp))
                                         }
                                     }
@@ -697,6 +698,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                     },
                                     border = BorderStroke(1.dp, greenMain),
                                     shape = RoundedCornerShape(8.dp),
+                                    interactionSource = NoRippleInteractionSource(),
                                     modifier = Modifier
                                 ) {
                                     Text(text = stringResource(R.string.log_in),
@@ -750,21 +752,21 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                             ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
                                             contentDescription = "logo",
                                             modifier = Modifier
-                                                .clickable { uriHandler.openUri("https://www.gosuslugi.ru/") }
+                                                .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://www.gosuslugi.ru/") }
                                                 .size(40.dp))
                                         Spacer(modifier = Modifier.padding(25.dp))
                                         Image(
                                             ImageVector.vectorResource(id = R.drawable.vk_logo),
                                             contentDescription = "logo",
                                             modifier = Modifier
-                                                .clickable { uriHandler.openUri("https://vk.com/artorius81") }
+                                                .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://vk.com/artorius81") }
                                                 .size(40.dp))
                                         Spacer(modifier = Modifier.padding(25.dp))
                                         Image(
                                             ImageVector.vectorResource(id = R.drawable.ok_logo),
                                             contentDescription = "logo",
                                             modifier = Modifier
-                                                .clickable { uriHandler.openUri("https://ok.ru/") }
+                                                .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://ok.ru/") }
                                                 .size(40.dp))
                                     }
                                 }
