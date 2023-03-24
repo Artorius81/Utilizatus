@@ -2,7 +2,6 @@
 
 package com.example.utilizatus.screens
 
-import android.app.Activity
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,28 +14,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.utilizatus.R
 import com.example.utilizatus.ui.theme.UtilizatusTheme
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.utilizatus.HomeActivity
-import com.example.utilizatus.bottombar.BottomBarScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import com.example.utilizatus.model.onboardPages
 import com.example.utilizatus.ui.theme.greenMain
-import com.example.utilizatus.ui.theme.grey
-import com.example.utilizatus.ui.theme.white
 import com.example.utilizatus.view.OnBoardingScreen
 
 @ExperimentalAnimationApi
@@ -49,9 +42,7 @@ fun OnboardingUi() {
     val context = LocalContext.current
     val launchActivity = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
-    ) { activityResult ->
-        // Handle the result of the launched activity here if needed
-    }
+    ) { activityResult -> }
 
     Column {
 

@@ -7,10 +7,8 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.content.ContextCompat
 import com.example.utilizatus.bottombar.Main
-import com.example.utilizatus.screens.Home
 import com.example.utilizatus.ui.theme.UtilizatusTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 

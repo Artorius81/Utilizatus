@@ -1,9 +1,6 @@
 package com.example.utilizatus.bottombar
 
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.utilizatus.R
-import compose.icons.FeatherIcons
-import compose.icons.feathericons.*
 
 sealed class BottomBarScreen(
     val route: String,
