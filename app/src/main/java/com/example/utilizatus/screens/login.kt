@@ -300,7 +300,6 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                         Spacer(modifier = Modifier.padding(20.dp))
                         OutlinedButton(
                             onClick = {  },
-                            interactionSource = NoRippleInteractionSource(),
                             border = BorderStroke(1.dp, greenMain),
                             shape = RoundedCornerShape(8.dp),
                             modifier = Modifier
@@ -310,7 +309,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                     color = greenMain,
                                     letterSpacing = 2.sp,
                                     fontSize = 22.sp,
-                                    fontFamily = nunitoRegular))
+                                    fontFamily = nunitoBold))
                         }
                         Spacer(modifier = Modifier.padding(33.dp))
                         Column(modifier = Modifier.fillMaxWidth(),
@@ -388,7 +387,6 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                         state.value = Button.First
                                         type.value = false
                                     },
-                                    interactionSource = NoRippleInteractionSource(),
                                     border = if (state.value == Button.First) {
                                         BorderStroke(1.dp, greenMain)
                                     } else {
@@ -414,7 +412,6 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                         state.value = Button.Second
                                         type.value = true
                                     },
-                                    interactionSource = NoRippleInteractionSource(),
                                     border = if (state.value == Button.Second) {
                                         BorderStroke(1.dp, greenMain)
                                     } else {
@@ -437,10 +434,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                 if (!OTP.value) {
                                     TogiCountryCodePicker(
                                         text = phoneNumber,
-                                        onValueChange = { value ->
-                                            if (value.length <= 15) {
-                                                phoneNumber = value
-                                            } },
+                                        onValueChange = { phoneNumber = it },
                                         unfocusedBorderColor = white,
                                         modifier = Modifier
                                             .width(315.dp),
@@ -555,7 +549,6 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                             else { OTPError = true }
                                         },
                                         border = BorderStroke(1.dp, greenMain),
-                                        interactionSource = NoRippleInteractionSource(),
                                         shape = RoundedCornerShape(8.dp),
                                         modifier = Modifier
                                     ) {
@@ -698,7 +691,6 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                     },
                                     border = BorderStroke(1.dp, greenMain),
                                     shape = RoundedCornerShape(8.dp),
-                                    interactionSource = NoRippleInteractionSource(),
                                     modifier = Modifier
                                 ) {
                                     Text(text = stringResource(R.string.log_in),

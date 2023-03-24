@@ -2,6 +2,10 @@
 
 package com.example.utilizatus.screens
 
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,11 +21,14 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.example.utilizatus.HomeActivity
+import com.example.utilizatus.bottombar.BottomBarScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -39,6 +46,12 @@ fun OnboardingUi() {
 
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
     val pagerState = rememberPagerState(3)
+    val context = LocalContext.current
+    val launchActivity = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { activityResult ->
+        // Handle the result of the launched activity here if needed
+    }
 
     Column {
 
@@ -60,7 +73,7 @@ fun OnboardingUi() {
             horizontalArrangement = Arrangement.Center) {
                 OutlinedButton(shape = RoundedCornerShape(8.dp), modifier = Modifier
                     .padding(bottom = 46.dp),
-                    onClick = {},
+                    onClick = { launchActivity.launch(Intent(context, HomeActivity::class.java)) },
                     border = BorderStroke(1.dp, greenMain),
                 ) {
 
