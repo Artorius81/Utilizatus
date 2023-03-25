@@ -85,6 +85,9 @@ dependencies {
 
     implementation "androidx.multidex:multidex:2.0.1"
 
+    //GoogleMaps
+    implementation 'com.google.android.gms:play-services-maps:18.0.0'
+
     //Accompanist pager
     def accompanist_version = '0.15.0'
     //noinspection GradleDependency

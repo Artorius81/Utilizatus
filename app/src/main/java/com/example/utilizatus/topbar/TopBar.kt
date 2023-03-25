@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.Font
@@ -18,19 +20,24 @@ import androidx.compose.ui.unit.sp
 import com.example.utilizatus.R
 import com.example.utilizatus.ui.theme.greenMain
 import com.example.utilizatus.ui.theme.white
-import compose.icons.FeatherIcons
-import compose.icons.feathericons.Search
+import androidx.compose.foundation.shape.CircleShape
+
 
 @Composable
 fun TopBar() {
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
     TopAppBar(
         backgroundColor = white,
-        modifier = Modifier.padding(top = 15.dp),
+        modifier = Modifier.padding(top = 5.dp),
         elevation = 0.dp,
-        actions = { IconButton(onClick = { /*TODO*/ }) {
-            Icon(FeatherIcons.Search, contentDescription = "Search")
-        }},
+        actions = { Image(painter = painterResource(id = R.drawable.profile),
+            contentDescription = "logo",
+            modifier = Modifier.run {
+                padding(top = 15.dp, end = 40.dp)
+                        .size(50.dp)
+                        .shadow(elevation = 4.dp, shape = CircleShape)
+            }
+        ) },
         title = { Image(
             ImageVector.vectorResource(id = R.drawable.util_logo),
             contentDescription = "logo",

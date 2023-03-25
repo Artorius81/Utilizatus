@@ -16,3 +16,13 @@ val orange = Color(0xFFEAA318)
 val secGrey = Color(0xFFB5B5B5)
 val brown = Color(0xFF582F2F)
 val gr = Color(0xFFFAFAFA)
+
+val recycle_icon_color = Color(0xFF40E0D0)
+val leaf_icon_color = Color(0xFF218ECC)
+val beer_icon_color = Color(0xFFDC143C)
+val metal_icon_color = Color(0xFF753CD3)
+val plastic_icon_color = Color(0xFFFFE24D)
+val toxic_icon_color = Color(0xFFEAA318)
+val electronics_icon_color = Color(0xFFB5B5B5)
+val close_icon_color = Color(0xFF582F2F)
+
