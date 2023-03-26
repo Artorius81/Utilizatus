@@ -1,8 +1,13 @@
 package com.example.utilizatus.bottombar
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.utilizatus.topbar.TopBar
 
@@ -13,7 +18,9 @@ fun Main() {
     Scaffold(
         topBar = { TopBar() },
         bottomBar = { BottomNav(navController = navController) }
-    ) {
-        NavGraph(navHostController = navController)
+    ) { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)) {
+            NavGraph(navHostController = navController)
+        }
     }
 }

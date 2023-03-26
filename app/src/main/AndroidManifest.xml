@@ -24,11 +24,6 @@
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/splashScreenTheme"
             tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
             <meta-data
                 android:name="android.app.lib_name"
@@ -42,6 +37,11 @@
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/splashScreenTheme"
             tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

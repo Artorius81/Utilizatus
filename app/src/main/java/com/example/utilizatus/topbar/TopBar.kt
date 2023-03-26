@@ -33,9 +33,8 @@ fun TopBar() {
         actions = { Image(painter = painterResource(id = R.drawable.profile),
             contentDescription = "logo",
             modifier = Modifier.run {
-                padding(top = 15.dp, end = 40.dp)
+                padding(top = 15.dp, end = 30.dp)
                         .size(50.dp)
-                        .shadow(elevation = 4.dp, shape = CircleShape)
             }
         ) },
         title = { Image(
