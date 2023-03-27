@@ -1,5 +1,8 @@
 package com.example.utilizatus.screens
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,13 +10,29 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,8 +44,80 @@ import com.example.utilizatus.R
 import com.example.utilizatus.cards.CardMore
 import com.example.utilizatus.cards.CardPopular
 import com.example.utilizatus.cards.Item
+import com.example.utilizatus.notification.OTPNumber
 import com.example.utilizatus.ui.theme.*
+import com.togitech.ccp.component.TogiCountryCodePicker
+import compose.icons.FeatherIcons
+import compose.icons.feathericons.Eye
+import compose.icons.feathericons.EyeOff
+import compose.icons.feathericons.Lock
+import compose.icons.feathericons.User
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
+@SuppressLint("UnrememberedMutableState")
+@Composable
+fun Map() {
+    val nunitoBold = FontFamily(Font(R.font.nunito_bold))
+    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
+
+    Text(modifier = Modifier
+        .fillMaxSize()
+        .padding(start = 20.dp, top = 5.dp),
+        text = "Карта",
+        style = MaterialTheme.typography.h4.copy(
+            color = black,
+            letterSpacing = 2.sp,
+            fontSize = 32.sp,
+            fontFamily = nunitoBold),
+        textAlign = TextAlign.Start
+    )
+}
+
+
+@Composable
+fun BottomSheetContent(cardItem: CardMore) {
+    val nunitoBold = FontFamily(Font(R.font.nunito_bold))
+    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
+    Surface(
+        modifier = Modifier.height(300.dp),
+        color = white
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = painterResource(id = cardItem.icon),
+                contentDescription = "Favorite icon",
+                tint = black,
+                modifier = Modifier.size(60.dp)
+            )
+            Text(
+                text = cardItem.name,
+                style = MaterialTheme.typography.h4.copy(
+                    color = black,
+                    fontSize = 18.sp,
+                    fontFamily = nunitoBold
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 16.dp)
+            )
+            Text(
+                text = "ID: ${cardItem.description}",
+                style = MaterialTheme.typography.h6.copy(
+                    color = black,
+                    fontSize = 16.sp,
+                    fontFamily = nunitoRegular
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
+    }
+}
+
+@ExperimentalMaterialApi
 @Composable
 fun Home() {
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
@@ -50,17 +141,17 @@ fun Home() {
     )
 
     val cardItems = listOf(
-        CardMore(11, "Макулатура", R.drawable.paper, intArrayOf(0, 1)),
-        CardMore(12, "Бутылки", R.drawable.bottles, intArrayOf(0, 2, 4)),
-        CardMore(13, "Флаконы", R.drawable.vials, intArrayOf(0, 2, 4)),
-        CardMore(14, "Метал. банки", R.drawable.metal_jar, intArrayOf(0, 3)),
-        CardMore(15, "Ткань", R.drawable.cloth, intArrayOf(0, 6)),
-        CardMore(16, "Стекло", R.drawable.glass, intArrayOf(0, 2)),
-        CardMore(17, "Лекарства", R.drawable.medicine, intArrayOf(0, 7)),
-        CardMore(18, "Техника", R.drawable.electr, intArrayOf(0, 3, 8, 9)),
-        CardMore(19, "Мебель", R.drawable.furn, intArrayOf(0, 6)),
-        CardMore(20, "Пищ. отходы", R.drawable.food_waste, intArrayOf(0, 5)),
-        CardMore(21, "Батарейки", R.drawable.battery, intArrayOf(0, 7, 9))
+        CardMore(11, "Макулатура", R.drawable.paper, "В эту категорию входят газеты, журналы, бумага для принтера, карточки, письма и другие бумажные изделия. Макулатуру можно перерабатывать и использовать в качестве сырья для производства новой бумаги. На один тонну переработанной макулатуры можно сохранить 17 деревьев и 7,000 галлонов воды.", intArrayOf(0, 1)),
+        CardMore(12, "Бутылки", R.drawable.bottles, "Эта категория включает в себя стеклянные и пластиковые бутылки. Стеклянные бутылки можно перерабатывать и использовать снова и снова без потери качества, а пластиковые бутылки могут быть переработаны в множество различных продуктов, включая одежду и коврики. Одна стеклянная бутылка, переработанная вместо выбрасывания, может осветить лампочку мощностью 100 ватт на 4 часа.", intArrayOf(0, 2, 4)),
+        CardMore(13, "Флаконы", R.drawable.vials, "Флаконы из стекла и пластика, используемые для лекарств и косметических продуктов, относятся к этой категории. Как и в случае с бутылками, стеклянные флаконы можно перерабатывать многократно. Пластиковые флаконы могут быть переработаны в качестве материала для изготовления других продуктов, включая садовые инструменты и мебель.", intArrayOf(0, 2, 4)),
+        CardMore(14, "Метал. банки", R.drawable.metal_jar, "Эта категория включает в себя банки из алюминия и стали, используемые для консервирования продуктов питания. Металлические банки можно перерабатывать и использовать в качестве сырья для производства новых банок, автомобилей и даже самолетов. Один алюминиевый банк можно переработать и использовать для производства нового банка в течение всего 60 дней.", intArrayOf(0, 3)),
+        CardMore(15, "Ткань", R.drawable.cloth, "Эта категория включает в себя старую одежду, постельное белье, полотенца и другие текстильные изделия. Ткань можно перерабатывать и использовать в качестве сырья для производства новых текстильных изделий. Переработка ткани также может сэкономить до 90% воды и энергии, которые используются при производстве новой ткани. Некоторые компании также собирают старую одежду для переработки в качестве утеплителя для домов и зданий.", intArrayOf(0, 6)),
+        CardMore(16, "Стекло", R.drawable.glass, "В эту категорию входят стеклянные бутылки, окна, зеркала и другие изделия из стекла. Стекло можно перерабатывать и использовать в качестве сырья для производства нового стекла, при этом сокращается количество необходимых сырьевых материалов и энергии. Одна тонна переработанного стекла может сэкономить до 1.2 тонн сырья и 130 кг углекислого газа.", intArrayOf(0, 2)),
+        CardMore(17, "Лекарства", R.drawable.medicine, "Эта категория включает в себя просроченные или ненужные лекарства, которые необходимо утилизировать безопасным способом. Лекарства не должны выбрасываться в мусор, т.к. могут вызвать загрязнение водных ресурсов и опасность для здоровья людей и животных. Некоторые аптеки и больницы предоставляют возможность сдать устаревшие лекарства для безопасной утилизации.", intArrayOf(0, 7)),
+        CardMore(18, "Техника", R.drawable.electr, "Эта категория включает в себя старые компьютеры, телефоны, телевизоры и другие электронные устройства. Утилизация электроники требует специального подхода, т.к. могут содержать опасные химические вещества. Многие компании принимают утилизацию электроники и перерабатывают ее, используя ценные ресурсы, такие как золото, серебро и медь, в качестве сырья для производства новых устройств.", intArrayOf(0, 3, 8, 9)),
+        CardMore(19, "Мебель", R.drawable.furn, "Эта категория включает в себя старую или поврежденную мебель, которая должна быть утилизирована безопасным способом. Мебель может содержать токсичные химические вещества, которые могут загрязнить окружающую среду, если выброшены на свалку. Многие компании предлагают услуги по утилизации мебели, а также перерабатывают ее в качестве сырья для производства новых мебельных изделий.", intArrayOf(0, 6)),
+        CardMore(20, "Пищ. отходы", R.drawable.food_waste, "Эта категория включает в себя остатки пищи, которые могут быть утилизированы путем компостирования. Компостирование - это процесс переработки органических отходов в питательную почву. Компост можно использовать в качестве удобрения для растений и садов. Компостирование пищевых отходов также может сократить количество отходов, которые попадают на свалку.", intArrayOf(0, 5)),
+        CardMore(21, "Батарейки", R.drawable.battery, "Эта категория включает в себя старые или ненужные батарейки, которые должны быть утилизированы безопасным способом. Батареи могут содержать токсичные химические вещества, которые могут вызвать загрязнение окружающей среды, если выброшены на свалку. Некоторые компании предлагают услуги по утилизации батареек, а также собирают их для переработки и использования ценных материалов, таких как цинк и марганец.", intArrayOf(0, 7, 9))
     )
 
     val cardPop = listOf(
@@ -82,6 +173,18 @@ fun Home() {
         CardPopular(37, "Коробка", R.drawable.box, "Может быть переработана в качестве заполнителя для новых упаковочных материалов"),
         CardPopular(38, "Постельное бельё", R.drawable.bedding, "Может быть переработано в изоляцию"),
         CardPopular(39, "Дерево", R.drawable.wood, "Превращается в древесный уголь")
+    )
+
+    var selectedCard by remember { mutableStateOf<CardMore?>(null) }
+
+    val showModalSheet = rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    val scope = rememberCoroutineScope()
+
+    val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
     )
 
     LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -167,7 +270,10 @@ fun Home() {
                             .padding(8.dp)
                             .width(120.dp)
                             .height(100.dp)
-                            .clickable { },
+                            .clickable { showModalSheet.value = !showModalSheet.value
+                                scope.launch {
+                                    sheetState.show()
+                                }; selectedCard = cardItem },
                         shape = roundedRectangleShape,
                         elevation = 4.dp,
                         backgroundColor = white
@@ -278,24 +384,20 @@ fun Home() {
             }
         }
     }
-}
 
-@Composable
-fun Map() {
-    val nunitoBold = FontFamily(Font(R.font.nunito_bold))
-    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
+    //val showModalSheet = rememberSaveable {
+    //    mutableStateOf(false)
+    //}
 
-    Text(modifier = Modifier
-        .fillMaxSize()
-        .padding(start = 20.dp, top = 5.dp),
-        text = "Карта",
-        style = MaterialTheme.typography.h4.copy(
-            color = black,
-            letterSpacing = 2.sp,
-            fontSize = 32.sp,
-            fontFamily = nunitoBold),
-        textAlign = TextAlign.Start
-    )
+    if (selectedCard != null) {
+        ModalBottomSheetLayout(
+            sheetState = sheetState,
+            sheetContent = { BottomSheetContent(cardItem = selectedCard!!) },
+            sheetBackgroundColor = Color.Transparent
+        ) {
+
+        }
+    }
 }
 
 @Composable

@@ -1,5 +1,8 @@
 package com.example.utilizatus.cards
 
+import android.annotation.SuppressLint
+import androidx.annotation.StringRes
+
 data class Item(
     val id: Int,
     val name: String,
@@ -7,10 +10,12 @@ data class Item(
     val color: androidx.compose.ui.graphics.Color
     )
 
+@SuppressLint("SupportAnnotationUsage")
 data class CardMore(
     val id: Int,
     val name: String,
     val icon: Int,
+    val description: String,
     val type: IntArray
 )
 
