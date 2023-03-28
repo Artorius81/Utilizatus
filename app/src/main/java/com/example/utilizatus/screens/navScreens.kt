@@ -20,7 +20,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,6 +50,7 @@ import com.example.utilizatus.cards.CardPopular
 import com.example.utilizatus.cards.Item
 import com.example.utilizatus.notification.OTPNumber
 import com.example.utilizatus.ui.theme.*
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.togitech.ccp.component.TogiCountryCodePicker
 import compose.icons.FeatherIcons
 import compose.icons.feathericons.Eye
@@ -76,45 +81,92 @@ fun Map() {
 
 
 @Composable
-fun BottomSheetContent(cardItem: CardMore) {
+fun BottomSheetContent(cardItem: CardMore, itemList: List<Item>) {
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
+    val nunitoMedium = FontFamily(Font(R.font.nunito_medium))
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
-    Surface(
-        modifier = Modifier.height(300.dp),
-        color = white
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                painter = painterResource(id = cardItem.icon),
-                contentDescription = "Favorite icon",
-                tint = black,
-                modifier = Modifier.size(60.dp)
-            )
-            Text(
-                text = cardItem.name,
-                style = MaterialTheme.typography.h4.copy(
-                    color = black,
-                    fontSize = 18.sp,
-                    fontFamily = nunitoBold
-                ),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 16.dp)
-            )
-            Text(
-                text = "ID: ${cardItem.description}",
-                style = MaterialTheme.typography.h6.copy(
-                    color = black,
-                    fontSize = 16.sp,
-                    fontFamily = nunitoRegular
-                ),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 8.dp)
-            )
+    var backColor = mutableListOf<Color>()
+    cardItem.type.forEach { typeCol ->
+        val typeColor = itemList.find { it.id == typeCol }
+        if (typeColor != null) {
+            backColor.add(typeColor.color)
         }
     }
+    val brush = Brush.linearGradient(
+        colors = backColor,
+        start = Offset.Zero,
+        end = Offset.Infinite
+    )
+    Surface(
+        modifier = Modifier.height(400.dp)) {
+        Box(modifier = Modifier.fillMaxSize().background(brush)) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Card(modifier = Modifier
+                        .padding(8.dp)
+                        .width(120.dp)
+                        .height(100.dp),
+                        shape = RoundedCornerShape(16.dp))
+                    {
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(
+                                painter = painterResource(id = cardItem.icon),
+                                contentDescription = "description",
+                                tint = black,
+                                modifier = Modifier.size(60.dp)
+                            )
+                            Text(
+                                text = cardItem.name,
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = black,
+                                    fontSize = 14.sp,
+                                    fontFamily = nunitoBold
+                                ),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            Column(
+                                Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.End
+                            ) {
+                                cardItem.type.forEach { typeId ->
+                                    val typeItem = itemList.find { it.id == typeId }
+                                    if (typeItem != null) {
+                                        Icon(
+                                            painter = painterResource(id = typeItem.icon),
+                                            contentDescription = typeItem.name,
+                                            tint = typeItem.color,
+                                            modifier = Modifier
+                                                .size(25.dp)
+                                                .padding(4.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Text(
+                        text = cardItem.description,
+                        style = MaterialTheme.typography.h6.copy(
+                            color = white,
+                            fontSize = 16.sp,
+                            fontFamily = nunitoMedium
+                        ),
+                        textAlign = TextAlign.Justify,
+                        modifier = Modifier.padding(top = 8.dp, start = 5.dp, end = 5.dp)
+                    )
+                }
+            }
+        }
 }
 
 @ExperimentalMaterialApi
@@ -141,14 +193,14 @@ fun Home() {
     )
 
     val cardItems = listOf(
-        CardMore(11, "Макулатура", R.drawable.paper, "В эту категорию входят газеты, журналы, бумага для принтера, карточки, письма и другие бумажные изделия. Макулатуру можно перерабатывать и использовать в качестве сырья для производства новой бумаги. На один тонну переработанной макулатуры можно сохранить 17 деревьев и 7,000 галлонов воды.", intArrayOf(0, 1)),
+        CardMore(11, "Макулатура", R.drawable.paper, "В эту категорию входят газеты, журналы, бумага для принтера, карточки, письма и другие бумажные изделия. Макулатуру можно перерабатывать и использовать в качестве сырья для производства новой бумаги. На одну тонну переработанной макулатуры можно сохранить 17 деревьев и 7,000 галлонов воды.", intArrayOf(0, 1)),
         CardMore(12, "Бутылки", R.drawable.bottles, "Эта категория включает в себя стеклянные и пластиковые бутылки. Стеклянные бутылки можно перерабатывать и использовать снова и снова без потери качества, а пластиковые бутылки могут быть переработаны в множество различных продуктов, включая одежду и коврики. Одна стеклянная бутылка, переработанная вместо выбрасывания, может осветить лампочку мощностью 100 ватт на 4 часа.", intArrayOf(0, 2, 4)),
         CardMore(13, "Флаконы", R.drawable.vials, "Флаконы из стекла и пластика, используемые для лекарств и косметических продуктов, относятся к этой категории. Как и в случае с бутылками, стеклянные флаконы можно перерабатывать многократно. Пластиковые флаконы могут быть переработаны в качестве материала для изготовления других продуктов, включая садовые инструменты и мебель.", intArrayOf(0, 2, 4)),
-        CardMore(14, "Метал. банки", R.drawable.metal_jar, "Эта категория включает в себя банки из алюминия и стали, используемые для консервирования продуктов питания. Металлические банки можно перерабатывать и использовать в качестве сырья для производства новых банок, автомобилей и даже самолетов. Один алюминиевый банк можно переработать и использовать для производства нового банка в течение всего 60 дней.", intArrayOf(0, 3)),
+        CardMore(14, "Метал. банки", R.drawable.metal_jar, "Эта категория включает в себя банки из алюминия и стали, используемые для консервирования продуктов питания. Металлические банки можно перерабатывать и использовать в качестве сырья для производства новых банок, автомобилей и даже самолетов. Одну алюминиевую банку можно переработать и использовать для производства новых банок в течение всего 60 дней.", intArrayOf(0, 3)),
         CardMore(15, "Ткань", R.drawable.cloth, "Эта категория включает в себя старую одежду, постельное белье, полотенца и другие текстильные изделия. Ткань можно перерабатывать и использовать в качестве сырья для производства новых текстильных изделий. Переработка ткани также может сэкономить до 90% воды и энергии, которые используются при производстве новой ткани. Некоторые компании также собирают старую одежду для переработки в качестве утеплителя для домов и зданий.", intArrayOf(0, 6)),
         CardMore(16, "Стекло", R.drawable.glass, "В эту категорию входят стеклянные бутылки, окна, зеркала и другие изделия из стекла. Стекло можно перерабатывать и использовать в качестве сырья для производства нового стекла, при этом сокращается количество необходимых сырьевых материалов и энергии. Одна тонна переработанного стекла может сэкономить до 1.2 тонн сырья и 130 кг углекислого газа.", intArrayOf(0, 2)),
         CardMore(17, "Лекарства", R.drawable.medicine, "Эта категория включает в себя просроченные или ненужные лекарства, которые необходимо утилизировать безопасным способом. Лекарства не должны выбрасываться в мусор, т.к. могут вызвать загрязнение водных ресурсов и опасность для здоровья людей и животных. Некоторые аптеки и больницы предоставляют возможность сдать устаревшие лекарства для безопасной утилизации.", intArrayOf(0, 7)),
-        CardMore(18, "Техника", R.drawable.electr, "Эта категория включает в себя старые компьютеры, телефоны, телевизоры и другие электронные устройства. Утилизация электроники требует специального подхода, т.к. могут содержать опасные химические вещества. Многие компании принимают утилизацию электроники и перерабатывают ее, используя ценные ресурсы, такие как золото, серебро и медь, в качестве сырья для производства новых устройств.", intArrayOf(0, 3, 8, 9)),
+        CardMore(18, "Техника", R.drawable.electr, "Эта категория включает в себя старые компьютеры, телефоны, телевизоры и другие электронные устройства. Утилизация электроники требует специального подхода, т.к. может содержать опасные химические вещества. Многие компании принимают электронику и перерабатывают ее, используя ценные ресурсы, такие как золото, серебро и медь, в качестве сырья для производства новых устройств.", intArrayOf(0, 3, 8, 9)),
         CardMore(19, "Мебель", R.drawable.furn, "Эта категория включает в себя старую или поврежденную мебель, которая должна быть утилизирована безопасным способом. Мебель может содержать токсичные химические вещества, которые могут загрязнить окружающую среду, если выброшены на свалку. Многие компании предлагают услуги по утилизации мебели, а также перерабатывают ее в качестве сырья для производства новых мебельных изделий.", intArrayOf(0, 6)),
         CardMore(20, "Пищ. отходы", R.drawable.food_waste, "Эта категория включает в себя остатки пищи, которые могут быть утилизированы путем компостирования. Компостирование - это процесс переработки органических отходов в питательную почву. Компост можно использовать в качестве удобрения для растений и садов. Компостирование пищевых отходов также может сократить количество отходов, которые попадают на свалку.", intArrayOf(0, 5)),
         CardMore(21, "Батарейки", R.drawable.battery, "Эта категория включает в себя старые или ненужные батарейки, которые должны быть утилизированы безопасным способом. Батареи могут содержать токсичные химические вещества, которые могут вызвать загрязнение окружающей среды, если выброшены на свалку. Некоторые компании предлагают услуги по утилизации батареек, а также собирают их для переработки и использования ценных материалов, таких как цинк и марганец.", intArrayOf(0, 7, 9))
@@ -201,22 +253,13 @@ fun Home() {
             )
             LazyRow(modifier = Modifier) {
                 items(itemList) { item ->
-                    var selectedItemId = viewModel.selectedItemId.value
-                    val isSelected = selectedItemId == item.id
                     Card(
                         modifier = Modifier
                             .padding(8.dp)
                             .width(100.dp)
                             .height(80.dp)
-                            .clickable {
-                                selectedItemId = if (selectedItemId == item.id) {
-                                    null
-                                } else {
-                                    item.id
-                                }
-                            },
+                            .clickable {  },
                         shape = roundedRectangleShape,
-                        elevation = 4.dp,
                         backgroundColor = item.color,
                     ) {
                         Column(
@@ -270,12 +313,13 @@ fun Home() {
                             .padding(8.dp)
                             .width(120.dp)
                             .height(100.dp)
-                            .clickable { showModalSheet.value = !showModalSheet.value
+                            .clickable {
+                                showModalSheet.value = !showModalSheet.value
                                 scope.launch {
                                     sheetState.show()
-                                }; selectedCard = cardItem },
+                                }; selectedCard = cardItem
+                            },
                         shape = roundedRectangleShape,
-                        elevation = 4.dp,
                         backgroundColor = white
                     ) {
                         Column(
@@ -348,8 +392,7 @@ fun Home() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .clickable {  },
-                elevation = 4.dp
+                    .clickable { },
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
@@ -392,10 +435,10 @@ fun Home() {
     if (selectedCard != null) {
         ModalBottomSheetLayout(
             sheetState = sheetState,
-            sheetContent = { BottomSheetContent(cardItem = selectedCard!!) },
-            sheetBackgroundColor = Color.Transparent
+            sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+            sheetContent = { BottomSheetContent(cardItem = selectedCard!!, itemList = itemList) },
+            scrimColor = Color.Unspecified,
         ) {
-
         }
     }
 }

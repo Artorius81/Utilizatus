@@ -87,6 +87,8 @@ dependencies {
 
     implementation "androidx.multidex:multidex:2.0.1"
 
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.18.0"
+
     //GoogleMaps
     implementation 'com.google.android.gms:play-services-maps:18.0.0'
 

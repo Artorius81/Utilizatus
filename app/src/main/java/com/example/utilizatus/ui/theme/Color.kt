@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 val greenMain = Color(0xFF4FA328)
 val white = Color(0xFFFFFFFF)
+val greenCard = Color(0xFF38C549)
 val backWhite = Color(0xFFE4E4E4)
 val grey = Color(0xFF5C5C5C)
 val black = Color(0xFF000000)

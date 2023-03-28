@@ -25,7 +25,7 @@ fun BottomNav(navController: NavController) {
     )
     BottomNavigation(
         backgroundColor = white,
-        modifier = Modifier.clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
+        modifier = Modifier.clip(RoundedCornerShape(0.dp, 0.dp, 0.dp, 0.dp))
     ) {
         val backStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = backStackEntry?.destination?.route
