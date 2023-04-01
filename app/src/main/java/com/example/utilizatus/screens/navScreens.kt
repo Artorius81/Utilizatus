@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -142,7 +143,7 @@ fun Map() {
         Text(modifier = Modifier
             .fillMaxSize()
             .padding(start = 20.dp, top = 5.dp),
-            text = "Карта",
+            text = stringResource(R.string.map),
             style = MaterialTheme.typography.h4.copy(
                 color = white,
                 letterSpacing = 2.sp,
@@ -236,7 +237,7 @@ fun BottomSheetContentPop(item: CardPopular) {
                     }
                 }
                 Text(
-                    text = "Описание",
+                    text = stringResource(R.string.descript),
                     style = MaterialTheme.typography.h4.copy(
                         color = black,
                         fontSize = 16.sp,
@@ -345,7 +346,7 @@ fun BottomSheetContent(cardItem: CardMore, itemList: List<Item>) {
                     }
                 }
                 Text(
-                    text = "Описание",
+                    text = stringResource(R.string.descript),
                     style = MaterialTheme.typography.h4.copy(
                         color = white,
                         fontSize = 16.sp,
@@ -384,52 +385,52 @@ fun Home() {
     val roundedRectangleShape = RoundedCornerShape(12.dp)
 
     val itemList = listOf(
-        Item(0, "Перерабат.", R.drawable.recycl, recycle_icon_color),
-        Item(1, "Бумага", R.drawable.paper_icon, leaf_icon_color),
-        Item(2, "Стекло", R.drawable.glass_icon, beer_icon_color),
-        Item(3, "Металл", R.drawable.metal_icon, metal_icon_color),
-        Item(4, "Пластик", R.drawable.plastic_icon, plastic_icon_color),
-        Item(5, "Орган. отходы", R.drawable.food_waste_icon, food_icon_color),
-        Item(6, "Текстиль", R.drawable.textile, cloth_icon_color),
-        Item(7, "Опас. отходы", R.drawable.dang, toxic_icon_color),
-        Item(8, "Строит. отходы", R.drawable.const_icon, build_icon_color),
-        Item(9, "Электроника", R.drawable.electro, electronics_icon_color),
-        Item(10, "Неперерабат.", R.drawable.close_icon, close_icon_color)
+        Item(0, stringResource(R.string.item_1), R.drawable.recycl, recycle_icon_color),
+        Item(1, stringResource(R.string.item_2), R.drawable.paper_icon, leaf_icon_color),
+        Item(2, stringResource(R.string.item_3), R.drawable.glass_icon, beer_icon_color),
+        Item(3, stringResource(R.string.item_4), R.drawable.metal_icon, metal_icon_color),
+        Item(4, stringResource(R.string.item_5), R.drawable.plastic_icon, plastic_icon_color),
+        Item(5, stringResource(R.string.item_6), R.drawable.food_waste_icon, food_icon_color),
+        Item(6, stringResource(R.string.item_7), R.drawable.textile, cloth_icon_color),
+        Item(7, stringResource(R.string.item_8), R.drawable.dang, toxic_icon_color),
+        Item(8, stringResource(R.string.item_9), R.drawable.const_icon, build_icon_color),
+        Item(9, stringResource(R.string.item_10), R.drawable.electro, electronics_icon_color),
+        Item(10, stringResource(R.string.item_11), R.drawable.close_icon, close_icon_color)
     )
 
     val cardItems = listOf(
-        CardMore(11, "Макулатура", R.drawable.paper, "В эту категорию входят газеты, журналы, бумага для принтера, карточки, письма и другие бумажные изделия. Макулатуру можно перерабатывать и использовать в качестве сырья для производства новой бумаги. На одну тонну переработанной макулатуры можно сохранить 17 деревьев и 7,000 галлонов воды.", intArrayOf(0, 1)),
-        CardMore(12, "Бутылки", R.drawable.bottles, "Эта категория включает в себя стеклянные и пластиковые бутылки. Стеклянные бутылки можно перерабатывать и использовать снова и снова без потери качества, а пластиковые бутылки могут быть переработаны в множество различных продуктов, включая одежду и коврики. Одна стеклянная бутылка, переработанная вместо выбрасывания, может осветить лампочку мощностью 100 ватт на 4 часа.", intArrayOf(0, 2, 4)),
-        CardMore(13, "Флаконы", R.drawable.vials, "Флаконы из стекла и пластика, используемые для лекарств и косметических продуктов, относятся к этой категории. Как и в случае с бутылками, стеклянные флаконы можно перерабатывать многократно. Пластиковые флаконы могут быть переработаны в качестве материала для изготовления других продуктов, включая садовые инструменты и мебель.", intArrayOf(0, 2, 4)),
-        CardMore(14, "Метал. банки", R.drawable.metal_jar, "Эта категория включает в себя банки из алюминия и стали, используемые для консервирования продуктов питания. Металлические банки можно перерабатывать и использовать в качестве сырья для производства новых банок, автомобилей и даже самолетов. Одну алюминиевую банку можно переработать и использовать для производства новых банок в течение всего 60 дней.", intArrayOf(0, 3)),
-        CardMore(15, "Ткань", R.drawable.cloth, "Эта категория включает в себя старую одежду, постельное белье, полотенца и другие текстильные изделия. Ткань можно перерабатывать и использовать в качестве сырья для производства новых текстильных изделий. Переработка ткани также может сэкономить до 90% воды и энергии, которые используются при производстве новой ткани. Некоторые компании также собирают старую одежду для переработки в качестве утеплителя для домов и зданий.", intArrayOf(0, 6)),
-        CardMore(16, "Стекло", R.drawable.glass, "В эту категорию входят стеклянные бутылки, окна, зеркала и другие изделия из стекла. Стекло можно перерабатывать и использовать в качестве сырья для производства нового стекла, при этом сокращается количество необходимых сырьевых материалов и энергии. Одна тонна переработанного стекла может сэкономить до 1.2 тонн сырья и 130 кг углекислого газа.", intArrayOf(0, 2)),
-        CardMore(17, "Лекарства", R.drawable.medicine, "Эта категория включает в себя просроченные или ненужные лекарства, которые необходимо утилизировать безопасным способом. Лекарства не должны выбрасываться в мусор, т.к. могут вызвать загрязнение водных ресурсов и опасность для здоровья людей и животных. Некоторые аптеки и больницы предоставляют возможность сдать устаревшие лекарства для безопасной утилизации.", intArrayOf(0, 7)),
-        CardMore(18, "Техника", R.drawable.electr, "Эта категория включает в себя старые компьютеры, телефоны, телевизоры и другие электронные устройства. Утилизация электроники требует специального подхода, т.к. может содержать опасные химические вещества. Многие компании принимают электронику и перерабатывают ее, используя ценные ресурсы, такие как золото, серебро и медь, в качестве сырья для производства новых устройств.", intArrayOf(0, 3, 8, 9)),
-        CardMore(19, "Мебель", R.drawable.furn, "Эта категория включает в себя старую или поврежденную мебель, которая должна быть утилизирована безопасным способом. Мебель может содержать токсичные химические вещества, которые могут загрязнить окружающую среду, если выброшены на свалку. Многие компании предлагают услуги по утилизации мебели, а также перерабатывают ее в качестве сырья для производства новых мебельных изделий.", intArrayOf(0, 6)),
-        CardMore(20, "Пищ. отходы", R.drawable.food_waste, "Эта категория включает в себя остатки пищи, которые могут быть утилизированы путем компостирования. Компостирование - это процесс переработки органических отходов в питательную почву. Компост можно использовать в качестве удобрения для растений и садов. Компостирование пищевых отходов также может сократить количество отходов, которые попадают на свалку.", intArrayOf(0, 5)),
-        CardMore(21, "Батарейки", R.drawable.battery, "Эта категория включает в себя старые или ненужные батарейки, которые должны быть утилизированы безопасным способом. Батареи могут содержать токсичные химические вещества, которые могут вызвать загрязнение окружающей среды, если выброшены на свалку. Некоторые компании предлагают услуги по утилизации батареек, а также собирают их для переработки и использования ценных материалов, таких как цинк и марганец.", intArrayOf(0, 7, 9))
+        CardMore(11, stringResource(R.string.card_more_1), R.drawable.paper, stringResource(R.string.desc_1), intArrayOf(0, 1)),
+        CardMore(12, stringResource(R.string.card_more_2), R.drawable.bottles, stringResource(R.string.desc_2), intArrayOf(0, 2, 4)),
+        CardMore(13, stringResource(R.string.card_more_3), R.drawable.vials, stringResource(R.string.desc_3), intArrayOf(0, 2, 4)),
+        CardMore(14, stringResource(R.string.card_more_4), R.drawable.metal_jar, stringResource(R.string.desc_4), intArrayOf(0, 3)),
+        CardMore(15, stringResource(R.string.card_more_5), R.drawable.cloth, stringResource(R.string.desc_5), intArrayOf(0, 6)),
+        CardMore(16, stringResource(R.string.card_more_6), R.drawable.glass, stringResource(R.string.desc_6), intArrayOf(0, 2)),
+        CardMore(17, stringResource(R.string.card_more_7), R.drawable.medicine, stringResource(R.string.desc_7), intArrayOf(0, 7)),
+        CardMore(18, stringResource(R.string.card_more_8), R.drawable.electr, stringResource(R.string.desc_8), intArrayOf(0, 3, 8, 9)),
+        CardMore(19, stringResource(R.string.card_more_9), R.drawable.furn, stringResource(R.string.desc_9), intArrayOf(0, 6)),
+        CardMore(20, stringResource(R.string.card_more_10), R.drawable.food_waste, stringResource(R.string.desc_10), intArrayOf(0, 5)),
+        CardMore(21, stringResource(R.string.card_more_11), R.drawable.battery, stringResource(R.string.desc_11), intArrayOf(0, 7, 9))
     )
 
     val cardPop = listOf(
-        CardPopular(22, "Газета", R.drawable.news, "Перерабатывается в качестве бумаги и картона"),
-        CardPopular(23, "Журнал", R.drawable.magazine, "Нажмите, чтобы узнать подробнее"),
-        CardPopular(24, "Пакет", R.drawable.bag, "Перерабатывается в качестве пластмассовых изделий"),
-        CardPopular(25, "Пленка", R.drawable.wrap, "Может быть переработана в качестве сырья для производства пластиковых изделий"),
-        CardPopular(26, "Одежда", R.drawable.clothes, "Перерабатывается в качестве изоляционного материала и прочих текстильных изделий"),
-        CardPopular(27, "Телефон", R.drawable.phone, "Содержит множество ценных материалов, которые могут быть переработаны"),
-        CardPopular(28, "Обувь", R.drawable.boots, "Может быть переработана в качестве сырья для производства резиновых изделий"),
-        CardPopular(29, "Жестяные банки", R.drawable.tin, "Перерабатываются в качестве сырья для производства новых металлических изделий"),
-        CardPopular(30, "Алюминевая фольга", R.drawable.foil, "Перерабатывается в качестве сырья для производства новых алюминиевых изделий"),
-        CardPopular(31, "Лампа накаливания", R.drawable.lamp, "Содержит опасные химические элементы, которые должны быть утилизированы правильно"),
-        CardPopular(32, "Краска", R.drawable.paint, "Содержит опасные химические вещества, которые должны быть утилизированы правильно"),
-        CardPopular(33, "Бетон", R.drawable.concreate, "Может быть переработан в качестве заполнителя для новых строительных материалов"),
-        CardPopular(34, "Масло", R.drawable.oil, "Может быть переработано в качестве топлива или сырья для производства новых смазочных материалов."),
-        CardPopular(35, "Батарейка", R.drawable.batteri, "Должна быть утилизирована правильно, чтобы не вредить окружающей среде"),
-        CardPopular(36, "Еда", R.drawable.food, "Может быть переработана в качестве компоста или использована для производства биотоплива"),
-        CardPopular(37, "Коробка", R.drawable.box, "Может быть переработана в качестве заполнителя для новых упаковочных материалов"),
-        CardPopular(38, "Постельное бельё", R.drawable.bedding, "Может быть переработано в изоляцию"),
-        CardPopular(39, "Дерево", R.drawable.wood, "Превращается в древесный уголь")
+        CardPopular(22, stringResource(R.string.card_pop_1), R.drawable.news, stringResource(R.string.card_pop_desc)),
+        CardPopular(23, stringResource(R.string.card_pop_2), R.drawable.magazine, stringResource(R.string.card_pop_desc)),
+        CardPopular(24, stringResource(R.string.card_pop_3), R.drawable.bag, stringResource(R.string.card_pop_desc)),
+        CardPopular(25, stringResource(R.string.card_pop_4), R.drawable.wrap, stringResource(R.string.card_pop_desc)),
+        CardPopular(26, stringResource(R.string.card_pop_5), R.drawable.clothes, stringResource(R.string.card_pop_desc)),
+        CardPopular(27, stringResource(R.string.card_pop_6), R.drawable.phone, stringResource(R.string.card_pop_desc)),
+        CardPopular(28, stringResource(R.string.card_pop_7), R.drawable.boots, stringResource(R.string.card_pop_desc)),
+        CardPopular(29, stringResource(R.string.card_pop_8), R.drawable.tin, stringResource(R.string.card_pop_desc)),
+        CardPopular(30, stringResource(R.string.card_pop_9), R.drawable.foil, stringResource(R.string.card_pop_desc)),
+        CardPopular(31, stringResource(R.string.card_pop_10), R.drawable.lamp, stringResource(R.string.card_pop_desc)),
+        CardPopular(32, stringResource(R.string.card_pop_11), R.drawable.paint, stringResource(R.string.card_pop_desc)),
+        CardPopular(33, stringResource(R.string.card_pop_12), R.drawable.concreate, stringResource(R.string.card_pop_desc)),
+        CardPopular(34, stringResource(R.string.card_pop_13), R.drawable.oil, stringResource(R.string.card_pop_desc)),
+        CardPopular(35, stringResource(R.string.card_pop_14), R.drawable.batteri, stringResource(R.string.card_pop_desc)),
+        CardPopular(36, stringResource(R.string.card_pop_15), R.drawable.food, stringResource(R.string.card_pop_desc)),
+        CardPopular(37, stringResource(R.string.card_pop_16), R.drawable.box, stringResource(R.string.card_pop_desc)),
+        CardPopular(38, stringResource(R.string.card_pop_17), R.drawable.bedding, stringResource(R.string.card_pop_desc)),
+        CardPopular(39, stringResource(R.string.card_pop_18), R.drawable.wood, stringResource(R.string.card_pop_desc))
     )
 
     var selectedCard by remember { mutableStateOf<CardMore?>(null) }
@@ -456,7 +457,7 @@ fun Home() {
         item {
             Text(
                 modifier = Modifier.padding(start = 20.dp, top = 5.dp),
-                text = "Главная",
+                text = stringResource(R.string.main),
                 style = MaterialTheme.typography.h4.copy(
                     color = black,
                     letterSpacing = 2.sp,
@@ -501,7 +502,7 @@ fun Home() {
             }
             Text(
                 modifier = Modifier.padding(start = 20.dp),
-                text = "Подробнее",
+                text = stringResource(R.string.more),
                 style = MaterialTheme.typography.h4.copy(
                     color = black,
                     letterSpacing = 2.sp,
@@ -581,7 +582,7 @@ fun Home() {
             }
             Text(
                 modifier = Modifier.padding(start = 20.dp),
-                text = "Популярное",
+                text = stringResource(R.string.popular),
                 style = MaterialTheme.typography.h4.copy(
                     color = black,
                     letterSpacing = 2.sp,
@@ -674,7 +675,7 @@ fun Star() {
     Text(modifier = Modifier
         .fillMaxSize()
         .padding(start = 20.dp, top = 5.dp),
-        text = "Мои бонусы",
+        text = stringResource(R.string.bonuses),
         style = MaterialTheme.typography.h4.copy(
             color = black,
             letterSpacing = 2.sp,
@@ -693,7 +694,7 @@ fun Menu() {
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 20.dp, top = 5.dp),
-        text = "Меню",
+        text = stringResource(R.string.menu),
         style = MaterialTheme.typography.h4.copy(
             color = black,
             letterSpacing = 2.sp,

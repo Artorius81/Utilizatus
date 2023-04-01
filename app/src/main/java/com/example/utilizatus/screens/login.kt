@@ -128,7 +128,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
     var logPassError by remember { mutableStateOf(false) }
     var phoneError by remember { mutableStateOf(false) }
     var OTPError by remember { mutableStateOf(false) }
-    var registration = remember { mutableStateOf(false) }
+    val registration = remember { mutableStateOf(false) }
     var phoNumbError by remember { mutableStateOf(false) }
     var phoneNumber by remember { mutableStateOf("") }
     val uriHandler = LocalUriHandler.current
@@ -180,7 +180,10 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                 ImageVector.vectorResource(id = R.drawable.back),
                                 contentDescription = "back",
                                 modifier = Modifier
-                                    .clickable (indication = null, interactionSource = interactionSource) { registration.value = false }
+                                    .clickable(
+                                        indication = null,
+                                        interactionSource = interactionSource
+                                    ) { registration.value = false }
                                     .padding(top = 10.dp)
                                     .size(30.dp))
                             Spacer(modifier = Modifier
@@ -329,21 +332,30 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                     ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
                                     contentDescription = "logo",
                                     modifier = Modifier
-                                        .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://www.gosuslugi.ru/") }
+                                        .clickable(
+                                            indication = null,
+                                            interactionSource = interactionSource
+                                        ) { uriHandler.openUri("https://www.gosuslugi.ru/") }
                                         .size(40.dp))
                                 Spacer(modifier = Modifier.padding(25.dp))
                                 Image(
                                     ImageVector.vectorResource(id = R.drawable.vk_logo),
                                     contentDescription = "logo",
                                     modifier = Modifier
-                                        .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://vk.com/artorius81") }
+                                        .clickable(
+                                            indication = null,
+                                            interactionSource = interactionSource
+                                        ) { uriHandler.openUri("https://vk.com/artorius81") }
                                         .size(40.dp))
                                 Spacer(modifier = Modifier.padding(25.dp))
                                 Image(
                                     ImageVector.vectorResource(id = R.drawable.ok_logo),
                                     contentDescription = "logo",
                                     modifier = Modifier
-                                        .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://ok.ru/") }
+                                        .clickable(
+                                            indication = null,
+                                            interactionSource = interactionSource
+                                        ) { uriHandler.openUri("https://ok.ru/") }
                                         .size(40.dp))
                             }
                         }
@@ -492,27 +504,36 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                                 ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
-                                                    .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://www.gosuslugi.ru/") }
+                                                    .clickable(
+                                                        indication = null,
+                                                        interactionSource = interactionSource
+                                                    ) { uriHandler.openUri("https://www.gosuslugi.ru/") }
                                                     .size(40.dp))
                                             Spacer(modifier = Modifier.padding(25.dp))
                                             Image(
                                                 ImageVector.vectorResource(id = R.drawable.vk_logo),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
-                                                    .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://vk.com/artorius81") }
+                                                    .clickable(
+                                                        indication = null,
+                                                        interactionSource = interactionSource
+                                                    ) { uriHandler.openUri("https://vk.com/artorius81") }
                                                     .size(40.dp))
                                             Spacer(modifier = Modifier.padding(25.dp))
                                             Image(
                                                 ImageVector.vectorResource(id = R.drawable.ok_logo),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
-                                                    .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://ok.ru/") }
+                                                    .clickable(
+                                                        indication = null,
+                                                        interactionSource = interactionSource
+                                                    ) { uriHandler.openUri("https://ok.ru/") }
                                                     .size(40.dp))
                                         }
                                     }
                                 } else {
                                     Column(modifier = Modifier
-                                        .height(50.dp)
+                                        .height(70.dp)
                                         .fillMaxWidth()
                                         .padding(start = 50.dp)) {
                                         Text(text = stringResource(R.string.OTP),
@@ -601,21 +622,30 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                                 ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
-                                                    .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://www.gosuslugi.ru/") }
+                                                    .clickable(
+                                                        indication = null,
+                                                        interactionSource = interactionSource
+                                                    ) { uriHandler.openUri("https://www.gosuslugi.ru/") }
                                                     .size(40.dp))
                                             Spacer(modifier = Modifier.padding(25.dp))
                                             Image(
                                                 ImageVector.vectorResource(id = R.drawable.vk_logo),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
-                                                    .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://vk.com/artorius81") }
+                                                    .clickable(
+                                                        indication = null,
+                                                        interactionSource = interactionSource
+                                                    ) { uriHandler.openUri("https://vk.com/artorius81") }
                                                     .size(40.dp))
                                             Spacer(modifier = Modifier.padding(25.dp))
                                             Image(
                                                 ImageVector.vectorResource(id = R.drawable.ok_logo),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
-                                                    .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://ok.ru/") }
+                                                    .clickable(
+                                                        indication = null,
+                                                        interactionSource = interactionSource
+                                                    ) { uriHandler.openUri("https://ok.ru/") }
                                                     .size(40.dp))
                                         }
                                     }
@@ -744,21 +774,30 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                             ImageVector.vectorResource(id = R.drawable.gosuslugi_logo),
                                             contentDescription = "logo",
                                             modifier = Modifier
-                                                .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://www.gosuslugi.ru/") }
+                                                .clickable(
+                                                    indication = null,
+                                                    interactionSource = interactionSource
+                                                ) { uriHandler.openUri("https://www.gosuslugi.ru/") }
                                                 .size(40.dp))
                                         Spacer(modifier = Modifier.padding(25.dp))
                                         Image(
                                             ImageVector.vectorResource(id = R.drawable.vk_logo),
                                             contentDescription = "logo",
                                             modifier = Modifier
-                                                .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://vk.com/artorius81") }
+                                                .clickable(
+                                                    indication = null,
+                                                    interactionSource = interactionSource
+                                                ) { uriHandler.openUri("https://vk.com/artorius81") }
                                                 .size(40.dp))
                                         Spacer(modifier = Modifier.padding(25.dp))
                                         Image(
                                             ImageVector.vectorResource(id = R.drawable.ok_logo),
                                             contentDescription = "logo",
                                             modifier = Modifier
-                                                .clickable (indication = null, interactionSource = interactionSource) { uriHandler.openUri("https://ok.ru/") }
+                                                .clickable(
+                                                    indication = null,
+                                                    interactionSource = interactionSource
+                                                ) { uriHandler.openUri("https://ok.ru/") }
                                                 .size(40.dp))
                                     }
                                 }
@@ -775,27 +814,27 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
     }
     if (loginError) {
         loginError = false
-        SweetError(message = "Введите логин", contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
+        SweetError(message = stringResource(R.string.enter_login), contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
     }
     if (passwordError) {
         passwordError = false
-        SweetError(message = "Введите пароль", contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
+        SweetError(message = stringResource(R.string.enter_password), contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
     }
     if (logPassError) {
         logPassError = false
-        SweetError(message = "Неверный логин или пароль", contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
+        SweetError(message = stringResource(R.string.error_login), contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
     }
     if (phoneError) {
         phoneError = false
-        SweetError(message = "Введите номер телефона", contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
+        SweetError(message = stringResource(R.string.enter_phone), contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
     }
     if (phoNumbError) {
         phoNumbError = false
-        SweetError(message = "Неверный номер телефона", contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
+        SweetError(message = stringResource(R.string.error_phone), contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
     }
     if (OTPError) {
         OTPError = false
-        SweetError(message = "Неверный СМС-код", contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
+        SweetError(message = stringResource(R.string.error_sms), contentAlignment = Alignment.BottomCenter, padding = PaddingValues(bottom = 100.dp))
     }
     AnimatedVisibility(visible = OnBoard.value,
         enter = scaleIn(

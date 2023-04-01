@@ -1,25 +1,26 @@
 package com.example.utilizatus.model
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.example.utilizatus.R
 
-data class Page(val title: String , val description : String,
+data class Page(@StringRes val title: Int , @StringRes val description : Int,
                 @DrawableRes val image: Int)
 
 val onboardPages = listOf(
     Page(
-        "Сортировка",
-        "Сканируйте предмет, чтобы узнать как именно стоит его сортировать",
+        R.string.sorting,
+        R.string.sorting_tip,
         R.drawable.sort_onboard
     ),
     Page(
-        "Поиск",
-        "Узнайте, где находится ближайший пункт сортировки мусора",
+        R.string.searching,
+        R.string.searching_tip,
         R.drawable.search_onboard
     ),
     Page(
-        "Потрясающе!",
-        "Отсортировав мусор, Вы помогли планете. Так держать!",
+        R.string.awesome,
+        R.string.awesome_tip,
         R.drawable.awesome_onboard
     )
 

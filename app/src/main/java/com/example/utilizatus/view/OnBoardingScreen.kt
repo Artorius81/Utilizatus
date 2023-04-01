@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -43,7 +44,7 @@ fun OnBoardingScreen(page: Page) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center) {
                 Text(modifier = Modifier,
-                    text = page.title,
+                    text = stringResource(page.title),
                     style = MaterialTheme.typography.h4.copy(
                         color = greenMain,
                         letterSpacing = 2.sp,
@@ -58,7 +59,7 @@ fun OnBoardingScreen(page: Page) {
                 horizontalArrangement = Arrangement.Center) {
                 Box(modifier = Modifier.width(350.dp), contentAlignment = Alignment.Center) {
                     Text(modifier = Modifier,
-                        text = page.description,
+                        text = stringResource(page.description),
                         style = MaterialTheme.typography.h4.copy(
                             color = grey,
                             letterSpacing = 2.sp,

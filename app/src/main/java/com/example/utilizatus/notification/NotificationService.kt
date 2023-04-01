@@ -1,7 +1,10 @@
 package com.example.utilizatus.notification
 
 import android.app.NotificationManager
+import android.content.ContentResolver
 import android.content.Context
+import android.provider.Settings.Global.getString
+import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import com.example.utilizatus.R
 
@@ -13,7 +16,7 @@ class NotificationService(
     fun showNotification(otp: Int) {
         val notification = NotificationCompat.Builder(context, OTP_CHANNEL_ID)
             .setSmallIcon(R.drawable.util_logo)
-            .setContentText("Ваш СМС-код для входа в приложение: $otp")
+            .setContentText("Your code: $otp")
             .build()
 
         notificationManager.notify(NOTIFICATION_ID, notification)

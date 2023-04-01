@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Утилизатус</string>
+    <string name="greetings">嗨。;)</string>
+    <string name="slogan">这是在你的力量，使地球更清洁，更光明！ 那你还在等什么？</string>
+    <string name="enter">登入</string>
+    <string name="login">登入</string>
+    <string name="password">密码</string>
+    <string name="reg_screen">登记注册</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="login_type">登入</string>
+    <string name="pass_type">按编号</string>
+    <string name="otp_code">您的SMS代码登录到应用程序:</string>
+    <string name="phone">电话号码</string>
+    <string name="log_in">登入</string>
+    <string name="next">下一个</string>
+    <string name="pass_forgot">忘记密码？</string>
+    <string name="no_code">再次发送代码</string>
+    <string name="enter_with">以</string>
+    <string name="registration">注册</string>
+    <string name="OTP">输入密码</string>
+    <string name="OTP_phone">一个短信代码已发送到您的号码</string>
+    <string name="main">主要</string>
+    <string name="more">更多细节</string>
+    <string name="popular">流行的</string>
+    <string name="bonuses">奖励计划</string>
+    <string name="menu">菜单</string>
+    <string name="descript">资料描述</string>
+    <string name="map">地图</string>
+    <string name="begin">开始</string>
+    <string name="sorting">排序</string>
+    <string name="searching">搜索</string>
+    <string name="awesome">坚持下去！</string>
+
+    <string name="enter_login">输入登入</string>
+    <string name="enter_password">输入密码</string>
+    <string name="error_login">登录名或密码无效</string>
+    <string name="enter_phone">输入电话号码</string>
+    <string name="error_phone">电话号码无效</string>
+    <string name="error_sms">无效的SMS-代码</string>
+
+    <string name="item_1">可循环再造</string>
+    <string name="item_2">文件</string>
+    <string name="item_3">玻璃制品</string>
+    <string name="item_4">金属</string>
+    <string name="item_5">塑胶制品</string>
+    <string name="item_6">食物废物</string>
+    <string name="item_7">纺织品</string>
+    <string name="item_8">危险废物</string>
+    <string name="item_9">建造废物</string>
+    <string name="item_10">电子产品</string>
+    <string name="item_11">不可循环再造</string>
+
+    <string name="card_more_1">废纸</string>
+    <string name="card_more_2">瓶子</string>
+    <string name="card_more_3">小瓶</string>
+    <string name="card_more_4">金属罐</string>
+    <string name="card_more_5">[经]布料</string>
+    <string name="card_more_6">玻璃制品</string>
+    <string name="card_more_7">药物</string>
+    <string name="card_more_8">电器用品</string>
+    <string name="card_more_9">家具</string>
+    <string name="card_more_10">食物废物</string>
+    <string name="card_more_11">电池</string>
+
+    <string name="card_pop_1">报章</string>
+    <string name="card_pop_2">杂志</string>
+    <string name="card_pop_3">包裹</string>
+    <string name="card_pop_4">包装,包装</string>
+    <string name="card_pop_5">衣服</string>
+    <string name="card_pop_6">电话</string>
+    <string name="card_pop_7">鞋履</string>
+    <string name="card_pop_8">锡罐</string>
+    <string name="card_pop_9">铝箔</string>
+    <string name="card_pop_10">白炽灯</string>
+    <string name="card_pop_11">油漆</string>
+    <string name="card_pop_12">混凝土</string>
+    <string name="card_pop_13">石油</string>
+    <string name="card_pop_14">电池</string>
+    <string name="card_pop_15">係食物呀</string>
+    <string name="card_pop_16">盒子</string>
+    <string name="card_pop_17">亚麻布</string>
+    <string name="card_pop_18">木材</string>
+
+    <string name="sorting_tip">了解如何分类垃圾</string>
+    <string name="searching_tip">找出最近的垃圾分类点所在位置</string>
+    <string name="awesome_tip">通过分类垃圾，你帮助了这个星球，也获得了奖金。 坚持下去！</string>
+
+    <string name="card_pop_desc">点击了解更多</string>
+
+    <string name="desc_1">此类别包括报纸，杂志，打印机纸张，卡片，信件和其他纸张产品。 废纸可以回收利用，用作生产新纸的原料。 使用一吨回收废纸，您可以节省17棵树和7,000加仑的水。</string>
+
+    <string name="desc_2">此类别包括玻璃和塑料瓶。 玻璃瓶可以反复回收和使用而不会损失质量，塑料瓶可以回收成许多不同的产品，包括服装和垫子。 一个玻璃瓶，回收而不是丢弃，可以照亮一个100瓦的灯泡4小时。</string>
+
+    <string name="desc_3">用于药品和化妆品的玻璃和塑料制成的瓶子属于这一类。 与瓶子一样，玻璃瓶可以回收多次。 塑料瓶可以回收用作制造其他产品的材料，包括园林工具和家具。</string>
+
+    <string name="desc_4">此类别包括用于食品保鲜的铝罐和钢罐。 金属罐可以回收利用，并用作生产新罐，汽车甚至飞机的原材料。 一个铝罐可以回收利用，并在60天内生产一个新的铝罐。</string>
+
+    <string name="desc_5">此类别包括旧衣服，床单，毛巾和其他纺织品。 该织物可以回收利用，并用作生产新纺织品的原料。 织物回收还可以节省高达90%的水和能源，用于生产新织物。 一些公司还收集旧衣服用于回收，作为家庭和建筑物的绝缘材料。</string>
+
+    <string name="desc_6">此类别包括玻璃瓶，窗户，镜子和其他玻璃制品。 玻璃可以回收并用作生产新玻璃的原料，同时减少所需的原料量和能源。 一吨再生玻璃可节省高达1.2吨的原材料和130公斤的二氧化碳。</string>
+
+    <string name="desc_7">此类别包括需要以安全方式处置的过期或不必要的药物。 药品不应该被扔进垃圾桶，因为它们会造成水资源的污染和对人类和动物健康的危险。 一些药店和医院提供了捐赠过时药物的机会，以便安全处置。</string>
+
+    <string name="desc_8">此类别包括旧电脑，电话，电视和其他电子设备。 处理电子产品需要一种特殊的方法，因为它们可能含有危险的化学物质。 许多公司接受电子产品的回收并回收利用，使用金，银和铜等宝贵资源作为生产新设备的原材料。</string>
+
+    <string name="desc_9">此类别包括必须以安全方式处置的旧家具或损坏家具。 家具可能含有有毒化学物质，如果扔进垃圾填埋场会污染环境。 许多公司提供家具回收服务，并将其作为生产新家具产品的原材料进行回收。</string>
+
+    <string name="desc_10">此类别包括可通过堆肥处理的食物剩菜。 堆肥是将有机废物加工成营养土壤的过程。 堆肥可用作植物和花园的肥料。 将食物垃圾堆肥还可以减少最终进入垃圾填埋场的废物量。</string>
+
+    <string name="desc_11">此类别包括必须以安全方式处理的旧电池或不需要的电池。 电池可能含有有毒化学物质，如果在垃圾填埋场处理，会造成环境污染。 一些公司提供电池回收服务，以及收集它们用于回收和使用有价值的材料，如锌和锰。</string>
+</resources>

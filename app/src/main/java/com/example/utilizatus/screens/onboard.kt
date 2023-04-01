@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -69,7 +70,7 @@ fun OnboardingUi() {
                 ) {
 
                     Text(modifier = Modifier,
-                        text = "Начать",
+                        text = stringResource(R.string.begin),
                         style = MaterialTheme.typography.h4.copy(
                             color = greenMain,
                             letterSpacing = 2.sp,

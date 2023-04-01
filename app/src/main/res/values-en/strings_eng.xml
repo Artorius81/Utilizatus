@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string name="app_name">Утилизатус</string>
+        <string name="greetings">Hi ;)</string>
+        <string name="slogan">It is in your power to make the planet cleaner and
+        brighter! So what are you waiting for?</string>
+        <string name="enter">Log in</string>
+        <string name="login">Login</string>
+        <string name="password">Password</string>
+        <string name="reg_screen">Registration</string>
+        <string name="confirm_password">Confirm password</string>
+        <string name="login_type">By login</string>
+        <string name="pass_type">By number</string>
+        <string name="otp_code">Your SMS code to log in to the app:</string>
+        <string name="phone">Phone number</string>
+        <string name="log_in">Log in</string>
+        <string name="next">Next</string>
+        <string name="pass_forgot">Forgot password?</string>
+        <string name="no_code">Send the code again</string>
+        <string name="enter_with">Log in with</string>
+        <string name="registration">Sign up</string>
+        <string name="OTP">Enter the code</string>
+        <string name="OTP_phone">An SMS-code has been sent to your number</string>
+        <string name="main">Main</string>
+        <string name="more">More Detail</string>
+        <string name="popular">Popular</string>
+        <string name="bonuses">Rewards</string>
+        <string name="menu">Menu</string>
+        <string name="descript">Description</string>
+        <string name="map">Map</string>
+        <string name="begin">Start</string>
+        <string name="sorting">Sort</string>
+        <string name="searching">Search</string>
+        <string name="awesome">Keep it up!</string>
+
+        <string name="enter_login">Enter login</string>
+        <string name="enter_password">Enter password</string>
+        <string name="error_login">Invalid login or password</string>
+        <string name="enter_phone">Enter phone number</string>
+        <string name="error_phone">Invalid phone number</string>
+        <string name="error_sms">Invalid SMS-code</string>
+
+        <string name="item_1">Recyclable</string>
+        <string name="item_2">Paper</string>
+        <string name="item_3">Glass</string>
+        <string name="item_4">Metal</string>
+        <string name="item_5">Plastic</string>
+        <string name="item_6">Food waste</string>
+        <string name="item_7">Textile</string>
+        <string name="item_8">Dang. waste</string>
+        <string name="item_9">Build waste</string>
+        <string name="item_10">Electronics</string>
+        <string name="item_11">Not recyclable</string>
+
+        <string name="card_more_1">Waste paper</string>
+        <string name="card_more_2">Bottles</string>
+        <string name="card_more_3">Vials</string>
+        <string name="card_more_4">Metal cans</string>
+        <string name="card_more_5">Cloth</string>
+        <string name="card_more_6">Glass</string>
+        <string name="card_more_7">Medicines</string>
+        <string name="card_more_8">Appliances</string>
+        <string name="card_more_9">Furniture</string>
+        <string name="card_more_10">Food waste</string>
+        <string name="card_more_11">Batteries</string>
+
+        <string name="card_pop_1">Newspaper</string>
+        <string name="card_pop_2">Magazine</string>
+        <string name="card_pop_3">Package</string>
+        <string name="card_pop_4">Wrap</string>
+        <string name="card_pop_5">Clothes</string>
+        <string name="card_pop_6">Telephone</string>
+        <string name="card_pop_7">Footwear</string>
+        <string name="card_pop_8">Tin cans</string>
+        <string name="card_pop_9">Aluminum foil</string>
+        <string name="card_pop_10">Incandescent lamp</string>
+        <string name="card_pop_11">Paint</string>
+        <string name="card_pop_12">Concrete</string>
+        <string name="card_pop_13">Oil</string>
+        <string name="card_pop_14">Battery</string>
+        <string name="card_pop_15">Food</string>
+        <string name="card_pop_16">Box</string>
+        <string name="card_pop_17">Linen</string>
+        <string name="card_pop_18">Wood</string>
+
+        <string name="sorting_tip">Find out exactly how to sort garbage</string>
+        <string name="searching_tip">Find out where the nearest garbage sorting point is located</string>
+        <string name="awesome_tip">By sorting the garbage, you helped the planet, and also received bonuses. Keep it up!</string>
+
+        <string name="card_pop_desc">Click to learn more</string>
+
+        <string name="desc_1">This category includes newspapers, magazines, printer paper, cards, letters and other paper products.
+                Waste paper can be recycled and used as raw materials for the production of new paper.
+                With one ton of recycled waste paper, you can save 17 trees and 7,000 gallons of water.</string>
+
+        <string name="desc_2">This category includes glass and plastic bottles.
+                Glass bottles can be recycled and used over and over again without loss of quality, and plastic bottles can be recycled into many different products, including clothing and mats.
+                One glass bottle, recycled instead of discarded, can illuminate a 100 watt bulb for 4 hours.</string>
+
+        <string name="desc_3">Bottles made of glass and plastic used for medicines and cosmetic products belong to this category.
+                As with bottles, glass vials can be recycled multiple times.
+                Plastic bottles can be recycled as a material for making other products, including garden tools and furniture.</string>
+
+        <string name="desc_4">This category includes aluminum and steel cans used for food preservation.
+                Metal cans can be recycled and used as raw materials for the production of new cans, cars and even airplanes.
+                One aluminum can can be recycled and used to produce a new can within just 60 days.</string>
+
+        <string name="desc_5">This category includes old clothes, bed linen, towels and other textiles.
+                The fabric can be recycled and used as a raw material for the production of new textiles.
+                Fabric recycling can also save up to 90% of the water and energy that is used in the production of new fabric.
+                Some companies also collect old clothes for recycling as insulation for homes and buildings.</string>
+
+        <string name="desc_6">This category includes glass bottles, windows, mirrors and other glass products.
+                Glass can be recycled and used as a raw material for the production of new glass, while reducing the amount of raw materials and energy needed.
+                One ton of recycled glass can save up to 1.2 tons of raw materials and 130 kg of carbon dioxide.</string>
+
+        <string name="desc_7">This category includes expired or unnecessary medicines that need to be disposed of in a safe way.
+                Medicines should not be thrown into the trash, because they can cause pollution of water resources and danger to human and animal health.
+                Some pharmacies and hospitals provide an opportunity to donate outdated medicines for safe disposal.</string>
+
+        <string name="desc_8">This category includes old computers, phones, televisions and other electronic devices.
+                Disposal of electronics requires a special approach, because they may contain dangerous chemicals.
+                Many companies accept the recycling of electronics and recycle it, using valuable resources such as gold, silver and copper as raw materials for the production of new devices.</string>
+
+        <string name="desc_9">This category includes old or damaged furniture that must be disposed of in a safe way.
+                Furniture may contain toxic chemicals that can pollute the environment if thrown into a landfill.
+                Many companies offer furniture recycling services, as well as recycle it as raw materials for the production of new furniture products.</string>
+
+        <string name="desc_10">This category includes food leftovers that can be disposed of by composting.
+                Composting is the process of processing organic waste into nutritious soil. Compost can be used as fertilizer for plants and gardens.
+                Composting food waste can also reduce the amount of waste that ends up in landfill.</string>
+
+        <string name="desc_11">This category includes old or unwanted batteries that must be disposed of in a safe way.
+                Batteries may contain toxic chemicals that can cause environmental pollution if disposed of in landfills.
+                Some companies offer battery recycling services, as well as collect them for recycling and using valuable materials such as zinc and manganese.</string>
+</resources>
