@@ -28,13 +28,13 @@ fun TopBar() {
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
     TopAppBar(
         backgroundColor = white,
-        modifier = Modifier.padding(top = 5.dp),
+        modifier = Modifier.padding(top = 3.dp),
         elevation = 0.dp,
         actions = { Image(painter = painterResource(id = R.drawable.profile),
             contentDescription = "logo",
             modifier = Modifier.run {
-                padding(top = 15.dp, end = 30.dp)
-                        .size(50.dp)
+                padding(top = 10.dp, end = 30.dp)
+                        .size(40.dp)
             }
         ) },
         title = { Image(

@@ -1,8 +1,9 @@
 package com.example.utilizatus.screens
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
+import android.content.Context
+import android.graphics.Bitmap
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,55 +11,36 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.core.content.ContextCompat
 import com.example.utilizatus.R
 import com.example.utilizatus.cards.CardMore
 import com.example.utilizatus.cards.CardPopular
 import com.example.utilizatus.cards.Item
-import com.example.utilizatus.notification.OTPNumber
+import com.example.utilizatus.model.MapMarkerData
 import com.example.utilizatus.ui.theme.*
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.togitech.ccp.component.TogiCountryCodePicker
-import compose.icons.FeatherIcons
-import compose.icons.feathericons.Eye
-import compose.icons.feathericons.EyeOff
-import compose.icons.feathericons.Lock
-import compose.icons.feathericons.User
-import kotlinx.coroutines.coroutineScope
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.*
 import kotlinx.coroutines.launch
+import java.security.cert.TrustAnchor
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -66,17 +48,223 @@ fun Map() {
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
 
-    Text(modifier = Modifier
-        .fillMaxSize()
-        .padding(start = 20.dp, top = 5.dp),
-        text = "Карта",
-        style = MaterialTheme.typography.h4.copy(
-            color = black,
-            letterSpacing = 2.sp,
-            fontSize = 32.sp,
-            fontFamily = nunitoBold),
-        textAlign = TextAlign.Start
+// Set properties using MapProperties which you can use to recompose the map
+    val mapProperties by remember {
+        mutableStateOf(
+            MapProperties(maxZoomPreference = 500f, minZoomPreference = 10f, mapType = MapType.HYBRID)
+        )
+    }
+
+    val markerList = listOf(
+        MapMarkerData(1, "Утилизация отходов: просп. Острякова, 44Б", LatLng(43.138642, 131.904132)),
+        MapMarkerData(2, "Пункт приёма батареек: ул. Бестужева, 23", LatLng(43.110439, 131.876726)),
+        MapMarkerData(3, "Скупка вторсырья: ул. Краева, 8А", LatLng(43.104957, 131.896902)),
+        MapMarkerData(4, "Точка сбора мусора: Народный просп. 6", LatLng(43.128360, 131.921786)),
+        MapMarkerData(5, "Утилизация отходов: Бархатная ул. 3", LatLng(43.073411, 131.939548)),
+        MapMarkerData(6, "Скупка вторсырья: Снеговая ул. 6А", LatLng(43.139173, 131.933132)),
+        MapMarkerData(7, "Пункт приёма вторсырья: Бородинская ул. 30Б", LatLng(43.164894, 131.940889)),
+        MapMarkerData(8, "Утилизация отходов: ул. Фанзавод, 1", LatLng(43.242909, 132.014850)),
+        MapMarkerData(9, "Приём ртутьсодержащих отходов: посёлок Трудовое", LatLng(43.300378, 132.063063)),
     )
+
+    val mapUiSettings by remember {
+        mutableStateOf(
+            MapUiSettings(mapToolbarEnabled = true)
+        )
+    }
+    val cameraPositionState: CameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(markerList[0].latLng, 11f)
+    }
+    Box(Modifier.fillMaxSize()) {
+        GoogleMap(
+            modifier = Modifier.fillMaxSize(),
+            properties = mapProperties,
+            uiSettings = mapUiSettings,
+            cameraPositionState = cameraPositionState
+        ) {
+            markerList.forEach { typeOf ->
+            MapMarker(
+                position = typeOf.latLng,
+                title = typeOf.title,
+                context = LocalContext.current,
+                iconResourceId = R.drawable.recycle_machine
+            )
+            MapMarker(
+                position = typeOf.latLng,
+                title = typeOf.title,
+                context = LocalContext.current,
+                iconResourceId = R.drawable.recycle_machine
+            )
+            MapMarker(
+                position = typeOf.latLng,
+                title = typeOf.title,
+                context = LocalContext.current,
+                iconResourceId = R.drawable.recycle_machine
+            )
+            MapMarker(
+                position = typeOf.latLng,
+                title = typeOf.title,
+                context = LocalContext.current,
+                iconResourceId = R.drawable.recycle_machine
+            )
+            MapMarker(
+                position = typeOf.latLng,
+                title = typeOf.title,
+                context = LocalContext.current,
+                iconResourceId = R.drawable.recycle_machine
+            )
+            MapMarker(
+                position = typeOf.latLng,
+                title = typeOf.title,
+                context = LocalContext.current,
+                iconResourceId = R.drawable.recycle_machine
+            )
+            MapMarker(
+                position = typeOf.latLng,
+                title = typeOf.title,
+                context = LocalContext.current,
+                iconResourceId = R.drawable.recycle_machine
+            )
+            MapMarker(
+                position = typeOf.latLng,
+                title = typeOf.title,
+                context = LocalContext.current,
+                iconResourceId = R.drawable.recycle_machine
+            )
+            MapMarker(
+                position = typeOf.latLng,
+                title = typeOf.title,
+                context = LocalContext.current,
+                iconResourceId = R.drawable.recycle_machine
+            )
+        }
+        }
+        Text(modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 20.dp, top = 5.dp),
+            text = "Карта",
+            style = MaterialTheme.typography.h4.copy(
+                color = white,
+                letterSpacing = 2.sp,
+                fontSize = 32.sp,
+                fontFamily = nunitoBold),
+            textAlign = TextAlign.Start
+        )
+    }
+}
+
+@Composable
+fun MapMarker(
+    context: Context,
+    position: LatLng,
+    title: String,
+    @DrawableRes iconResourceId: Int
+) {
+    val icon = bitmapDescriptorFromVector(
+        context, iconResourceId
+    )
+    Marker(
+        state = MarkerState(position = position),
+        title = title,
+        icon = icon,
+    )
+}
+
+fun bitmapDescriptorFromVector(
+    context: Context,
+    vectorResId: Int
+): BitmapDescriptor? {
+
+    // retrieve the actual drawable
+    val drawable = ContextCompat.getDrawable(context, vectorResId) ?: return null
+    drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+    val bm = Bitmap.createBitmap(
+        drawable.intrinsicWidth,
+        drawable.intrinsicHeight,
+        Bitmap.Config.ARGB_8888
+    )
+
+    // draw it onto the bitmap
+    val canvas = android.graphics.Canvas(bm)
+    drawable.draw(canvas)
+    return BitmapDescriptorFactory.fromBitmap(bm)
+}
+
+@Composable
+fun BottomSheetContentPop(item: CardPopular) {
+    val nunitoBold = FontFamily(Font(R.font.nunito_bold))
+    val nunitoMedium = FontFamily(Font(R.font.nunito_medium))
+    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
+
+    Surface(
+        modifier = Modifier.height(450.dp)) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(white)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Card(modifier = Modifier
+                    .padding(8.dp)
+                    .width(120.dp)
+                    .height(100.dp),
+                    shape = RoundedCornerShape(16.dp))
+                {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            painter = painterResource(id = item.icon),
+                            contentDescription = "description",
+                            tint = black,
+                            modifier = Modifier.size(60.dp)
+                        )
+                        Text(
+                            text = item.name,
+                            style = MaterialTheme.typography.h4.copy(
+                                color = black,
+                                fontSize = 14.sp,
+                                fontFamily = nunitoBold
+                            ),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(top = 4.dp)
+                        )
+                    }
+                }
+                Text(
+                    text = "Описание",
+                    style = MaterialTheme.typography.h4.copy(
+                        color = black,
+                        fontSize = 16.sp,
+                        fontFamily = nunitoBold
+                    ),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.padding(top = 4.dp, start = 5.dp)
+                )
+                Card(modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+                    .wrapContentSize(),
+                    shape = RoundedCornerShape(16.dp))
+                {
+                    Text(
+                        text = item.desc,
+                        style = MaterialTheme.typography.h6.copy(
+                            color = black,
+                            fontSize = 16.sp,
+                            fontFamily = nunitoMedium
+                        ),
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(top = 5.dp, start = 5.dp, end = 5.dp, bottom = 5.dp),
+                    )
+                }
+            }
+        }
+    }
 }
 
 
@@ -85,7 +273,7 @@ fun BottomSheetContent(cardItem: CardMore, itemList: List<Item>) {
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
     val nunitoMedium = FontFamily(Font(R.font.nunito_medium))
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
-    var backColor = mutableListOf<Color>()
+    val backColor = mutableListOf<Color>()
     cardItem.type.forEach { typeCol ->
         val typeColor = itemList.find { it.id == typeCol }
         if (typeColor != null) {
@@ -98,75 +286,94 @@ fun BottomSheetContent(cardItem: CardMore, itemList: List<Item>) {
         end = Offset.Infinite
     )
     Surface(
-        modifier = Modifier.height(400.dp)) {
-        Box(modifier = Modifier.fillMaxSize().background(brush)) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Card(modifier = Modifier
-                        .padding(8.dp)
-                        .width(120.dp)
-                        .height(100.dp),
-                        shape = RoundedCornerShape(16.dp))
-                    {
+        modifier = Modifier.height(450.dp)) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(brush)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Card(modifier = Modifier
+                    .padding(8.dp)
+                    .width(120.dp)
+                    .height(100.dp),
+                    shape = RoundedCornerShape(16.dp))
+                {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            painter = painterResource(id = cardItem.icon),
+                            contentDescription = "description",
+                            tint = black,
+                            modifier = Modifier.size(60.dp)
+                        )
+                        Text(
+                            text = cardItem.name,
+                            style = MaterialTheme.typography.h4.copy(
+                                color = black,
+                                fontSize = 14.sp,
+                                fontFamily = nunitoBold
+                            ),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(top = 4.dp)
+                        )
+                    }
+                    Box(modifier = Modifier.fillMaxWidth()) {
                         Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
+                            Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.End
                         ) {
-                            Icon(
-                                painter = painterResource(id = cardItem.icon),
-                                contentDescription = "description",
-                                tint = black,
-                                modifier = Modifier.size(60.dp)
-                            )
-                            Text(
-                                text = cardItem.name,
-                                style = MaterialTheme.typography.h4.copy(
-                                    color = black,
-                                    fontSize = 14.sp,
-                                    fontFamily = nunitoBold
-                                ),
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            Column(
-                                Modifier.fillMaxSize(),
-                                horizontalAlignment = Alignment.End
-                            ) {
-                                cardItem.type.forEach { typeId ->
-                                    val typeItem = itemList.find { it.id == typeId }
-                                    if (typeItem != null) {
-                                        Icon(
-                                            painter = painterResource(id = typeItem.icon),
-                                            contentDescription = typeItem.name,
-                                            tint = typeItem.color,
-                                            modifier = Modifier
-                                                .size(25.dp)
-                                                .padding(4.dp)
-                                        )
-                                    }
+                            cardItem.type.forEach { typeId ->
+                                val typeItem = itemList.find { it.id == typeId }
+                                if (typeItem != null) {
+                                    Icon(
+                                        painter = painterResource(id = typeItem.icon),
+                                        contentDescription = typeItem.name,
+                                        tint = typeItem.color,
+                                        modifier = Modifier
+                                            .size(25.dp)
+                                            .padding(4.dp)
+                                    )
                                 }
                             }
                         }
                     }
+                }
+                Text(
+                    text = "Описание",
+                    style = MaterialTheme.typography.h4.copy(
+                        color = white,
+                        fontSize = 16.sp,
+                        fontFamily = nunitoBold
+                    ),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.padding(top = 4.dp, start = 5.dp)
+                )
+                Card(modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+                    .wrapContentSize(),
+                    shape = RoundedCornerShape(16.dp))
+                {
                     Text(
                         text = cardItem.description,
                         style = MaterialTheme.typography.h6.copy(
-                            color = white,
+                            color = black,
                             fontSize = 16.sp,
                             fontFamily = nunitoMedium
                         ),
-                        textAlign = TextAlign.Justify,
-                        modifier = Modifier.padding(top = 8.dp, start = 5.dp, end = 5.dp)
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(top = 5.dp, start = 5.dp, end = 5.dp, bottom = 5.dp),
                     )
                 }
             }
         }
+    }
 }
 
 @ExperimentalMaterialApi
@@ -176,8 +383,6 @@ fun Home() {
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
     val roundedRectangleShape = RoundedCornerShape(12.dp)
 
-    val viewModel: MyViewModel = viewModel()
-    var selectedItemId by remember { mutableStateOf<Int?>(null) }
     val itemList = listOf(
         Item(0, "Перерабат.", R.drawable.recycl, recycle_icon_color),
         Item(1, "Бумага", R.drawable.paper_icon, leaf_icon_color),
@@ -228,14 +433,22 @@ fun Home() {
     )
 
     var selectedCard by remember { mutableStateOf<CardMore?>(null) }
+    var selectedCard2 by remember { mutableStateOf<CardPopular?>(null) }
 
     val showModalSheet = rememberSaveable {
         mutableStateOf(false)
     }
+    val showModalSheet2 = rememberSaveable {
+        mutableStateOf(false)
+    }
 
     val scope = rememberCoroutineScope()
+    val scope2 = rememberCoroutineScope()
 
     val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+    )
+    val sheetState2 = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
     )
 
@@ -258,7 +471,7 @@ fun Home() {
                             .padding(8.dp)
                             .width(100.dp)
                             .height(80.dp)
-                            .clickable {  },
+                            .clickable { },
                         shape = roundedRectangleShape,
                         backgroundColor = item.color,
                     ) {
@@ -392,7 +605,12 @@ fun Home() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .clickable { },
+                    .clickable {
+                        showModalSheet2.value = !showModalSheet2.value
+                        scope2.launch {
+                            sheetState2.show()
+                        }; selectedCard2 = item
+                    },
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
@@ -428,15 +646,20 @@ fun Home() {
         }
     }
 
-    //val showModalSheet = rememberSaveable {
-    //    mutableStateOf(false)
-    //}
-
-    if (selectedCard != null) {
+    if ((selectedCard != null)) {
         ModalBottomSheetLayout(
             sheetState = sheetState,
             sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
             sheetContent = { BottomSheetContent(cardItem = selectedCard!!, itemList = itemList) },
+            scrimColor = Color.Unspecified,
+        ) {
+        }
+    }
+    if ((selectedCard2 != null)) {
+        ModalBottomSheetLayout(
+            sheetState = sheetState2,
+            sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+            sheetContent = { BottomSheetContentPop(item = selectedCard2!!) },
             scrimColor = Color.Unspecified,
         ) {
         }
@@ -466,24 +689,17 @@ fun Menu() {
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
 
-    Text(modifier = Modifier
-        .fillMaxSize()
-        .padding(start = 20.dp, top = 5.dp),
+    Text(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 20.dp, top = 5.dp),
         text = "Меню",
         style = MaterialTheme.typography.h4.copy(
             color = black,
             letterSpacing = 2.sp,
             fontSize = 32.sp,
-            fontFamily = nunitoBold),
+            fontFamily = nunitoBold
+        ),
         textAlign = TextAlign.Start
     )
-}
-
-class MyViewModel : ViewModel() {
-    private val _selectedItemId = MutableLiveData<Int?>(null)
-    val selectedItemId: LiveData<Int?> = _selectedItemId
-
-    fun selectItem(itemId: Int?) {
-        _selectedItemId.value = itemId
-    }
 }

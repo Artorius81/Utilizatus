@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:name=".notification.Notification"
@@ -16,6 +17,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Utilizatus"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="android.app.lib_name"
+            android:value="" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDUfEW-izGBiwKfXYS0dmNMj95G0BOmy6c" />
+
         <activity
             android:configChanges="orientation"
             android:screenOrientation="portrait"
@@ -28,6 +37,9 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+            <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyDUfEW-izGBiwKfXYS0dmNMj95G0BOmy6c" />
         </activity>
         <activity
             android:configChanges="orientation"

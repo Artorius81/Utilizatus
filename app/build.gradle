@@ -77,6 +77,10 @@ dependencies {
     //Lottie
     implementation "com.airbnb.android:lottie-compose:4.1.0"
 
+    // Maps Compose
+    implementation 'com.google.maps.android:maps-compose:2.8.0'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
     //Code picker
     implementation 'com.github.togisoft:jetpack_compose_country_code_picker:1.1.4'
 
