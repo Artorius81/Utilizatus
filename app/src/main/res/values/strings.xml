@@ -32,6 +32,21 @@
     <string name="searching">Поиск</string>
     <string name="awesome">Потрясающе!</string>
 
+    <string name="system">Система</string>
+    <string name="notifications">Уведомления</string>
+    <string name="other">Прочее</string>
+    <string name="username">Данил</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="dark_mode">Темная тема</string>
+    <string name="location">Доступ к местоположению</string>
+    <string name="notifications_on">Уведомления</string>
+    <string name="log_out">Выйти</string>
+    <string name="auto_update">Автообновление</string>
+    <string name="vk">ВКонтакте</string>
+    <string name="gos">Госуслуги</string>
+    <string name="ok">Одноклассники</string>
+    <string name="receive_tasks">Оповещать о новых заданиях</string>
+
     <string name="enter_login">Введите логин</string>
     <string name="enter_password">Введите пароль</string>
     <string name="error_login">Неверный логин или пароль</string>

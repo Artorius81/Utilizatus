@@ -2,52 +2,65 @@ package com.example.utilizatus.screens
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import com.example.utilizatus.MainActivity
 import com.example.utilizatus.R
 import com.example.utilizatus.cards.CardMore
 import com.example.utilizatus.cards.CardPopular
 import com.example.utilizatus.cards.Item
 import com.example.utilizatus.model.MapMarkerData
 import com.example.utilizatus.ui.theme.*
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.launch
-import java.security.cert.TrustAnchor
+import java.util.*
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun Map() {
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
-    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
 
 // Set properties using MapProperties which you can use to recompose the map
     val mapProperties by remember {
@@ -195,7 +208,6 @@ fun bitmapDescriptorFromVector(
 fun BottomSheetContentPop(item: CardPopular) {
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
     val nunitoMedium = FontFamily(Font(R.font.nunito_medium))
-    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
 
     Surface(
         modifier = Modifier.height(450.dp)) {
@@ -273,7 +285,6 @@ fun BottomSheetContentPop(item: CardPopular) {
 fun BottomSheetContent(cardItem: CardMore, itemList: List<Item>) {
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
     val nunitoMedium = FontFamily(Font(R.font.nunito_medium))
-    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
     val backColor = mutableListOf<Color>()
     cardItem.type.forEach { typeCol ->
         val typeColor = itemList.find { it.id == typeCol }
@@ -471,12 +482,12 @@ fun Home() {
                         modifier = Modifier
                             .padding(8.dp)
                             .width(100.dp)
-                            .height(80.dp)
-                            .clickable { },
+                            .height(80.dp),
                         shape = roundedRectangleShape,
                         backgroundColor = item.color,
                     ) {
                         Column(
+                            modifier = Modifier.clickable {  },
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
@@ -526,17 +537,17 @@ fun Home() {
                         modifier = Modifier
                             .padding(8.dp)
                             .width(120.dp)
-                            .height(100.dp)
-                            .clickable {
+                            .height(100.dp),
+                        shape = roundedRectangleShape,
+                        backgroundColor = white
+                    ) {
+                        Column(
+                            modifier = Modifier.clickable {
                                 showModalSheet.value = !showModalSheet.value
                                 scope.launch {
                                     sheetState.show()
                                 }; selectedCard = cardItem
                             },
-                        shape = roundedRectangleShape,
-                        backgroundColor = white
-                    ) {
-                        Column(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
@@ -605,15 +616,14 @@ fun Home() {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .clickable {
-                        showModalSheet2.value = !showModalSheet2.value
-                        scope2.launch {
-                            sheetState2.show()
-                        }; selectedCard2 = item
-                    },
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(modifier = Modifier.clickable {
+                    showModalSheet2.value = !showModalSheet2.value
+                    scope2.launch {
+                        sheetState2.show()
+                    }; selectedCard2 = item
+                }, verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         painter = painterResource(id = item.icon),
                         contentDescription = null,
@@ -670,7 +680,6 @@ fun Home() {
 @Composable
 fun Star() {
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
-    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
 
     Text(modifier = Modifier
         .fillMaxSize()
@@ -685,22 +694,593 @@ fun Star() {
     )
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Menu() {
+    val roundedRectangleShape = RoundedCornerShape(12.dp)
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
 
-    Text(
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        item {
+            Column {
+                Text(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 20.dp, top = 5.dp),
+                    text = stringResource(R.string.menu),
+                    style = MaterialTheme.typography.h4.copy(
+                        color = black,
+                        letterSpacing = 2.sp,
+                        fontSize = 32.sp,
+                        fontFamily = nunitoBold
+                    ),
+                    textAlign = TextAlign.Start
+                )
+                Card(
+                    modifier = Modifier
+                        .padding(start = 20.dp, end = 20.dp)
+                        .fillMaxWidth()
+                        .height(80.dp),
+                    shape = roundedRectangleShape,
+                    backgroundColor = white
+                ) {
+                    Row(modifier = Modifier.fillMaxWidth().clickable {  }, horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(id = R.drawable.profile),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(72.dp)
+                                .padding(8.dp)
+                        )
+                        Column(modifier = Modifier
+                            .width(200.dp)
+                            .height(80.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.Start) {
+                            Text(modifier = Modifier,
+                                text = stringResource(R.string.username),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = black,
+                                    letterSpacing = 2.sp,
+                                    fontSize = 16.sp,
+                                    fontFamily = nunitoBold
+                                ),
+                            )
+                            Text(modifier = Modifier,
+                                text = stringResource(R.string.edit_profile),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = black,
+                                    fontSize = 10.sp,
+                                    fontFamily = nunitoRegular
+                                ),
+                            )
+                        }
+                        Image(
+                            painter = painterResource(id = R.drawable.edit_arrow),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(48.dp)
+                                .padding(8.dp, end = 10.dp)
+                        )
+                    }
+                }
+                // Система part
+                Text(
+                    modifier = Modifier.padding(start = 20.dp, top = 5.dp),
+                    text = stringResource(R.string.system),
+                    style = MaterialTheme.typography.h4.copy(
+                        color = black,
+                        letterSpacing = 2.sp,
+                        fontSize = 24.sp,
+                        fontFamily = nunitoBold
+                    ),
+                )
+                Spacer(modifier = Modifier.padding(1.dp))
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .padding(start = 20.dp)
+                        .height(2.dp)
+                        .background(greenMain)
+                ) {
+                    Divider()
+                }
+                Column {
+                    Card(modifier = Modifier
+                        .padding(top = 10.dp, start = 20.dp, end = 20.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
+                        shape = roundedRectangleShape,
+                        backgroundColor = white) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(id = R.drawable.dark_mode),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(54.dp)
+                                    .padding(8.dp, end = 10.dp)
+                            )
+                            Text(modifier = Modifier,
+                                text = stringResource(R.string.dark_mode),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = black,
+                                    fontSize = 14.sp,
+                                    fontFamily = nunitoRegular
+                                ),
+                            )
+                            Column(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 10.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.End) {
+                                CustomSwitch(width = 50.dp,
+                                    height = 30.dp,
+                                    checkedTrackColor = greenMain,
+                                    uncheckedTrackColor = grey_black,
+                                    borderWidth = 2.dp,
+                                    thumbSize = 6.dp)
+                            }
+                        }
+                    }
+                    Divider(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 30.dp, end = 30.dp))
+                    Card(modifier = Modifier
+                        .padding(start = 20.dp, end = 20.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
+                        shape = roundedRectangleShape,
+                        backgroundColor = white) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(id = R.drawable.location),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .padding(8.dp, end = 10.dp)
+                            )
+                            Text(modifier = Modifier,
+                                text = stringResource(R.string.location),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = black,
+                                    fontSize = 14.sp,
+                                    fontFamily = nunitoRegular
+                                ),
+                            )
+                            Column(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 10.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.End) {
+                                CustomSwitch(width = 50.dp,
+                                    height = 30.dp,
+                                    checkedTrackColor = greenMain,
+                                    uncheckedTrackColor = grey_black,
+                                    borderWidth = 2.dp,
+                                    thumbSize = 6.dp)
+                            }
+                        }
+                    }
+                }
+                // Уведомления part
+                Text(
+                    modifier = Modifier.padding(start = 20.dp, top = 5.dp),
+                    text = stringResource(R.string.notifications),
+                    style = MaterialTheme.typography.h4.copy(
+                        color = black,
+                        letterSpacing = 2.sp,
+                        fontSize = 24.sp,
+                        fontFamily = nunitoBold
+                    ),
+                )
+                Spacer(modifier = Modifier.padding(1.dp))
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .padding(start = 20.dp)
+                        .height(2.dp)
+                        .background(greenMain)
+                ) {
+                    Divider()
+                }
+                Column {
+                    Card(modifier = Modifier
+                        .padding(top = 10.dp, start = 20.dp, end = 20.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
+                        shape = roundedRectangleShape,
+                        backgroundColor = white) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(id = R.drawable.notif),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .padding(8.dp, end = 10.dp)
+                            )
+                            Text(modifier = Modifier,
+                                text = stringResource(R.string.notifications_on),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = black,
+                                    fontSize = 14.sp,
+                                    fontFamily = nunitoRegular
+                                ),
+                            )
+                            Column(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 10.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.End) {
+                                CustomSwitch(width = 50.dp,
+                                    height = 30.dp,
+                                    checkedTrackColor = greenMain,
+                                    uncheckedTrackColor = grey_black,
+                                    borderWidth = 2.dp,
+                                    thumbSize = 6.dp)
+                            }
+                        }
+                    }
+                    Divider(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 30.dp, end = 30.dp))
+                    Card(modifier = Modifier
+                        .padding(start = 20.dp, end = 20.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
+                        shape = roundedRectangleShape,
+                        backgroundColor = white) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(id = R.drawable.update),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .padding(8.dp, end = 10.dp)
+                            )
+                            Text(modifier = Modifier,
+                                text = stringResource(R.string.auto_update),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = black,
+                                    fontSize = 14.sp,
+                                    fontFamily = nunitoRegular
+                                ),
+                            )
+                            Column(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 10.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.End) {
+                                CustomSwitch(width = 50.dp,
+                                    height = 30.dp,
+                                    checkedTrackColor = greenMain,
+                                    uncheckedTrackColor = grey_black,
+                                    borderWidth = 2.dp,
+                                    thumbSize = 6.dp)
+                            }
+                        }
+                    }
+                    Divider(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 30.dp, end = 30.dp))
+                    Card(modifier = Modifier
+                        .padding(start = 20.dp, end = 20.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
+                        shape = roundedRectangleShape,
+                        backgroundColor = white) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(id = R.drawable.tasks),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .padding(8.dp, end = 10.dp)
+                            )
+                            Text(modifier = Modifier,
+                                text = stringResource(R.string.receive_tasks),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = black,
+                                    fontSize = 14.sp,
+                                    fontFamily = nunitoRegular
+                                ),
+                            )
+                            Column(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 10.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.End) {
+                                CustomSwitch(width = 50.dp,
+                                    height = 30.dp,
+                                    checkedTrackColor = greenMain,
+                                    uncheckedTrackColor = grey_black,
+                                    borderWidth = 2.dp,
+                                    thumbSize = 6.dp)
+                            }
+                        }
+                    }
+                }
+                // Прочее part
+                Text(
+                    modifier = Modifier.padding(start = 20.dp, top = 5.dp),
+                    text = stringResource(R.string.other),
+                    style = MaterialTheme.typography.h4.copy(
+                        color = black,
+                        letterSpacing = 2.sp,
+                        fontSize = 24.sp,
+                        fontFamily = nunitoBold
+                    ),
+                )
+                Spacer(modifier = Modifier.padding(1.dp))
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .padding(start = 20.dp)
+                        .height(2.dp)
+                        .background(greenMain)
+                ) {
+                    Divider()
+                }
+                Column {
+                    Card(modifier = Modifier
+                        .padding(top = 10.dp, start = 20.dp, end = 20.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
+                        shape = roundedRectangleShape,
+                        backgroundColor = white) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(id = R.drawable.vk_logo),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .padding(8.dp, end = 10.dp)
+                            )
+                            Text(modifier = Modifier,
+                                text = stringResource(R.string.vk),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = black,
+                                    fontSize = 14.sp,
+                                    fontFamily = nunitoRegular
+                                ),
+                            )
+                            Column(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 10.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.End) {
+                                CustomSwitch(width = 50.dp,
+                                    height = 30.dp,
+                                    checkedTrackColor = greenMain,
+                                    uncheckedTrackColor = grey_black,
+                                    borderWidth = 2.dp,
+                                    thumbSize = 6.dp)
+                            }
+                        }
+                    }
+                    Divider(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 30.dp, end = 30.dp))
+                    Card(modifier = Modifier
+                        .padding(start = 20.dp, end = 20.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
+                        shape = roundedRectangleShape,
+                        backgroundColor = white) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(id = R.drawable.gosuslugi_logo),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .padding(8.dp, end = 10.dp)
+                            )
+                            Text(modifier = Modifier,
+                                text = stringResource(R.string.gos),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = black,
+                                    fontSize = 14.sp,
+                                    fontFamily = nunitoRegular
+                                ),
+                            )
+                            Column(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 10.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.End) {
+                                CustomSwitch(width = 50.dp,
+                                    height = 30.dp,
+                                    checkedTrackColor = greenMain,
+                                    uncheckedTrackColor = grey_black,
+                                    borderWidth = 2.dp,
+                                    thumbSize = 6.dp)
+                            }
+                        }
+                    }
+                    Divider(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 30.dp, end = 30.dp))
+                    Card(modifier = Modifier
+                        .padding(start = 20.dp, end = 20.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
+                        shape = roundedRectangleShape,
+                        backgroundColor = white) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ok_logo),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(42.dp)
+                                    .padding(start = 13.dp, end = 10.dp)
+                            )
+                            Text(modifier = Modifier,
+                                text = stringResource(R.string.ok),
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = black,
+                                    fontSize = 14.sp,
+                                    fontFamily = nunitoRegular
+                                ),
+                            )
+                            Column(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 10.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.End) {
+                                CustomSwitch(width = 50.dp,
+                                    height = 30.dp,
+                                    checkedTrackColor = greenMain,
+                                    uncheckedTrackColor = grey_black,
+                                    borderWidth = 2.dp,
+                                    thumbSize = 6.dp)
+                            }
+                        }
+                    }
+                }
+            }
+            Column(modifier = Modifier.fillMaxWidth().padding(top = 10.dp, bottom = 5.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(modifier = Modifier,
+                    text = "v1.0",
+                    style = MaterialTheme.typography.h4.copy(
+                        color = grey,
+                        fontSize = 14.sp,
+                        fontFamily = nunitoRegular
+                    ),
+                )
+            }
+            Card(modifier = Modifier
+                .padding(top = 10.dp, start = 50.dp, end = 50.dp, bottom = 10.dp)
+                .fillMaxWidth()
+                .shadow(elevation = 8.dp, spotColor = Color.Red, ambientColor = Color.Red, shape = roundedRectangleShape)
+                .height(50.dp),
+                shape = roundedRectangleShape,
+                backgroundColor = white) {
+                val mContext = LocalContext.current
+                Row(modifier = Modifier.fillMaxWidth().clickable { mContext.startActivity(Intent(mContext, MainActivity::class.java)) }, horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painter = painterResource(id = R.drawable.log_out),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .padding(8.dp, end = 10.dp),
+                        colorFilter = ColorFilter.tint(Color.Red)
+                    )
+                    Text(modifier = Modifier,
+                        text = stringResource(R.string.log_out),
+                        style = MaterialTheme.typography.h4.copy(
+                            color = Color.Red,
+                            fontSize = 14.sp,
+                            fontFamily = nunitoRegular
+                        ),
+                    )
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 10.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.End) {
+                        Image(
+                            painter = painterResource(id = R.drawable.sad_face),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(48.dp)
+                                .padding(8.dp, end = 10.dp),
+                            colorFilter = ColorFilter.tint(Color.Red)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun CustomSwitch(
+    width: Dp = 72.dp,
+    height: Dp = 40.dp,
+    checkedTrackColor: Color = Color(0xFF35898F),
+    uncheckedTrackColor: Color = Color(0xFFe0e0e0),
+    gapBetweenThumbAndTrackEdge: Dp = 8.dp,
+    borderWidth: Dp = 4.dp,
+    cornerSize: Int = 50,
+    iconInnerPadding: Dp = 4.dp,
+    thumbSize: Dp = 24.dp,
+) {
+
+    // this is to disable the ripple effect
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
+
+    // state of the switch
+    var switchOn by remember {
+        mutableStateOf(false)
+    }
+
+    // for moving the thumb
+    val alignment by animateAlignmentAsState(if (switchOn) 1f else -1f)
+
+    // outer rectangle with border
+    Box(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 20.dp, top = 5.dp),
-        text = stringResource(R.string.menu),
-        style = MaterialTheme.typography.h4.copy(
-            color = black,
-            letterSpacing = 2.sp,
-            fontSize = 32.sp,
-            fontFamily = nunitoBold
-        ),
-        textAlign = TextAlign.Start
-    )
+            .size(width = width, height = height)
+            .border(
+                width = borderWidth,
+                color = if (switchOn) checkedTrackColor else uncheckedTrackColor,
+                shape = RoundedCornerShape(percent = cornerSize)
+            )
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource
+            ) {
+                switchOn = !switchOn
+            },
+        contentAlignment = Alignment.Center
+    ) {
+
+        // this is to add padding at the each horizontal side
+        Box(
+            modifier = Modifier
+                .padding(
+                    start = gapBetweenThumbAndTrackEdge,
+                    end = gapBetweenThumbAndTrackEdge
+                )
+                .fillMaxSize(),
+            contentAlignment = alignment
+        ) {
+
+            // thumb with icon
+            Icon(
+                imageVector = if (switchOn) Icons.Filled.Done else Icons.Filled.Close,
+                contentDescription = if (switchOn) "Enabled" else "Disabled",
+                modifier = Modifier
+                    .size(size = thumbSize)
+                    .background(
+                        color = if (switchOn) checkedTrackColor else uncheckedTrackColor,
+                        shape = CircleShape
+                    )
+                    .padding(all = iconInnerPadding),
+                tint = Color.White
+            )
+        }
+    }
+}
+
+@Composable
+private fun animateAlignmentAsState(
+    targetBiasValue: Float
+): State<BiasAlignment> {
+    val bias by animateFloatAsState(targetBiasValue)
+    return derivedStateOf { BiasAlignment(horizontalBias = bias, verticalBias = 0f) }
 }

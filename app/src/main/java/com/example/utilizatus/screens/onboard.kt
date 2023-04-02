@@ -84,12 +84,3 @@ fun OnboardingUi() {
         }
     }
 }
-
-@OptIn(ExperimentalAnimationApi::class)
-@Preview
-@Composable
-fun Preview() {
-    UtilizatusTheme {
-        OnboardingUi()
-    }
-}

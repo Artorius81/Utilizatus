@@ -1,5 +1,6 @@
 package com.example.utilizatus.bottombar
 
+import android.content.res.Resources
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
