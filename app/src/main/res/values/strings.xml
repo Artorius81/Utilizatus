@@ -25,6 +25,7 @@
     <string name="popular">Популярное</string>
     <string name="bonuses">Бонусы</string>
     <string name="menu">Меню</string>
+    <string name="profile">Профиль</string>
     <string name="descript">Описание</string>
     <string name="map">Карта</string>
     <string name="begin">Начать</string>
@@ -35,7 +36,7 @@
     <string name="system">Система</string>
     <string name="notifications">Уведомления</string>
     <string name="other">Прочее</string>
-    <string name="username">Данил</string>
+    <string name="username">Данил Басов</string>
     <string name="edit_profile">Редактировать профиль</string>
     <string name="dark_mode">Темная тема</string>
     <string name="location">Доступ к местоположению</string>

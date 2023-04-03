@@ -24,6 +24,10 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -41,6 +45,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavHostController
 import com.example.utilizatus.MainActivity
 import com.example.utilizatus.R
 import com.example.utilizatus.cards.CardMore
@@ -696,7 +701,7 @@ fun Star() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun Menu() {
+fun Menu(navController: NavHostController) {
     val roundedRectangleShape = RoundedCornerShape(12.dp)
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
@@ -723,9 +728,9 @@ fun Menu() {
                         .fillMaxWidth()
                         .height(80.dp),
                     shape = roundedRectangleShape,
-                    backgroundColor = white
+                    backgroundColor = white,
                 ) {
-                    Row(modifier = Modifier.fillMaxWidth().clickable {  }, horizontalArrangement = Arrangement.SpaceAround,
+                    Row(modifier = Modifier.fillMaxWidth().clickable { navController.navigate("PROFILE") }, horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically) {
                         Image(
                             painter = painterResource(id = R.drawable.profile),
@@ -743,7 +748,6 @@ fun Menu() {
                                 text = stringResource(R.string.username),
                                 style = MaterialTheme.typography.h4.copy(
                                     color = black,
-                                    letterSpacing = 2.sp,
                                     fontSize = 16.sp,
                                     fontFamily = nunitoBold
                                 ),
@@ -1201,6 +1205,48 @@ fun Menu() {
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun Profile(navController: NavHostController) {
+    val nunitoBold = FontFamily(Font(R.font.nunito_bold))
+    val interactionSource = remember { MutableInteractionSource() }
+
+    Icon(
+        painter = painterResource(R.drawable.go_back),
+        contentDescription = null,
+        modifier = Modifier
+            .size(52.dp)
+            .padding(top = 15.dp, start = 20.dp)
+            .clickable (interactionSource = interactionSource,
+                indication = null) {
+                navController.navigate("MENU")
+            }
+    )
+    Box(modifier = Modifier.fillMaxWidth().padding(top = 50.dp)) {
+        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = CenterHorizontally) {
+            Image(
+                painter = painterResource(id = R.drawable.profile),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(124.dp)
+                    .padding(8.dp)
+                    .shadow(elevation = 36.dp,
+                        spotColor = Color.Green,
+                        ambientColor = Color.Green,
+                        shape = CircleShape
+                    )
+            )
+            Text(modifier = Modifier,
+                text = stringResource(R.string.username),
+                style = MaterialTheme.typography.h4.copy(
+                    color = black,
+                    fontSize = 24.sp,
+                    fontFamily = nunitoBold
+                ),
+            )
         }
     }
 }

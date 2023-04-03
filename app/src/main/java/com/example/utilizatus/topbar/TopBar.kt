@@ -1,14 +1,16 @@
 package com.example.utilizatus.topbar
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -20,12 +22,14 @@ import androidx.compose.ui.unit.sp
 import com.example.utilizatus.R
 import com.example.utilizatus.ui.theme.greenMain
 import com.example.utilizatus.ui.theme.white
-import androidx.compose.foundation.shape.CircleShape
+import androidx.navigation.NavHostController
 
 
 @Composable
-fun TopBar() {
+fun TopBar(navController: NavHostController) {
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
+    val interactionSource = remember { MutableInteractionSource() }
+
     TopAppBar(
         backgroundColor = white,
         modifier = Modifier.padding(top = 3.dp),
@@ -35,6 +39,10 @@ fun TopBar() {
             modifier = Modifier.run {
                 padding(top = 10.dp, end = 30.dp)
                         .size(40.dp)
+                    .clickable (interactionSource = interactionSource,
+                        indication = null) {
+                        navController.navigate("PROFILE")
+                    }
             }
         ) },
         title = { Image(

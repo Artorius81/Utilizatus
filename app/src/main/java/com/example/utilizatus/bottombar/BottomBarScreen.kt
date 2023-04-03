@@ -1,6 +1,5 @@
 package com.example.utilizatus.bottombar
 
-import androidx.compose.ui.res.stringResource
 import com.example.utilizatus.R
 
 sealed class BottomBarScreen(
@@ -30,5 +29,13 @@ sealed class BottomBarScreen(
         route = "MENU",
         title = R.string.menu,
         icon = R.drawable.menu
+    )
+}
+
+sealed class MyProfile(
+    val route: String
+) {
+    object Profile : MyProfile(
+        route = "PROFILE"
     )
 }
