@@ -17,6 +17,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -30,17 +32,25 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,6 +69,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import compose.icons.FeatherIcons
+import compose.icons.feathericons.Eye
+import compose.icons.feathericons.EyeOff
+import compose.icons.feathericons.User
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -682,21 +696,326 @@ fun Home() {
     }
 }
 
+data class Task(
+    val name: String,
+    val description: String,
+    val ecoPoints: Int
+)
+
 @Composable
 fun Star() {
+    val tasks = listOf(
+        Task(
+            name = "Voluntary Saturdays",
+            description = "Spend a Saturday volunteering for an environmental organization or event.",
+            ecoPoints = 50
+        ),
+        Task(
+            name = "Plastic-Free Week",
+            description = "Avoid using single-use plastics for a whole week.",
+            ecoPoints = 100
+        ),
+        Task(
+            name = "Charity Donation",
+            description = "Donate to a charity that supports environmental causes.",
+            ecoPoints = 150
+        ),
+        Task(
+            name = "Eco-Friendly Cleaning",
+            description = "Switch to eco-friendly cleaning products for a month.",
+            ecoPoints = 200
+        ),
+        Task(
+            name = "Public Transport",
+            description = "Take public transport instead of driving for a whole week.",
+            ecoPoints = 75
+        ),
+        Task(
+            name = "Bike to Work",
+            description = "Bike to work instead of driving for a week.",
+            ecoPoints = 75
+        ),
+        Task(
+            name = "Beach Cleanup",
+            description = "Organize or participate in a beach cleanup event.",
+            ecoPoints = 100
+        ),
+        Task(
+            name = "Plant a Tree",
+            description = "Plant a tree in your community.",
+            ecoPoints = 50
+        )
+    )
+
+
+    var availableTasks by remember { mutableStateOf(tasks) }
+    var activeTasks by remember { mutableStateOf(listOf<Task>()) }
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
 
-    Text(modifier = Modifier
-        .fillMaxSize()
-        .padding(start = 20.dp, top = 5.dp),
-        text = stringResource(R.string.bonuses),
-        style = MaterialTheme.typography.h4.copy(
-            color = black,
-            letterSpacing = 2.sp,
-            fontSize = 32.sp,
-            fontFamily = nunitoBold),
-        textAlign = TextAlign.Start
-    )
+    LazyColumn() {
+        item{
+            Column(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    modifier = Modifier.padding(start = 20.dp, top = 5.dp),
+                    text = stringResource(R.string.tasks),
+                    style = MaterialTheme.typography.h4.copy(
+                        color = Color.Black,
+                        letterSpacing = 2.sp,
+                        fontSize = 32.sp,
+                        fontFamily = nunitoBold
+                    ),
+                    textAlign = TextAlign.Start
+                )
+
+                // Slider to display available tasks
+                LazyRow(
+                    contentPadding = PaddingValues(start = 20.dp, top = 20.dp, end = 20.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(availableTasks) { task ->
+                        TaskCard(task = task, activeTasks = activeTasks, onStartClicked = {
+                            if (activeTasks.size < 3 && task !in activeTasks) {
+                                activeTasks = activeTasks + task
+                                availableTasks = availableTasks.filter { it != task }
+                            }
+                        })
+                    }
+                }
+
+                // Slider to display active tasks
+                if (activeTasks.isNotEmpty()) {
+                    Text(
+                        modifier = Modifier.padding(start = 20.dp, top = 30.dp),
+                        text = "Начато",
+                        style = MaterialTheme.typography.h4.copy(
+                            color = Color.Black,
+                            letterSpacing = 2.sp,
+                            fontSize = 24.sp,
+                            fontFamily = FontFamily(Font(R.font.nunito_bold))
+                        ),
+                        textAlign = TextAlign.Start
+                    )
+
+                    LazyRow(
+                        contentPadding = PaddingValues(start = 20.dp, top = 20.dp, end = 20.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(activeTasks) { task ->
+                            ActiveTaskCard(task = task, onCancelClicked = {
+                                activeTasks = activeTasks.filter { it != task }
+                                activeTasks = activeTasks - task
+                                availableTasks = availableTasks + task
+                            })
+                        }
+                    }
+                }
+                PartnerInfo()
+            }
+        }
+    }
+}
+
+@Composable
+fun TaskCard(task: Task, onStartClicked: (Task) -> Unit, activeTasks: List<Task>) {
+    var started by remember { mutableStateOf(false) }
+    val dialogShownState = remember { mutableStateOf(false) }
+    Card(
+        modifier = Modifier
+            .padding(end = 16.dp)
+            .clickable(
+                onClick = {
+                    if (!started) {
+                        if (activeTasks.size < 3) {
+                            started = true
+                            onStartClicked(task)
+                        } else {
+                            dialogShownState.value = true
+                        }
+                    }
+                }
+            )
+            .size(200.dp, 250.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = 4.dp
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = task.name,
+                style = MaterialTheme.typography.h6,
+                color = Color.Black
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = task.description,
+                style = MaterialTheme.typography.body2,
+                color = Color.Gray,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.star),
+                    contentDescription = "Eco Points",
+                    tint = Color(0xFF3DB88B),
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = task.ecoPoints.toString(),
+                    style = MaterialTheme.typography.body2,
+                    color = Color.Black
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Button(
+                    onClick = {
+                        if (activeTasks.size < 3) {
+                            started = true
+                            onStartClicked(task)
+                        } else {
+                            dialogShownState.value = true
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color.Blue,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(
+                        text = "Start",
+                        style = MaterialTheme.typography.button
+                    )
+                }
+            }
+            if (dialogShownState.value) {
+                AlertDialog(
+                    onDismissRequest = { dialogShownState.value = false },
+                    title = { Text(text = "Limit Reached") },
+                    text = { Text(text = "You can only start up to 3 tasks at once.") },
+                    confirmButton = {
+                        Button(
+                            onClick = { dialogShownState.value = false },
+                            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
+                        ) {
+                            Text(text = "OK")
+                        }
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ActiveTaskCard(task: Task, onCancelClicked: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .padding(end = 16.dp)
+            .size(200.dp, 250.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = 4.dp
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = task.name,
+                style = MaterialTheme.typography.h6,
+                color = Color.Black
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = task.description,
+                style = MaterialTheme.typography.body2,
+                color = Color.Gray,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.star),
+                    contentDescription = "Eco Points",
+                    tint = Color(0xFF3DB88B),
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = task.ecoPoints.toString(),
+                    style = MaterialTheme.typography.body2,
+                    color = Color.Black
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Button(
+                    onClick = {
+                        onCancelClicked()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color.Red,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(
+                        text = "Delete",
+                        style = MaterialTheme.typography.button
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PartnerInfo() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Our Partners",
+            style = MaterialTheme.typography.h6,
+            color = Color.Black
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Exchange your eco-points for discounts in our partner stores!",
+            style = MaterialTheme.typography.body2,
+            color = Color.Gray
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Image(
+                painter = painterResource(id = R.drawable.recycle_machine),
+                contentDescription = "Store 1",
+                modifier = Modifier
+                    .size(80.dp)
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
+            Image(
+                painter = painterResource(id = R.drawable.recycle_machine),
+                contentDescription = "Store 2",
+                modifier = Modifier
+                    .size(80.dp)
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
+            Image(
+                painter = painterResource(id = R.drawable.recycle_machine),
+                contentDescription = "Store 3",
+                modifier = Modifier
+                    .size(80.dp)
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalPagerApi::class)
@@ -730,7 +1049,9 @@ fun Menu(navController: NavHostController) {
                     shape = roundedRectangleShape,
                     backgroundColor = white,
                 ) {
-                    Row(modifier = Modifier.fillMaxWidth().clickable { navController.navigate("PROFILE") }, horizontalArrangement = Arrangement.SpaceAround,
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { navController.navigate("PROFILE") }, horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically) {
                         Image(
                             painter = painterResource(id = R.drawable.profile),
@@ -762,7 +1083,7 @@ fun Menu(navController: NavHostController) {
                             )
                         }
                         Image(
-                            painter = painterResource(id = R.drawable.edit_arrow),
+                            painter = painterResource(id = R.drawable.edit_profile),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(48.dp)
@@ -1149,9 +1470,53 @@ fun Menu(navController: NavHostController) {
                             }
                         }
                     }
+                    Divider(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 30.dp, end = 30.dp))
+                    Card(modifier = Modifier
+                        .padding(start = 20.dp, end = 20.dp)
+                        .fillMaxWidth()
+                        .height(50.dp),
+                        shape = roundedRectangleShape,
+                        backgroundColor = white) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ok_logo),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(42.dp)
+                                    .padding(start = 13.dp, end = 10.dp)
+                            )
+                            Text(modifier = Modifier,
+                                text = "Часто задаваемые вопросы",
+                                style = MaterialTheme.typography.h4.copy(
+                                    color = black,
+                                    fontSize = 14.sp,
+                                    fontFamily = nunitoRegular
+                                ),
+                            )
+                            Column(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 10.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.End) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.edit_arrow),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(48.dp)
+                                        .padding(8.dp, end = 10.dp),
+                                    colorFilter = ColorFilter.tint(Color.Red)
+                                )
+                            }
+                        }
+                    }
                 }
             }
-            Column(modifier = Modifier.fillMaxWidth().padding(top = 10.dp, bottom = 5.dp),
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp, bottom = 5.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(modifier = Modifier,
@@ -1166,12 +1531,26 @@ fun Menu(navController: NavHostController) {
             Card(modifier = Modifier
                 .padding(top = 10.dp, start = 50.dp, end = 50.dp, bottom = 10.dp)
                 .fillMaxWidth()
-                .shadow(elevation = 8.dp, spotColor = Color.Red, ambientColor = Color.Red, shape = roundedRectangleShape)
+                .shadow(
+                    elevation = 8.dp,
+                    spotColor = Color.Red,
+                    ambientColor = Color.Red,
+                    shape = roundedRectangleShape
+                )
                 .height(50.dp),
                 shape = roundedRectangleShape,
                 backgroundColor = white) {
                 val mContext = LocalContext.current
-                Row(modifier = Modifier.fillMaxWidth().clickable { mContext.startActivity(Intent(mContext, MainActivity::class.java)) }, horizontalArrangement = Arrangement.Start,
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        mContext.startActivity(
+                            Intent(
+                                mContext,
+                                MainActivity::class.java
+                            )
+                        )
+                    }, horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(id = R.drawable.log_out),
@@ -1212,41 +1591,224 @@ fun Menu(navController: NavHostController) {
 @Composable
 fun Profile(navController: NavHostController) {
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
+    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
+    val profile_name = remember { mutableStateOf(TextFieldValue()) }
+    val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
-    Icon(
-        painter = painterResource(R.drawable.go_back),
-        contentDescription = null,
-        modifier = Modifier
-            .size(52.dp)
-            .padding(top = 15.dp, start = 20.dp)
-            .clickable (interactionSource = interactionSource,
-                indication = null) {
-                navController.navigate("MENU")
-            }
-    )
-    Box(modifier = Modifier.fillMaxWidth().padding(top = 50.dp)) {
-        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = CenterHorizontally) {
-            Image(
-                painter = painterResource(id = R.drawable.profile),
+    LazyColumn() {
+        item {
+            Icon(
+                painter = painterResource(R.drawable.go_back),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(124.dp)
-                    .padding(8.dp)
-                    .shadow(elevation = 36.dp,
-                        spotColor = Color.Green,
-                        ambientColor = Color.Green,
-                        shape = CircleShape
+                    .size(52.dp)
+                    .padding(top = 15.dp, start = 20.dp)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null
+                    ) {
+                        navController.navigate("MENU")
+                    }
+            )
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 30.dp)) {
+                Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = CenterHorizontally) {
+                    Image(
+                        painter = painterResource(id = R.drawable.profile),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(124.dp)
+                            .padding(8.dp)
+                            .shadow(
+                                elevation = 36.dp,
+                                spotColor = Color.Green,
+                                ambientColor = Color.Green,
+                                shape = CircleShape
+                            )
                     )
-            )
-            Text(modifier = Modifier,
-                text = stringResource(R.string.username),
-                style = MaterialTheme.typography.h4.copy(
-                    color = black,
-                    fontSize = 24.sp,
-                    fontFamily = nunitoBold
-                ),
-            )
+                    Text(modifier = Modifier,
+                        text = stringResource(R.string.username),
+                        style = MaterialTheme.typography.h4.copy(
+                            color = black,
+                            fontSize = 24.sp,
+                            fontFamily = nunitoBold
+                        ),
+                    )
+                    Text(modifier = Modifier,
+                        text = "Владивосток",
+                        style = MaterialTheme.typography.h4.copy(
+                            color = black,
+                            fontSize = 18.sp,
+                            fontFamily = nunitoRegular
+                        ),
+                    )
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                        Icon(
+                            painter = painterResource(R.drawable.star),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(22.dp)
+                        )
+                        Text(modifier = Modifier,
+                            text = "12074",
+                            style = MaterialTheme.typography.h4.copy(
+                                color = black,
+                                fontSize = 16.sp,
+                                fontFamily = nunitoRegular
+                            ),
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.padding(20.dp))
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 30.dp, end = 30.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start) {
+                Text(text = "Имя", modifier = Modifier)
+                OutlinedTextField(
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        backgroundColor = white,
+                        textColor = greenMain,
+                        cursorColor = secGrey,
+                    ),
+                    textStyle = TextStyle(fontSize = 15.sp),
+                    value = profile_name.value,
+                    singleLine = true,
+                    onValueChange = {
+                        profile_name.value = it
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    placeholder = { Text(text = "Данил",
+                        fontFamily = nunitoBold,
+                        fontSize = 15.sp,
+                        color = secGrey
+                    ) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }),
+                )
+                Spacer(modifier = Modifier.padding(10.dp))
+                Text(text = "Фамилия", modifier = Modifier)
+                OutlinedTextField(
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        backgroundColor = white,
+                        textColor = greenMain,
+                        cursorColor = secGrey,
+                    ),
+                    textStyle = TextStyle(fontSize = 15.sp),
+                    value = profile_name.value,
+                    singleLine = true,
+                    onValueChange = {
+                        profile_name.value = it
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    placeholder = { Text(text = "Басов",
+                        fontFamily = nunitoBold,
+                        fontSize = 15.sp,
+                        color = secGrey
+                    ) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }),
+                )
+                Spacer(modifier = Modifier.padding(10.dp))
+                Text(text = "Номер телефона", modifier = Modifier)
+                OutlinedTextField(
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        backgroundColor = white,
+                        textColor = greenMain,
+                        cursorColor = secGrey,
+                    ),
+                    textStyle = TextStyle(fontSize = 15.sp),
+                    value = profile_name.value,
+                    singleLine = true,
+                    onValueChange = {
+                        profile_name.value = it
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    placeholder = { Text(text = "+7-924-436-35-33",
+                        fontFamily = nunitoBold,
+                        fontSize = 15.sp,
+                        color = secGrey
+                    ) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }),
+                )
+                Spacer(modifier = Modifier.padding(10.dp))
+                Text(text = "Город", modifier = Modifier)
+                OutlinedTextField(
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        backgroundColor = white,
+                        textColor = greenMain,
+                        cursorColor = secGrey,
+                    ),
+                    textStyle = TextStyle(fontSize = 15.sp),
+                    value = profile_name.value,
+                    singleLine = true,
+                    onValueChange = {
+                        profile_name.value = it
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    trailingIcon = { Icon(imageVector = FeatherIcons.User, contentDescription = "Lock Icon") },
+                    placeholder = { Text(text = "Владивосток",
+                        fontFamily = nunitoBold,
+                        fontSize = 15.sp,
+                        color = secGrey
+                    ) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }),
+                )
+                Spacer(modifier = Modifier.padding(10.dp))
+                Text(text = "E-mail", modifier = Modifier)
+                OutlinedTextField(
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        backgroundColor = white,
+                        textColor = greenMain,
+                        cursorColor = secGrey,
+                    ),
+                    textStyle = TextStyle(fontSize = 15.sp),
+                    value = profile_name.value,
+                    singleLine = true,
+                    onValueChange = {
+                        profile_name.value = it
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    placeholder = { Text(text = "Artorius.81@yandex.ru",
+                        fontFamily = nunitoBold,
+                        fontSize = 15.sp,
+                        color = secGrey
+                    ) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }),
+                )
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ sealed class BottomBarScreen(
 
     object Star : BottomBarScreen(
         route = "STAR",
-        title = R.string.bonuses,
+        title = R.string.tasks,
         icon = R.drawable.star
     )
 
