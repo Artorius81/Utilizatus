@@ -91,6 +91,7 @@
     <string name="limit_desc">一次只能开始完成3个任务</string>
     <string name="OK">好的</string>
     <string name="delete">删除</string>
+    <string name="in_process">正在进行中</string>
 
     <string name="enter_login">输入登入</string>
     <string name="enter_password">输入密码</string>

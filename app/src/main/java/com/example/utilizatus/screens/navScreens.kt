@@ -512,7 +512,6 @@ fun Home() {
                 text = stringResource(R.string.more),
                 style = MaterialTheme.typography.h4.copy(
                     color = MaterialTheme.colors.secondary,
-                    letterSpacing = 2.sp,
                     fontSize = 24.sp,
                     fontFamily = nunitoBold
                 ),
@@ -592,7 +591,6 @@ fun Home() {
                 text = stringResource(R.string.popular),
                 style = MaterialTheme.typography.h4.copy(
                     color = MaterialTheme.colors.secondary,
-                    letterSpacing = 2.sp,
                     fontSize = 24.sp,
                     fontFamily = nunitoBold
                 ),
@@ -637,14 +635,12 @@ fun Home() {
                         Text(text = item.name,
                             style = MaterialTheme.typography.h4.copy(
                                 color = MaterialTheme.colors.secondary,
-                                letterSpacing = 2.sp,
                                 fontSize = 16.sp,
                                 fontFamily = nunitoBold
                             ))
                         Text(text = item.tiny_desc,
                             style = MaterialTheme.typography.h4.copy(
                                 color = MaterialTheme.colors.secondary,
-                                letterSpacing = 0.sp,
                                 fontSize = 10.sp,
                                 fontFamily = nunitoRegular
                             ))
@@ -764,10 +760,9 @@ fun Star() {
                 if (activeTasks.isNotEmpty()) {
                     Text(
                         modifier = Modifier.padding(start = 20.dp, top = 30.dp),
-                        text = "Начато",
+                        text = stringResource(R.string.in_process),
                         style = MaterialTheme.typography.h4.copy(
                             color = MaterialTheme.colors.secondary,
-                            letterSpacing = 2.sp,
                             fontSize = 24.sp,
                             fontFamily = FontFamily(Font(R.font.nunito_bold))
                         ),
@@ -1039,17 +1034,16 @@ fun PartnerInfo() {
             )
             Spacer(modifier = Modifier.width(15.dp))
             Image(
-                painter = painterResource(id = R.drawable._gis_logo),
-                contentDescription = "2GIS",
-                modifier = Modifier
-            )
-            Spacer(modifier = Modifier.width(15.dp))
-            Image(
                 painter = painterResource(id = R.drawable.yandex_logo),
                 contentDescription = "Yandex",
                 modifier = Modifier
             )
             Spacer(modifier = Modifier.width(15.dp))
+            Image(
+                painter = painterResource(id = R.drawable._gis_logo),
+                contentDescription = "2GIS",
+                modifier = Modifier
+            )
             Image(
                 painter = painterResource(id = R.drawable.vk_logo),
                 contentDescription = "VK",
@@ -1139,7 +1133,6 @@ fun Menu(navController: NavHostController) {
                     text = stringResource(R.string.system),
                     style = MaterialTheme.typography.h4.copy(
                         color = MaterialTheme.colors.secondary,
-                        letterSpacing = 2.sp,
                         fontSize = 24.sp,
                         fontFamily = nunitoBold
                     ),
@@ -1243,7 +1236,6 @@ fun Menu(navController: NavHostController) {
                     text = stringResource(R.string.notifications),
                     style = MaterialTheme.typography.h4.copy(
                         color = MaterialTheme.colors.secondary,
-                        letterSpacing = 2.sp,
                         fontSize = 24.sp,
                         fontFamily = nunitoBold
                     ),
@@ -1390,7 +1382,6 @@ fun Menu(navController: NavHostController) {
                     text = stringResource(R.string.other),
                     style = MaterialTheme.typography.h4.copy(
                         color = MaterialTheme.colors.secondary,
-                        letterSpacing = 2.sp,
                         fontSize = 24.sp,
                         fontFamily = nunitoBold
                     ),

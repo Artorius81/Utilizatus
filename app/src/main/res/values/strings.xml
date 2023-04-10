@@ -91,6 +91,7 @@
     <string name="limit_desc">Вы можете начать выполнять только 3 задания за раз</string>
     <string name="OK">Добро</string>
     <string name="delete">Удалить</string>
+    <string name="in_process">Начатые</string>
 
     <string name="enter_login">Введите логин</string>
     <string name="enter_password">Введите пароль</string>
@@ -131,18 +132,6 @@
     <string name="card_pop_6">Телефон</string>
     <string name="card_pop_7">Обувь</string>
     <string name="card_pop_8">Жестяные банки</string>
-
-
-    11. Краска
-    12. Бетон
-    13. Масло
-    14. Батарейка
-    15. Еда
-    16. Коробка
-    17. Постельное бельё
-    18. Дерево
-
-
 
     <string name="card_pop_9">Алюминевая фольга</string>
     <string name="card_pop_10">Лампа накаливания</string>

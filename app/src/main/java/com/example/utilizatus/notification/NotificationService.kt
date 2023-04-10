@@ -1,10 +1,7 @@
 package com.example.utilizatus.notification
 
 import android.app.NotificationManager
-import android.content.ContentResolver
 import android.content.Context
-import android.provider.Settings.Global.getString
-import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import com.example.utilizatus.R
 

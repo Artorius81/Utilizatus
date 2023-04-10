@@ -92,6 +92,7 @@
         <string name="limit_desc">You can only start completing 3 tasks at a time</string>
         <string name="OK">OK</string>
         <string name="delete">Delete</string>
+        <string name="in_process">In process</string>
 
         <string name="enter_login">Enter login</string>
         <string name="enter_password">Enter password</string>

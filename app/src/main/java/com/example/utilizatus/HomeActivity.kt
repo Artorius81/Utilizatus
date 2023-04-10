@@ -8,7 +8,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.content.ContextCompat
-import androidx.navigation.compose.NavHost
 import com.example.utilizatus.bottombar.Main
 import com.example.utilizatus.ui.theme.UtilizatusTheme
 import com.google.accompanist.pager.ExperimentalPagerApi

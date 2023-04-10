@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.utilizatus.R
 import com.example.utilizatus.ui.theme.greenMain
-import com.example.utilizatus.ui.theme.white
 import androidx.navigation.NavHostController
 
 
