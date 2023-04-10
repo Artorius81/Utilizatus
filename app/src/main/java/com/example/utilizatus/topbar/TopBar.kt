@@ -31,7 +31,7 @@ fun TopBar(navController: NavHostController) {
     val interactionSource = remember { MutableInteractionSource() }
 
     TopAppBar(
-        backgroundColor = white,
+        backgroundColor = MaterialTheme.colors.background,
         modifier = Modifier.padding(top = 3.dp),
         elevation = 0.dp,
         actions = { Image(painter = painterResource(id = R.drawable.profile),

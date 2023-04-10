@@ -24,7 +24,10 @@
         <string name="main">Main</string>
         <string name="more">More Detail</string>
         <string name="popular">Popular</string>
-        <string name="bonuses">Rewards</string>
+        <string name="tasks">Tasks</string>
+        <string name="parners">Our partners</string>
+        <string name="exchange">Exchange your EcoPoints for discounts in our partner stores!</string>
+        <string name="profile">Profile</string>
         <string name="menu">Menu</string>
         <string name="descript">Description</string>
         <string name="map">Map</string>
@@ -32,6 +35,63 @@
         <string name="sorting">Sort</string>
         <string name="searching">Search</string>
         <string name="awesome">Keep it up!</string>
+
+        <string name="town">Vladivostok</string>
+        <string name="name">Name</string>
+        <string name="surname">Surname</string>
+        <string name="nameprof">Данил</string>
+        <string name="surnameprof">Басов</string>
+        <string name="city">City</string>
+        <string name="email">E-mail</string>
+        <string name="mail">Artorius.81@yandex.ru</string>
+
+        <string name="system">System</string>
+        <string name="notifications">Notifications</string>
+        <string name="other">Other</string>
+        <string name="username">Данил Басов</string>
+        <string name="edit_profile">Edit Profile</string>
+        <string name="dark_mode">Dark theme</string>
+        <string name="location">Location Access</string>
+        <string name="notifications_on">Notifications</string>
+        <string name="log_out">Exit</string>
+        <string name="auto_update">Autoupdate</string>
+        <string name="FAQ">FAQ</string>
+        <string name="vk">ВКонтакте</string>
+        <string name="gos">Госуслуги</string>
+        <string name="ok">Одноклассники</string>
+        <string name="receive_tasks">Notify about new tasks</string>
+
+        <string name="dest_1">Waste disposal: просп. Острякова, 44Б</string>
+        <string name="dest_2">Battery receiving point: ул. Бестужева, 23</string>
+        <string name="dest_3">Purchase of recyclables: ул. Краева, 8А</string>
+        <string name="dest_4">Recycling collection point: Народный просп. 6</string>
+        <string name="dest_5">Waste disposal: Бархатная ул. 3</string>
+        <string name="dest_6">Purchase of recyclables: Снеговая ул. 6А</string>
+        <string name="dest_7">Recycling collection point: Бородинская ул. 30Б</string>
+        <string name="dest_8">Waste disposal: ул. Фанзавод, 1</string>
+        <string name="dest_9">Reception of mercury-containing waste: посёлок Трудовое</string>
+
+        <string name="task_1">Clean-up event</string>
+        <string name="task_1_desc">Take part in the clean-up event</string>
+        <string name="task_2">Without plastic</string>
+        <string name="task_2_desc">Give up plastic for 3 days</string>
+        <string name="task_3">Donation</string>
+        <string name="task_3_desc">Donate to charity (environmental projects)</string>
+        <string name="task_4">Environmental cleaning</string>
+        <string name="task_4_desc">Use eco-friendly products for a week</string>
+        <string name="task_5">Public transport</string>
+        <string name="task_5_desc">Use public transport instead of a car for 3 days</string>
+        <string name="task_6">Bike to work</string>
+        <string name="task_6_desc">Ride a bike to work for 3 days</string>
+        <string name="task_7">Beach cleaning</string>
+        <string name="task_7_desc">Take part in cleaning the beach</string>
+        <string name="task_8">The Living Tree</string>
+        <string name="task_8_desc">Plant a tree</string>
+
+        <string name="limit">You have reached the limit</string>
+        <string name="limit_desc">You can only start completing 3 tasks at a time</string>
+        <string name="OK">OK</string>
+        <string name="delete">Delete</string>
 
         <string name="enter_login">Enter login</string>
         <string name="enter_password">Enter password</string>
@@ -87,7 +147,59 @@
         <string name="searching_tip">Find out where the nearest garbage sorting point is located</string>
         <string name="awesome_tip">By sorting the garbage, you helped the planet, and also received bonuses. Keep it up!</string>
 
-        <string name="card_pop_desc">Click to learn more</string>
+        <string name="tiny_desc">CLick to learn more</string>
+
+        <string name="card_pop_desc1">Newspapers can be recycled into new paper or cardboard containers.
+                They can be handed over to the waste paper collection point or left in special containers for paper recycling.</string>
+
+        <string name="card_pop_desc2">Magazines can be recycled in the same way as newspapers, into new paper or cardboard containers.
+                They can also be handed over to the waste paper collection point or left in special containers for paper recycling.</string>
+
+        <string name="card_pop_desc3">Plastic bags can be handed over to plastic recycling points or left in special containers for recycling plastic waste.</string>
+
+        <string name="card_pop_desc4">The film can be handed over to plastic recycling points or left in special containers for recycling plastic waste.
+                It is important to remove any fasteners from the film, such as paper clips or clips.</string>
+
+        <string name="card_pop_desc5">Wearable, but non-working clothes can be handed over to charities or recyclable stores.
+                Damaged clothes can be recycled into new textile materials, for example, to make cleaning rags or insulation from it.</string>
+
+        <string name="card_pop_desc6">Phones and other electronics can be handed over to electronic waste collection points or to stores that accept old electronics as payment for new ones.</string>
+
+        <string name="card_pop_desc7">Non-working shoes can be put into special containers for shoe recycling.
+                Work shoes can be handed over to charities or recyclable stores.</string>
+
+        <string name="card_pop_desc8">Tin cans can be handed over to scrap collection points or left in special containers for recycling metal waste.</string>
+
+        <string name="card_pop_desc9">Aluminum foil can be disposed of together with other metal waste, such as tin cans.
+                Before disposal, it is necessary to separate aluminum foil from other materials, such as food residues or plastic.</string>
+
+        <string name="card_pop_desc10">Incandescent lamps can be put into special containers for recycling electric lamps and lamps.
+                In some cities there are reception points for such lamps.</string>
+
+        <string name="card_pop_desc11">The paint must be disposed of in accordance with local regulations. In some cases, it is possible to hand over unspent paint to special reception points,
+                and used paints may require special treatment and disposal in accordance with local legislation.</string>
+
+        <string name="card_pop_desc12">Concrete can be disposed of by recycling and used as a filler for new construction projects.
+                To recycle concrete, it is necessary to separate it from other materials, such as metal elements or plastic.</string>
+
+        <string name="card_pop_desc13">The oil can be disposed of at special reception points or auto repair shops. The oil should be collected separately and not mixed with other waste.
+                Before disposal, make sure that the oil is not contaminated with other substances, such as dust, dirt or gasoline.</string>
+
+        <string name="card_pop_desc14">Batteries can be disposed of at special reception points or in stores that sell batteries.
+                Some cities have special containers for recycling batteries. Before disposal, it is necessary to separate the batteries from other waste.</string>
+
+        <string name="card_pop_desc15">Food waste can be disposed of by composting. Composting is the process of decomposing organic waste, such as food residues and leaves, into nutritious soil for gardens and vegetable gardens.
+                There are several ways of composting, including composting in a closed container or using special compost heaps.</string>
+
+        <string name="card_pop_desc16">The boxes can be disposed of by recycling. In some cities there are special reception points for cardboard boxes, where they can be handed over. The boxes should be empty and dry.
+                Before disposal, it is necessary to separate the boxes from other materials such as plastic tapes, adhesive tapes and paper crumbs.</string>
+
+        <string name="card_pop_desc17">Bed linen can be recycled into new products such as insulation material, napkins or fibers for use in car tires. Before disposal, it is necessary to remove all metal parts, such as zippers and buttons, and separate materials,
+                such as filler or mattresses. This will help to increase the efficiency of recycling and reduce the amount of waste.</string>
+
+        <string name="card_pop_desc18">Wood can be used as fuel or processed into other products such as paper, charcoal or wood for construction. Before disposal, it is necessary to remove all metal parts,
+                such as nails or clamps, and separate the wood from other materials, such as plastic or metal parts.</string>
+
 
         <string name="desc_1">This category includes newspapers, magazines, printer paper, cards, letters and other paper products.
                 Waste paper can be recycled and used as raw materials for the production of new paper.
@@ -103,7 +215,7 @@
 
         <string name="desc_4">This category includes aluminum and steel cans used for food preservation.
                 Metal cans can be recycled and used as raw materials for the production of new cans, cars and even airplanes.
-                One aluminum can can be recycled and used to produce a new can within just 60 days.</string>
+                One aluminum-can can be recycled and used to produce a new can within just 60 days.</string>
 
         <string name="desc_5">This category includes old clothes, bed linen, towels and other textiles.
                 The fabric can be recycled and used as a raw material for the production of new textiles.

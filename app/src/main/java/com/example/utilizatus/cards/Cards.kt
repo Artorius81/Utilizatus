@@ -22,5 +22,6 @@ data class CardPopular(
     val id: Int,
     val name: String,
     val icon: Int,
-    val desc: String
+    val desc: String,
+    val tiny_desc: String
 )

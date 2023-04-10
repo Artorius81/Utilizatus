@@ -23,7 +23,10 @@
     <string name="main">主要</string>
     <string name="more">更多细节</string>
     <string name="popular">流行的</string>
-    <string name="bonuses">奖励计划</string>
+    <string name="tasks">任务</string>
+    <string name="parners">我们的合作伙伴</string>
+    <string name="exchange">在我们的合作伙伴商店交换您的环保积分折扣!</string>
+    <string name="profile">个人资料</string>
     <string name="menu">菜单</string>
     <string name="descript">资料描述</string>
     <string name="map">地图</string>
@@ -31,6 +34,63 @@
     <string name="sorting">排序</string>
     <string name="searching">搜索</string>
     <string name="awesome">坚持下去！</string>
+
+    <string name="town">Vladivostok</string>
+    <string name="name">姓名</string>
+    <string name="surname">姓</string>
+    <string name="nameprof">Данил</string>
+    <string name="surnameprof">Басов</string>
+    <string name="city">城市</string>
+    <string name="email">电子邮件</string>
+    <string name="mail">Artorius.81@yandex.ru</string>
+
+    <string name="system">系统</string>
+    <string name="notifications">通知书</string>
+    <string name="other">其他</string>
+    <string name="username">Данил Басов</string>
+    <string name="edit_profile">编辑个人资料</string>
+    <string name="dark_mode">黑暗主题</string>
+    <string name="location">位置访问</string>
+    <string name="notifications_on">通知书</string>
+    <string name="log_out">出口；出口</string>
+    <string name="auto_update">自动更新</string>
+    <string name="FAQ">常见问题</string>
+    <string name="vk">ВКонтакте</string>
+    <string name="gos">Госуслуги</string>
+    <string name="ok">Одноклассники</string>
+    <string name="receive_tasks">通知新任务</string>
+
+    <string name="dest_1">废物处置: просп. Острякова, 44Б</string>
+    <string name="dest_2">电池接收点: ул. Бестужева, 23</string>
+    <string name="dest_3">购买可回收物品: ул. Краева, 8А</string>
+    <string name="dest_4">回收收集点: Народный просп. 6</string>
+    <string name="dest_5">废物处置: Бархатная ул. 3</string>
+    <string name="dest_6">购买可回收物品: Снеговая ул. 6А</string>
+    <string name="dest_7">回收收集点: Бородинская ул. 30Б</string>
+    <string name="dest_8">废物处置: ул. Фанзавод, 1</string>
+    <string name="dest_9">接收含汞废物: посёлок Трудовое</string>
+
+    <string name="task_1">清理活动</string>
+    <string name="task_1_desc">参加清理活动</string>
+    <string name="task_2">没有塑料</string>
+    <string name="task_2_desc">放弃塑料3天</string>
+    <string name="task_3">捐款</string>
+    <string name="task_3_desc">捐款予慈善团体(环保计划)</string>
+    <string name="task_4">环境清洁</string>
+    <string name="task_4_desc">使用环保产品一周</string>
+    <string name="task_5">公共交通工具</string>
+    <string name="task_5_desc">使用公共交通工具而不是汽车3天</string>
+    <string name="task_6">骑自行车上班</string>
+    <string name="task_6_desc">骑自行车上班3天</string>
+    <string name="task_7">清洁泳滩</string>
+    <string name="task_7_desc">参加清洁海滩</string>
+    <string name="task_8">活树</string>
+    <string name="task_8_desc">种一棵树</string>
+
+    <string name="limit">你已经达到极限了</string>
+    <string name="limit_desc">一次只能开始完成3个任务</string>
+    <string name="OK">好的</string>
+    <string name="delete">删除</string>
 
     <string name="enter_login">输入登入</string>
     <string name="enter_password">输入密码</string>
@@ -86,7 +146,44 @@
     <string name="searching_tip">找出最近的垃圾分类点所在位置</string>
     <string name="awesome_tip">通过分类垃圾，你帮助了这个星球，也获得了奖金。 坚持下去！</string>
 
-    <string name="card_pop_desc">点击了解更多</string>
+    <string name="tiny_desc">点击了解更多</string>
+
+    <string name="card_pop_desc1">报纸可以回收到新的纸或纸板容器中。 它们可以交给废纸收集点或留在特殊容器中进行纸张回收。</string>
+
+    <string name="card_pop_desc2">杂志可以像报纸一样被回收到新的纸或纸板容器中。 它们也可以交给废纸收集点或留在特殊容器中进行纸张回收。</string>
+
+    <string name="card_pop_desc3">塑料袋可以交给塑料回收点或留在回收塑料废物的特殊容器中。</string>
+
+    <string name="card_pop_desc4">薄膜可以交给塑料回收点或留在回收塑料废物的特殊容器中。 重要的是从薄膜上移除任何紧固件，例如回形针或夹子。</string>
+
+    <string name="card_pop_desc5">可穿戴，但非工作服可以交给慈善机构或可回收商店。 损坏的衣服可以再循环到新的纺织材料中，例如，从其制成清洁抹布或绝缘材料。</string>
+
+    <string name="card_pop_desc6">电话和其他电子产品可以交给电子废物收集点或接受旧电子产品作为新电子产品付款的商店。</string>
+
+    <string name="card_pop_desc7">不工作的鞋子可以放入特殊的容器中进行鞋子回收。 工作鞋可以交给慈善机构或可回收商店。</string>
+
+    <string name="card_pop_desc8">锡罐可以交给废料收集点或留在回收金属废料的特殊容器中。</string>
+
+    <string name="card_pop_desc9">铝箔可以与其他金属废料一起处理，例如锡罐。 在处置之前，有必要将铝箔与其他材料（如食物残渣或塑料）分开。</string>
+
+    <string name="card_pop_desc10">白炽灯可以放入回收电灯和灯具的特殊容器中。 在一些城市有这种灯的接收点。</string>
+
+    <string name="card_pop_desc11">油漆必须按照当地法规处理。 在某些情况下，可以将未使用的油漆移交给特殊的接待点，使用过的油漆可能需要根据当地立法进行特殊处理和处置。</string>
+
+    <string name="card_pop_desc12">混凝土可以通过回收处理，并用作新建筑项目的填料。 要回收混凝土，有必要将其与其他材料分开，如金属元素或塑料。</string>
+
+    <string name="card_pop_desc13">油可以在特殊的接待点或汽车修理店处理。 油应单独收集，不得与其他废物混合。 在处理之前，请确保油没有被其他物质污染，如灰尘，污垢或汽油。</string>
+
+    <string name="card_pop_desc14">电池可以在特殊的接待点或出售电池的商店处理。 一些城市有回收电池的特殊容器。 在处理之前，有必要将电池与其他废物分开。</string>
+
+    <string name="card_pop_desc15">食物垃圾可以通过堆肥处理。 堆肥是将食物残渣和叶子等有机废物分解为花园和菜园的营养土壤的过程。 堆肥有几种方法，包括在密闭容器中堆肥或使用特殊的堆肥堆。</string>
+
+    <string name="card_pop_desc16">这些盒子可以通过回收处理。 在一些城市有纸板箱的特殊接待点，在那里他们可以被移交。 盒子应该是空的和干燥的。 在处理之前，有必要将盒子与其他材料（如塑料胶带，胶带和纸屑）分开。</string>
+
+    <string name="card_pop_desc17">床单可以回收成新产品，如绝缘材料，餐巾或纤维，用于汽车轮胎。 在处置之前，有必要去除所有金属部件，如拉链和按钮，以及单独的材料，如填充物或床垫。 这将有助于提高回收效率和减少废物量。</string>
+
+    <string name="card_pop_desc18">木材可以用作燃料或加工成其他产品，如纸张，木炭或木材用于建筑。 在处置之前，有必要去除所有金属部件，如钉子或夹子，并将木材与其他材料（如塑料或金属部件）分开。</string>
+
 
     <string name="desc_1">此类别包括报纸，杂志，打印机纸张，卡片，信件和其他纸张产品。 废纸可以回收利用，用作生产新纸的原料。 使用一吨回收废纸，您可以节省17棵树和7,000加仑的水。</string>
 

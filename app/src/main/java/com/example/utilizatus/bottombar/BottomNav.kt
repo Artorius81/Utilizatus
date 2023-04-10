@@ -1,10 +1,7 @@
 package com.example.utilizatus.bottombar
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -25,7 +22,7 @@ fun BottomNav(navController: NavController) {
         BottomBarScreen.Menu
     )
     BottomNavigation(
-        backgroundColor = white,
+        backgroundColor = MaterialTheme.colors.background,
         modifier = Modifier.clip(RoundedCornerShape(0.dp, 0.dp, 0.dp, 0.dp))
     ) {
         val backStackEntry by navController.currentBackStackEntryAsState()

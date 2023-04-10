@@ -37,6 +37,7 @@ import com.example.utilizatus.notification.NotificationService
 import com.example.utilizatus.notification.OTPNumber
 import com.example.utilizatus.ui.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.talhafaki.composablesweettoast.theme.whiteBackground
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
 import com.togitech.ccp.component.TogiCountryCodePicker
 import compose.icons.FeatherIcons
@@ -68,9 +69,9 @@ fun LoginPage() {
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(white)) {
+        .background(MaterialTheme.colors.background)) {
         Box(modifier = Modifier
-            .background(white)
+            .background(MaterialTheme.colors.background)
         ){
             Column(modifier = Modifier
                 .fillMaxSize(),
@@ -339,7 +340,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                         .size(40.dp))
                                 Spacer(modifier = Modifier.padding(25.dp))
                                 Image(
-                                    ImageVector.vectorResource(id = R.drawable.vk_logo),
+                                    ImageVector.vectorResource(id = R.drawable.vk_log),
                                     contentDescription = "logo",
                                     modifier = Modifier
                                         .clickable(
@@ -511,7 +512,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                                     .size(40.dp))
                                             Spacer(modifier = Modifier.padding(25.dp))
                                             Image(
-                                                ImageVector.vectorResource(id = R.drawable.vk_logo),
+                                                ImageVector.vectorResource(id = R.drawable.vk_log),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
                                                     .clickable(
@@ -629,7 +630,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                                     .size(40.dp))
                                             Spacer(modifier = Modifier.padding(25.dp))
                                             Image(
-                                                ImageVector.vectorResource(id = R.drawable.vk_logo),
+                                                ImageVector.vectorResource(id = R.drawable.vk_log),
                                                 contentDescription = "logo",
                                                 modifier = Modifier
                                                     .clickable(
@@ -781,7 +782,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                                 .size(40.dp))
                                         Spacer(modifier = Modifier.padding(25.dp))
                                         Image(
-                                            ImageVector.vectorResource(id = R.drawable.vk_logo),
+                                            ImageVector.vectorResource(id = R.drawable.vk_log),
                                             contentDescription = "logo",
                                             modifier = Modifier
                                                 .clickable(

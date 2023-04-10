@@ -6,10 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,21 +23,17 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
-import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -70,8 +63,6 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import compose.icons.FeatherIcons
-import compose.icons.feathericons.Eye
-import compose.icons.feathericons.EyeOff
 import compose.icons.feathericons.User
 import kotlinx.coroutines.launch
 import java.util.*
@@ -89,15 +80,15 @@ fun Map() {
     }
 
     val markerList = listOf(
-        MapMarkerData(1, "Утилизация отходов: просп. Острякова, 44Б", LatLng(43.138642, 131.904132)),
-        MapMarkerData(2, "Пункт приёма батареек: ул. Бестужева, 23", LatLng(43.110439, 131.876726)),
-        MapMarkerData(3, "Скупка вторсырья: ул. Краева, 8А", LatLng(43.104957, 131.896902)),
-        MapMarkerData(4, "Точка сбора мусора: Народный просп. 6", LatLng(43.128360, 131.921786)),
-        MapMarkerData(5, "Утилизация отходов: Бархатная ул. 3", LatLng(43.073411, 131.939548)),
-        MapMarkerData(6, "Скупка вторсырья: Снеговая ул. 6А", LatLng(43.139173, 131.933132)),
-        MapMarkerData(7, "Пункт приёма вторсырья: Бородинская ул. 30Б", LatLng(43.164894, 131.940889)),
-        MapMarkerData(8, "Утилизация отходов: ул. Фанзавод, 1", LatLng(43.242909, 132.014850)),
-        MapMarkerData(9, "Приём ртутьсодержащих отходов: посёлок Трудовое", LatLng(43.300378, 132.063063)),
+        MapMarkerData(1, stringResource(R.string.dest_1), LatLng(43.138642, 131.904132)),
+        MapMarkerData(2, stringResource(R.string.dest_2), LatLng(43.110439, 131.876726)),
+        MapMarkerData(3, stringResource(R.string.dest_3), LatLng(43.104957, 131.896902)),
+        MapMarkerData(4, stringResource(R.string.dest_4), LatLng(43.128360, 131.921786)),
+        MapMarkerData(5, stringResource(R.string.dest_5), LatLng(43.073411, 131.939548)),
+        MapMarkerData(6, stringResource(R.string.dest_6), LatLng(43.139173, 131.933132)),
+        MapMarkerData(7, stringResource(R.string.dest_7), LatLng(43.164894, 131.940889)),
+        MapMarkerData(8, stringResource(R.string.dest_8), LatLng(43.242909, 132.014850)),
+        MapMarkerData(9, stringResource(R.string.dest_9), LatLng(43.300378, 132.063063)),
     )
 
     val mapUiSettings by remember {
@@ -232,12 +223,12 @@ fun BottomSheetContentPop(item: CardPopular) {
         modifier = Modifier.height(450.dp)) {
         Box(modifier = Modifier
             .fillMaxSize()
-            .background(white)) {
+            .background(MaterialTheme.colors.background)) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = CenterHorizontally
             ) {
                 Card(modifier = Modifier
                     .padding(8.dp)
@@ -247,18 +238,18 @@ fun BottomSheetContentPop(item: CardPopular) {
                 {
                     Column(
                         verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = CenterHorizontally
                     ) {
                         Icon(
                             painter = painterResource(id = item.icon),
                             contentDescription = "description",
-                            tint = black,
+                            tint = MaterialTheme.colors.secondary,
                             modifier = Modifier.size(60.dp)
                         )
                         Text(
                             text = item.name,
                             style = MaterialTheme.typography.h4.copy(
-                                color = black,
+                                color = MaterialTheme.colors.secondary,
                                 fontSize = 14.sp,
                                 fontFamily = nunitoBold
                             ),
@@ -270,30 +261,23 @@ fun BottomSheetContentPop(item: CardPopular) {
                 Text(
                     text = stringResource(R.string.descript),
                     style = MaterialTheme.typography.h4.copy(
-                        color = black,
+                        color = MaterialTheme.colors.secondary,
                         fontSize = 16.sp,
                         fontFamily = nunitoBold
                     ),
                     textAlign = TextAlign.Start,
                     modifier = Modifier.padding(top = 4.dp, start = 5.dp)
                 )
-                Card(modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth()
-                    .wrapContentSize(),
-                    shape = RoundedCornerShape(16.dp))
-                {
-                    Text(
-                        text = item.desc,
-                        style = MaterialTheme.typography.h6.copy(
-                            color = black,
-                            fontSize = 16.sp,
-                            fontFamily = nunitoMedium
-                        ),
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.padding(top = 5.dp, start = 5.dp, end = 5.dp, bottom = 5.dp),
-                    )
-                }
+                Text(
+                    text = item.desc,
+                    style = MaterialTheme.typography.h6.copy(
+                        color = MaterialTheme.colors.secondary,
+                        fontSize = 16.sp,
+                        fontFamily = nunitoMedium
+                    ),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.padding(top = 5.dp, start = 5.dp, end = 5.dp, bottom = 5.dp),
+                )
             }
         }
     }
@@ -325,7 +309,7 @@ fun BottomSheetContent(cardItem: CardMore, itemList: List<Item>) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = CenterHorizontally
             ) {
                 Card(modifier = Modifier
                     .padding(8.dp)
@@ -335,18 +319,18 @@ fun BottomSheetContent(cardItem: CardMore, itemList: List<Item>) {
                 {
                     Column(
                         verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = CenterHorizontally
                     ) {
                         Icon(
                             painter = painterResource(id = cardItem.icon),
                             contentDescription = "description",
-                            tint = black,
+                            tint = MaterialTheme.colors.secondary,
                             modifier = Modifier.size(60.dp)
                         )
                         Text(
                             text = cardItem.name,
                             style = MaterialTheme.typography.h4.copy(
-                                color = black,
+                                color = MaterialTheme.colors.secondary,
                                 fontSize = 14.sp,
                                 fontFamily = nunitoBold
                             ),
@@ -378,30 +362,23 @@ fun BottomSheetContent(cardItem: CardMore, itemList: List<Item>) {
                 Text(
                     text = stringResource(R.string.descript),
                     style = MaterialTheme.typography.h4.copy(
-                        color = white,
+                        color = MaterialTheme.colors.primaryVariant,
                         fontSize = 16.sp,
                         fontFamily = nunitoBold
                     ),
                     textAlign = TextAlign.Start,
                     modifier = Modifier.padding(top = 4.dp, start = 5.dp)
                 )
-                Card(modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth()
-                    .wrapContentSize(),
-                    shape = RoundedCornerShape(16.dp))
-                {
-                    Text(
-                        text = cardItem.description,
-                        style = MaterialTheme.typography.h6.copy(
-                            color = black,
-                            fontSize = 16.sp,
-                            fontFamily = nunitoMedium
-                        ),
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.padding(top = 5.dp, start = 5.dp, end = 5.dp, bottom = 5.dp),
-                    )
-                }
+                Text(
+                    text = cardItem.description,
+                    style = MaterialTheme.typography.h6.copy(
+                        color = MaterialTheme.colors.primaryVariant,
+                        fontSize = 16.sp,
+                        fontFamily = nunitoMedium
+                    ),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.padding(top = 5.dp, start = 5.dp, end = 5.dp, bottom = 5.dp),
+                )
             }
         }
     }
@@ -443,24 +420,24 @@ fun Home() {
     )
 
     val cardPop = listOf(
-        CardPopular(22, stringResource(R.string.card_pop_1), R.drawable.news, stringResource(R.string.card_pop_desc)),
-        CardPopular(23, stringResource(R.string.card_pop_2), R.drawable.magazine, stringResource(R.string.card_pop_desc)),
-        CardPopular(24, stringResource(R.string.card_pop_3), R.drawable.bag, stringResource(R.string.card_pop_desc)),
-        CardPopular(25, stringResource(R.string.card_pop_4), R.drawable.wrap, stringResource(R.string.card_pop_desc)),
-        CardPopular(26, stringResource(R.string.card_pop_5), R.drawable.clothes, stringResource(R.string.card_pop_desc)),
-        CardPopular(27, stringResource(R.string.card_pop_6), R.drawable.phone, stringResource(R.string.card_pop_desc)),
-        CardPopular(28, stringResource(R.string.card_pop_7), R.drawable.boots, stringResource(R.string.card_pop_desc)),
-        CardPopular(29, stringResource(R.string.card_pop_8), R.drawable.tin, stringResource(R.string.card_pop_desc)),
-        CardPopular(30, stringResource(R.string.card_pop_9), R.drawable.foil, stringResource(R.string.card_pop_desc)),
-        CardPopular(31, stringResource(R.string.card_pop_10), R.drawable.lamp, stringResource(R.string.card_pop_desc)),
-        CardPopular(32, stringResource(R.string.card_pop_11), R.drawable.paint, stringResource(R.string.card_pop_desc)),
-        CardPopular(33, stringResource(R.string.card_pop_12), R.drawable.concreate, stringResource(R.string.card_pop_desc)),
-        CardPopular(34, stringResource(R.string.card_pop_13), R.drawable.oil, stringResource(R.string.card_pop_desc)),
-        CardPopular(35, stringResource(R.string.card_pop_14), R.drawable.batteri, stringResource(R.string.card_pop_desc)),
-        CardPopular(36, stringResource(R.string.card_pop_15), R.drawable.food, stringResource(R.string.card_pop_desc)),
-        CardPopular(37, stringResource(R.string.card_pop_16), R.drawable.box, stringResource(R.string.card_pop_desc)),
-        CardPopular(38, stringResource(R.string.card_pop_17), R.drawable.bedding, stringResource(R.string.card_pop_desc)),
-        CardPopular(39, stringResource(R.string.card_pop_18), R.drawable.wood, stringResource(R.string.card_pop_desc))
+        CardPopular(22, stringResource(R.string.card_pop_1), R.drawable.news, stringResource(R.string.card_pop_desc1), stringResource(R.string.tiny_desc)),
+        CardPopular(23, stringResource(R.string.card_pop_2), R.drawable.magazine, stringResource(R.string.card_pop_desc2), stringResource(R.string.tiny_desc)),
+        CardPopular(24, stringResource(R.string.card_pop_3), R.drawable.bag, stringResource(R.string.card_pop_desc3), stringResource(R.string.tiny_desc)),
+        CardPopular(25, stringResource(R.string.card_pop_4), R.drawable.wrap, stringResource(R.string.card_pop_desc4), stringResource(R.string.tiny_desc)),
+        CardPopular(26, stringResource(R.string.card_pop_5), R.drawable.clothes, stringResource(R.string.card_pop_desc5), stringResource(R.string.tiny_desc)),
+        CardPopular(27, stringResource(R.string.card_pop_6), R.drawable.phone, stringResource(R.string.card_pop_desc6), stringResource(R.string.tiny_desc)),
+        CardPopular(28, stringResource(R.string.card_pop_7), R.drawable.boots, stringResource(R.string.card_pop_desc7), stringResource(R.string.tiny_desc)),
+        CardPopular(29, stringResource(R.string.card_pop_8), R.drawable.tin, stringResource(R.string.card_pop_desc8), stringResource(R.string.tiny_desc)),
+        CardPopular(30, stringResource(R.string.card_pop_9), R.drawable.foil, stringResource(R.string.card_pop_desc9), stringResource(R.string.tiny_desc)),
+        CardPopular(31, stringResource(R.string.card_pop_10), R.drawable.lamp, stringResource(R.string.card_pop_desc10), stringResource(R.string.tiny_desc)),
+        CardPopular(32, stringResource(R.string.card_pop_11), R.drawable.paint, stringResource(R.string.card_pop_desc11), stringResource(R.string.tiny_desc)),
+        CardPopular(33, stringResource(R.string.card_pop_12), R.drawable.concreate, stringResource(R.string.card_pop_desc12), stringResource(R.string.tiny_desc)),
+        CardPopular(34, stringResource(R.string.card_pop_13), R.drawable.oil, stringResource(R.string.card_pop_desc13), stringResource(R.string.tiny_desc)),
+        CardPopular(35, stringResource(R.string.card_pop_14), R.drawable.batteri, stringResource(R.string.card_pop_desc14), stringResource(R.string.tiny_desc)),
+        CardPopular(36, stringResource(R.string.card_pop_15), R.drawable.food, stringResource(R.string.card_pop_desc15), stringResource(R.string.tiny_desc)),
+        CardPopular(37, stringResource(R.string.card_pop_16), R.drawable.box, stringResource(R.string.card_pop_desc16), stringResource(R.string.tiny_desc)),
+        CardPopular(38, stringResource(R.string.card_pop_17), R.drawable.bedding, stringResource(R.string.card_pop_desc17), stringResource(R.string.tiny_desc)),
+        CardPopular(39, stringResource(R.string.card_pop_18), R.drawable.wood, stringResource(R.string.card_pop_desc18), stringResource(R.string.tiny_desc))
     )
 
     var selectedCard by remember { mutableStateOf<CardMore?>(null) }
@@ -489,7 +466,7 @@ fun Home() {
                 modifier = Modifier.padding(start = 20.dp, top = 5.dp),
                 text = stringResource(R.string.main),
                 style = MaterialTheme.typography.h4.copy(
-                    color = black,
+                    color = MaterialTheme.colors.secondary,
                     letterSpacing = 2.sp,
                     fontSize = 32.sp,
                     fontFamily = nunitoBold
@@ -508,7 +485,7 @@ fun Home() {
                         Column(
                             modifier = Modifier.clickable {  },
                             verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
+                            horizontalAlignment = CenterHorizontally
                         ) {
                             Icon(
                                 painter = painterResource(id = item.icon),
@@ -534,7 +511,7 @@ fun Home() {
                 modifier = Modifier.padding(start = 20.dp),
                 text = stringResource(R.string.more),
                 style = MaterialTheme.typography.h4.copy(
-                    color = black,
+                    color = MaterialTheme.colors.secondary,
                     letterSpacing = 2.sp,
                     fontSize = 24.sp,
                     fontFamily = nunitoBold
@@ -546,7 +523,7 @@ fun Home() {
                     .width(120.dp)
                     .padding(start = 20.dp)
                     .height(2.dp)
-                    .background(greenMain)
+                    .background(MaterialTheme.colors.primary)
             ) {
                 Divider()
             }
@@ -558,7 +535,7 @@ fun Home() {
                             .width(120.dp)
                             .height(100.dp),
                         shape = roundedRectangleShape,
-                        backgroundColor = white
+                        backgroundColor = MaterialTheme.colors.surface
                     ) {
                         Column(
                             modifier = Modifier.clickable {
@@ -568,18 +545,18 @@ fun Home() {
                                 }; selectedCard = cardItem
                             },
                             verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
+                            horizontalAlignment = CenterHorizontally
                         ) {
                             Icon(
                                 painter = painterResource(id = cardItem.icon),
                                 contentDescription = "Favorite icon",
-                                tint = black,
+                                tint = MaterialTheme.colors.secondary,
                                 modifier = Modifier.size(45.dp)
                             )
                             Text(
                                 text = cardItem.name,
                                 style = MaterialTheme.typography.h4.copy(
-                                    color = black,
+                                    color = MaterialTheme.colors.secondary,
                                     fontSize = 14.sp,
                                     fontFamily = nunitoBold
                                 ),
@@ -614,7 +591,7 @@ fun Home() {
                 modifier = Modifier.padding(start = 20.dp),
                 text = stringResource(R.string.popular),
                 style = MaterialTheme.typography.h4.copy(
-                    color = black,
+                    color = MaterialTheme.colors.secondary,
                     letterSpacing = 2.sp,
                     fontSize = 24.sp,
                     fontFamily = nunitoBold
@@ -626,7 +603,7 @@ fun Home() {
                     .width(120.dp)
                     .padding(start = 20.dp)
                     .height(2.dp)
-                    .background(greenMain)
+                    .background(MaterialTheme.colors.primary)
             ) {
                 Divider()
             }
@@ -646,6 +623,7 @@ fun Home() {
                     Icon(
                         painter = painterResource(id = item.icon),
                         contentDescription = null,
+                        tint = MaterialTheme.colors.secondary,
                         modifier = Modifier
                             .size(72.dp)
                             .padding(8.dp)
@@ -658,14 +636,14 @@ fun Home() {
                     ) {
                         Text(text = item.name,
                             style = MaterialTheme.typography.h4.copy(
-                                color = black,
+                                color = MaterialTheme.colors.secondary,
                                 letterSpacing = 2.sp,
                                 fontSize = 16.sp,
                                 fontFamily = nunitoBold
                             ))
-                        Text(text = item.desc,
+                        Text(text = item.tiny_desc,
                             style = MaterialTheme.typography.h4.copy(
-                                color = black,
+                                color = MaterialTheme.colors.secondary,
                                 letterSpacing = 0.sp,
                                 fontSize = 10.sp,
                                 fontFamily = nunitoRegular
@@ -706,43 +684,43 @@ data class Task(
 fun Star() {
     val tasks = listOf(
         Task(
-            name = "Voluntary Saturdays",
-            description = "Spend a Saturday volunteering for an environmental organization or event.",
+            name = stringResource(R.string.task_1),
+            description = stringResource(R.string.task_1_desc),
             ecoPoints = 50
         ),
         Task(
-            name = "Plastic-Free Week",
-            description = "Avoid using single-use plastics for a whole week.",
+            name = stringResource(R.string.task_2),
+            description = stringResource(R.string.task_2_desc),
             ecoPoints = 100
         ),
         Task(
-            name = "Charity Donation",
-            description = "Donate to a charity that supports environmental causes.",
+            name = stringResource(R.string.task_3),
+            description = stringResource(R.string.task_3_desc),
             ecoPoints = 150
         ),
         Task(
-            name = "Eco-Friendly Cleaning",
-            description = "Switch to eco-friendly cleaning products for a month.",
+            name = stringResource(R.string.task_4),
+            description = stringResource(R.string.task_4_desc),
             ecoPoints = 200
         ),
         Task(
-            name = "Public Transport",
-            description = "Take public transport instead of driving for a whole week.",
+            name = stringResource(R.string.task_5),
+            description = stringResource(R.string.task_5_desc),
             ecoPoints = 75
         ),
         Task(
-            name = "Bike to Work",
-            description = "Bike to work instead of driving for a week.",
+            name = stringResource(R.string.task_6),
+            description = stringResource(R.string.task_6_desc),
             ecoPoints = 75
         ),
         Task(
-            name = "Beach Cleanup",
-            description = "Organize or participate in a beach cleanup event.",
+            name = stringResource(R.string.task_7),
+            description = stringResource(R.string.task_7_desc),
             ecoPoints = 100
         ),
         Task(
-            name = "Plant a Tree",
-            description = "Plant a tree in your community.",
+            name = stringResource(R.string.task_8),
+            description = stringResource(R.string.task_8_desc),
             ecoPoints = 50
         )
     )
@@ -759,7 +737,7 @@ fun Star() {
                     modifier = Modifier.padding(start = 20.dp, top = 5.dp),
                     text = stringResource(R.string.tasks),
                     style = MaterialTheme.typography.h4.copy(
-                        color = Color.Black,
+                        color = MaterialTheme.colors.secondary,
                         letterSpacing = 2.sp,
                         fontSize = 32.sp,
                         fontFamily = nunitoBold
@@ -788,7 +766,7 @@ fun Star() {
                         modifier = Modifier.padding(start = 20.dp, top = 30.dp),
                         text = "Начато",
                         style = MaterialTheme.typography.h4.copy(
-                            color = Color.Black,
+                            color = MaterialTheme.colors.secondary,
                             letterSpacing = 2.sp,
                             fontSize = 24.sp,
                             fontFamily = FontFamily(Font(R.font.nunito_bold))
@@ -818,6 +796,8 @@ fun Star() {
 @Composable
 fun TaskCard(task: Task, onStartClicked: (Task) -> Unit, activeTasks: List<Task>) {
     var started by remember { mutableStateOf(false) }
+    val nunitoBold = FontFamily(Font(R.font.nunito_bold))
+    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
     val dialogShownState = remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
@@ -841,14 +821,20 @@ fun TaskCard(task: Task, onStartClicked: (Task) -> Unit, activeTasks: List<Task>
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = task.name,
-                style = MaterialTheme.typography.h6,
-                color = Color.Black
+                style = MaterialTheme.typography.h4.copy(
+                    color = MaterialTheme.colors.secondary,
+                    fontSize = 18.sp,
+                    fontFamily = nunitoBold
+                ),
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = task.description,
-                style = MaterialTheme.typography.body2,
-                color = Color.Gray,
+                style = MaterialTheme.typography.h4.copy(
+                    fontSize = 14.sp,
+                    fontFamily = nunitoRegular
+                ),
+                color = MaterialTheme.colors.secondary,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis
             )
@@ -859,14 +845,17 @@ fun TaskCard(task: Task, onStartClicked: (Task) -> Unit, activeTasks: List<Task>
                 Icon(
                     painter = painterResource(id = R.drawable.star),
                     contentDescription = "Eco Points",
-                    tint = Color(0xFF3DB88B),
+                    tint = MaterialTheme.colors.primary,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = task.ecoPoints.toString(),
-                    style = MaterialTheme.typography.body2,
-                    color = Color.Black
+                    style = MaterialTheme.typography.h4.copy(
+                        fontSize = 14.sp,
+                        fontFamily = nunitoRegular
+                    ),
+                    color = MaterialTheme.colors.secondary
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Button(
@@ -879,27 +868,43 @@ fun TaskCard(task: Task, onStartClicked: (Task) -> Unit, activeTasks: List<Task>
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color.Blue,
-                        contentColor = Color.White
+                        backgroundColor = MaterialTheme.colors.primary,
+                        contentColor = white
                     )
                 ) {
                     Text(
-                        text = "Start",
-                        style = MaterialTheme.typography.button
+                        text = stringResource(R.string.begin),
+                        style = MaterialTheme.typography.h4.copy(
+                            color = white,
+                            fontSize = 14.sp,
+                            fontFamily = nunitoRegular
+                        )
                     )
                 }
             }
             if (dialogShownState.value) {
                 AlertDialog(
                     onDismissRequest = { dialogShownState.value = false },
-                    title = { Text(text = "Limit Reached") },
-                    text = { Text(text = "You can only start up to 3 tasks at once.") },
+                    title = { Text(text = stringResource(R.string.limit), style = MaterialTheme.typography.h4.copy(
+                        color = MaterialTheme.colors.secondary,
+                        fontSize = 14.sp,
+                        fontFamily = nunitoBold
+                    )) },
+                    text = { Text(text = stringResource(R.string.limit_desc), style = MaterialTheme.typography.h4.copy(
+                        color = MaterialTheme.colors.secondary,
+                        fontSize = 14.sp,
+                        fontFamily = nunitoRegular
+                    )) },
                     confirmButton = {
                         Button(
                             onClick = { dialogShownState.value = false },
                             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
                         ) {
-                            Text(text = "OK")
+                            Text(text = stringResource(R.string.OK), style = MaterialTheme.typography.h4.copy(
+                                color = white,
+                                fontSize = 14.sp,
+                                fontFamily = nunitoRegular
+                            ))
                         }
                     }
                 )
@@ -910,6 +915,8 @@ fun TaskCard(task: Task, onStartClicked: (Task) -> Unit, activeTasks: List<Task>
 
 @Composable
 fun ActiveTaskCard(task: Task, onCancelClicked: () -> Unit) {
+    val nunitoBold = FontFamily(Font(R.font.nunito_bold))
+    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
     Card(
         modifier = Modifier
             .padding(end = 16.dp)
@@ -920,14 +927,20 @@ fun ActiveTaskCard(task: Task, onCancelClicked: () -> Unit) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = task.name,
-                style = MaterialTheme.typography.h6,
-                color = Color.Black
+                style = MaterialTheme.typography.h4.copy(
+                    fontSize = 18.sp,
+                    fontFamily = nunitoBold
+                ),
+                color = MaterialTheme.colors.secondary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = task.description,
-                style = MaterialTheme.typography.body2,
-                color = Color.Gray,
+                style = MaterialTheme.typography.h4.copy(
+                    fontSize = 14.sp,
+                    fontFamily = nunitoRegular
+                ),
+                color = MaterialTheme.colors.secondary,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis
             )
@@ -938,14 +951,17 @@ fun ActiveTaskCard(task: Task, onCancelClicked: () -> Unit) {
                 Icon(
                     painter = painterResource(id = R.drawable.star),
                     contentDescription = "Eco Points",
-                    tint = Color(0xFF3DB88B),
+                    tint = MaterialTheme.colors.primary,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = task.ecoPoints.toString(),
-                    style = MaterialTheme.typography.body2,
-                    color = Color.Black
+                    style = MaterialTheme.typography.h4.copy(
+                        fontSize = 14.sp,
+                        fontFamily = nunitoRegular
+                    ),
+                    color = MaterialTheme.colors.secondary
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Button(
@@ -953,13 +969,17 @@ fun ActiveTaskCard(task: Task, onCancelClicked: () -> Unit) {
                         onCancelClicked()
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color.Red,
-                        contentColor = Color.White
+                        backgroundColor = red,
+                        contentColor = white
                     )
                 ) {
                     Text(
-                        text = "Delete",
-                        style = MaterialTheme.typography.button
+                        text = stringResource(R.string.delete),
+                        style = MaterialTheme.typography.h4.copy(
+                            color = white,
+                            fontSize = 14.sp,
+                            fontFamily = nunitoRegular
+                        )
                     )
                 }
             }
@@ -967,52 +987,73 @@ fun ActiveTaskCard(task: Task, onCancelClicked: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PartnerInfo() {
+    val nunitoBold = FontFamily(Font(R.font.nunito_bold))
+    val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .height(150.dp)
             .padding(16.dp)
     ) {
         Text(
-            text = "Our Partners",
-            style = MaterialTheme.typography.h6,
-            color = Color.Black
+            text = stringResource(R.string.parners),
+            style = MaterialTheme.typography.h4.copy(
+                color = MaterialTheme.colors.secondary,
+                fontSize = 24.sp,
+                fontFamily = nunitoBold
+            ),
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Exchange your eco-points for discounts in our partner stores!",
-            style = MaterialTheme.typography.body2,
-            color = Color.Gray
+            text = stringResource(R.string.exchange),
+            style = MaterialTheme.typography.h4.copy(
+                color = MaterialTheme.colors.secondary,
+                fontSize = 14.sp,
+                fontFamily = nunitoRegular
+            ),
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Spacer(modifier = Modifier.height(15.dp))
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentSize()
+            .basicMarquee(
+                iterations = Int.MAX_VALUE,
+                delayMillis = 0,
+                initialDelayMillis = 0,
+                velocity = 80.dp
+            )) {
             Image(
-                painter = painterResource(id = R.drawable.recycle_machine),
-                contentDescription = "Store 1",
+                painter = painterResource(id = R.drawable.sber_logo),
+                contentDescription = "Sber",
                 modifier = Modifier
-                    .size(80.dp)
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
             )
+            Spacer(modifier = Modifier.width(15.dp))
             Image(
-                painter = painterResource(id = R.drawable.recycle_machine),
-                contentDescription = "Store 2",
+                painter = painterResource(id = R.drawable.kinopoisk_logo_colored_on_blackbackground_rus),
+                contentDescription = "Kinopoisk",
                 modifier = Modifier
-                    .size(80.dp)
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
             )
+            Spacer(modifier = Modifier.width(15.dp))
             Image(
-                painter = painterResource(id = R.drawable.recycle_machine),
-                contentDescription = "Store 3",
+                painter = painterResource(id = R.drawable._gis_logo),
+                contentDescription = "2GIS",
                 modifier = Modifier
-                    .size(80.dp)
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.width(15.dp))
+            Image(
+                painter = painterResource(id = R.drawable.yandex_logo),
+                contentDescription = "Yandex",
+                modifier = Modifier
+            )
+            Spacer(modifier = Modifier.width(15.dp))
+            Image(
+                painter = painterResource(id = R.drawable.vk_logo),
+                contentDescription = "VK",
+                modifier = Modifier
             )
         }
     }
@@ -1034,7 +1075,7 @@ fun Menu(navController: NavHostController) {
                         .padding(start = 20.dp, top = 5.dp),
                     text = stringResource(R.string.menu),
                     style = MaterialTheme.typography.h4.copy(
-                        color = black,
+                        color = MaterialTheme.colors.secondary,
                         letterSpacing = 2.sp,
                         fontSize = 32.sp,
                         fontFamily = nunitoBold
@@ -1047,7 +1088,7 @@ fun Menu(navController: NavHostController) {
                         .fillMaxWidth()
                         .height(80.dp),
                     shape = roundedRectangleShape,
-                    backgroundColor = white,
+                    backgroundColor = MaterialTheme.colors.surface,
                 ) {
                     Row(modifier = Modifier
                         .fillMaxWidth()
@@ -1068,7 +1109,7 @@ fun Menu(navController: NavHostController) {
                             Text(modifier = Modifier,
                                 text = stringResource(R.string.username),
                                 style = MaterialTheme.typography.h4.copy(
-                                    color = black,
+                                    color = MaterialTheme.colors.secondary,
                                     fontSize = 16.sp,
                                     fontFamily = nunitoBold
                                 ),
@@ -1076,15 +1117,16 @@ fun Menu(navController: NavHostController) {
                             Text(modifier = Modifier,
                                 text = stringResource(R.string.edit_profile),
                                 style = MaterialTheme.typography.h4.copy(
-                                    color = black,
+                                    color = MaterialTheme.colors.secondary,
                                     fontSize = 10.sp,
                                     fontFamily = nunitoRegular
                                 ),
                             )
                         }
-                        Image(
+                        Icon(
                             painter = painterResource(id = R.drawable.edit_profile),
                             contentDescription = null,
+                            tint = MaterialTheme.colors.secondary,
                             modifier = Modifier
                                 .size(48.dp)
                                 .padding(8.dp, end = 10.dp)
@@ -1096,7 +1138,7 @@ fun Menu(navController: NavHostController) {
                     modifier = Modifier.padding(start = 20.dp, top = 5.dp),
                     text = stringResource(R.string.system),
                     style = MaterialTheme.typography.h4.copy(
-                        color = black,
+                        color = MaterialTheme.colors.secondary,
                         letterSpacing = 2.sp,
                         fontSize = 24.sp,
                         fontFamily = nunitoBold
@@ -1118,12 +1160,13 @@ fun Menu(navController: NavHostController) {
                         .fillMaxWidth()
                         .height(50.dp),
                         shape = roundedRectangleShape,
-                        backgroundColor = white) {
+                        backgroundColor = MaterialTheme.colors.surface) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically) {
-                            Image(
+                            Icon(
                                 painter = painterResource(id = R.drawable.dark_mode),
                                 contentDescription = null,
+                                tint = MaterialTheme.colors.secondary,
                                 modifier = Modifier
                                     .size(54.dp)
                                     .padding(8.dp, end = 10.dp)
@@ -1131,7 +1174,7 @@ fun Menu(navController: NavHostController) {
                             Text(modifier = Modifier,
                                 text = stringResource(R.string.dark_mode),
                                 style = MaterialTheme.typography.h4.copy(
-                                    color = black,
+                                    color = MaterialTheme.colors.secondary,
                                     fontSize = 14.sp,
                                     fontFamily = nunitoRegular
                                 ),
@@ -1143,10 +1186,11 @@ fun Menu(navController: NavHostController) {
                                 horizontalAlignment = Alignment.End) {
                                 CustomSwitch(width = 50.dp,
                                     height = 30.dp,
-                                    checkedTrackColor = greenMain,
-                                    uncheckedTrackColor = grey_black,
+                                    checkedTrackColor = MaterialTheme.colors.primary,
+                                    uncheckedTrackColor = MaterialTheme.colors.secondary,
                                     borderWidth = 2.dp,
-                                    thumbSize = 6.dp)
+                                    thumbSize = 6.dp,
+                                    onClick = {  })
                             }
                         }
                     }
@@ -1158,12 +1202,13 @@ fun Menu(navController: NavHostController) {
                         .fillMaxWidth()
                         .height(50.dp),
                         shape = roundedRectangleShape,
-                        backgroundColor = white) {
+                        backgroundColor = MaterialTheme.colors.surface) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically) {
-                            Image(
+                            Icon(
                                 painter = painterResource(id = R.drawable.location),
                                 contentDescription = null,
+                                tint = MaterialTheme.colors.secondary,
                                 modifier = Modifier
                                     .size(48.dp)
                                     .padding(8.dp, end = 10.dp)
@@ -1171,7 +1216,7 @@ fun Menu(navController: NavHostController) {
                             Text(modifier = Modifier,
                                 text = stringResource(R.string.location),
                                 style = MaterialTheme.typography.h4.copy(
-                                    color = black,
+                                    color = MaterialTheme.colors.secondary,
                                     fontSize = 14.sp,
                                     fontFamily = nunitoRegular
                                 ),
@@ -1183,10 +1228,11 @@ fun Menu(navController: NavHostController) {
                                 horizontalAlignment = Alignment.End) {
                                 CustomSwitch(width = 50.dp,
                                     height = 30.dp,
-                                    checkedTrackColor = greenMain,
-                                    uncheckedTrackColor = grey_black,
+                                    checkedTrackColor = MaterialTheme.colors.primary,
+                                    uncheckedTrackColor = MaterialTheme.colors.secondary,
                                     borderWidth = 2.dp,
-                                    thumbSize = 6.dp)
+                                    thumbSize = 6.dp,
+                                    onClick = {  })
                             }
                         }
                     }
@@ -1196,7 +1242,7 @@ fun Menu(navController: NavHostController) {
                     modifier = Modifier.padding(start = 20.dp, top = 5.dp),
                     text = stringResource(R.string.notifications),
                     style = MaterialTheme.typography.h4.copy(
-                        color = black,
+                        color = MaterialTheme.colors.secondary,
                         letterSpacing = 2.sp,
                         fontSize = 24.sp,
                         fontFamily = nunitoBold
@@ -1218,12 +1264,13 @@ fun Menu(navController: NavHostController) {
                         .fillMaxWidth()
                         .height(50.dp),
                         shape = roundedRectangleShape,
-                        backgroundColor = white) {
+                        backgroundColor = MaterialTheme.colors.surface) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically) {
-                            Image(
+                            Icon(
                                 painter = painterResource(id = R.drawable.notif),
                                 contentDescription = null,
+                                tint = MaterialTheme.colors.secondary,
                                 modifier = Modifier
                                     .size(48.dp)
                                     .padding(8.dp, end = 10.dp)
@@ -1231,7 +1278,7 @@ fun Menu(navController: NavHostController) {
                             Text(modifier = Modifier,
                                 text = stringResource(R.string.notifications_on),
                                 style = MaterialTheme.typography.h4.copy(
-                                    color = black,
+                                    color = MaterialTheme.colors.secondary,
                                     fontSize = 14.sp,
                                     fontFamily = nunitoRegular
                                 ),
@@ -1243,10 +1290,11 @@ fun Menu(navController: NavHostController) {
                                 horizontalAlignment = Alignment.End) {
                                 CustomSwitch(width = 50.dp,
                                     height = 30.dp,
-                                    checkedTrackColor = greenMain,
-                                    uncheckedTrackColor = grey_black,
+                                    checkedTrackColor = MaterialTheme.colors.primary,
+                                    uncheckedTrackColor = MaterialTheme.colors.secondary,
                                     borderWidth = 2.dp,
-                                    thumbSize = 6.dp)
+                                    thumbSize = 6.dp,
+                                    onClick = {  })
                             }
                         }
                     }
@@ -1258,12 +1306,13 @@ fun Menu(navController: NavHostController) {
                         .fillMaxWidth()
                         .height(50.dp),
                         shape = roundedRectangleShape,
-                        backgroundColor = white) {
+                        backgroundColor = MaterialTheme.colors.surface) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically) {
-                            Image(
+                            Icon(
                                 painter = painterResource(id = R.drawable.update),
                                 contentDescription = null,
+                                tint = MaterialTheme.colors.secondary,
                                 modifier = Modifier
                                     .size(48.dp)
                                     .padding(8.dp, end = 10.dp)
@@ -1271,7 +1320,7 @@ fun Menu(navController: NavHostController) {
                             Text(modifier = Modifier,
                                 text = stringResource(R.string.auto_update),
                                 style = MaterialTheme.typography.h4.copy(
-                                    color = black,
+                                    color = MaterialTheme.colors.secondary,
                                     fontSize = 14.sp,
                                     fontFamily = nunitoRegular
                                 ),
@@ -1283,10 +1332,11 @@ fun Menu(navController: NavHostController) {
                                 horizontalAlignment = Alignment.End) {
                                 CustomSwitch(width = 50.dp,
                                     height = 30.dp,
-                                    checkedTrackColor = greenMain,
-                                    uncheckedTrackColor = grey_black,
+                                    checkedTrackColor = MaterialTheme.colors.primary,
+                                    uncheckedTrackColor = MaterialTheme.colors.secondary,
                                     borderWidth = 2.dp,
-                                    thumbSize = 6.dp)
+                                    thumbSize = 6.dp,
+                                    onClick = {  })
                             }
                         }
                     }
@@ -1298,12 +1348,13 @@ fun Menu(navController: NavHostController) {
                         .fillMaxWidth()
                         .height(50.dp),
                         shape = roundedRectangleShape,
-                        backgroundColor = white) {
+                        backgroundColor = MaterialTheme.colors.surface) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically) {
-                            Image(
+                            Icon(
                                 painter = painterResource(id = R.drawable.tasks),
                                 contentDescription = null,
+                                tint = MaterialTheme.colors.secondary,
                                 modifier = Modifier
                                     .size(48.dp)
                                     .padding(8.dp, end = 10.dp)
@@ -1311,7 +1362,7 @@ fun Menu(navController: NavHostController) {
                             Text(modifier = Modifier,
                                 text = stringResource(R.string.receive_tasks),
                                 style = MaterialTheme.typography.h4.copy(
-                                    color = black,
+                                    color = MaterialTheme.colors.secondary,
                                     fontSize = 14.sp,
                                     fontFamily = nunitoRegular
                                 ),
@@ -1323,20 +1374,22 @@ fun Menu(navController: NavHostController) {
                                 horizontalAlignment = Alignment.End) {
                                 CustomSwitch(width = 50.dp,
                                     height = 30.dp,
-                                    checkedTrackColor = greenMain,
-                                    uncheckedTrackColor = grey_black,
+                                    checkedTrackColor = MaterialTheme.colors.primary,
+                                    uncheckedTrackColor = MaterialTheme.colors.secondary,
                                     borderWidth = 2.dp,
-                                    thumbSize = 6.dp)
+                                    thumbSize = 6.dp,
+                                onClick = {  })
                             }
                         }
                     }
                 }
                 // Прочее part
+                val uriHandler = LocalUriHandler.current
                 Text(
                     modifier = Modifier.padding(start = 20.dp, top = 5.dp),
                     text = stringResource(R.string.other),
                     style = MaterialTheme.typography.h4.copy(
-                        color = black,
+                        color = MaterialTheme.colors.secondary,
                         letterSpacing = 2.sp,
                         fontSize = 24.sp,
                         fontFamily = nunitoBold
@@ -1358,11 +1411,11 @@ fun Menu(navController: NavHostController) {
                         .fillMaxWidth()
                         .height(50.dp),
                         shape = roundedRectangleShape,
-                        backgroundColor = white) {
+                        backgroundColor = MaterialTheme.colors.surface) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically) {
                             Image(
-                                painter = painterResource(id = R.drawable.vk_logo),
+                                painter = painterResource(id = R.drawable.vk_log),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(48.dp)
@@ -1371,7 +1424,7 @@ fun Menu(navController: NavHostController) {
                             Text(modifier = Modifier,
                                 text = stringResource(R.string.vk),
                                 style = MaterialTheme.typography.h4.copy(
-                                    color = black,
+                                    color = MaterialTheme.colors.secondary,
                                     fontSize = 14.sp,
                                     fontFamily = nunitoRegular
                                 ),
@@ -1383,10 +1436,11 @@ fun Menu(navController: NavHostController) {
                                 horizontalAlignment = Alignment.End) {
                                 CustomSwitch(width = 50.dp,
                                     height = 30.dp,
-                                    checkedTrackColor = greenMain,
-                                    uncheckedTrackColor = grey_black,
+                                    checkedTrackColor = MaterialTheme.colors.primary,
+                                    uncheckedTrackColor = MaterialTheme.colors.secondary,
                                     borderWidth = 2.dp,
-                                    thumbSize = 6.dp)
+                                    thumbSize = 6.dp,
+                                    onClick = { uriHandler.openUri("https://vk.com/artorius81") })
                             }
                         }
                     }
@@ -1398,7 +1452,7 @@ fun Menu(navController: NavHostController) {
                         .fillMaxWidth()
                         .height(50.dp),
                         shape = roundedRectangleShape,
-                        backgroundColor = white) {
+                        backgroundColor = MaterialTheme.colors.surface) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically) {
                             Image(
@@ -1411,7 +1465,7 @@ fun Menu(navController: NavHostController) {
                             Text(modifier = Modifier,
                                 text = stringResource(R.string.gos),
                                 style = MaterialTheme.typography.h4.copy(
-                                    color = black,
+                                    color = MaterialTheme.colors.secondary,
                                     fontSize = 14.sp,
                                     fontFamily = nunitoRegular
                                 ),
@@ -1423,10 +1477,11 @@ fun Menu(navController: NavHostController) {
                                 horizontalAlignment = Alignment.End) {
                                 CustomSwitch(width = 50.dp,
                                     height = 30.dp,
-                                    checkedTrackColor = greenMain,
-                                    uncheckedTrackColor = grey_black,
+                                    checkedTrackColor = MaterialTheme.colors.primary,
+                                    uncheckedTrackColor = MaterialTheme.colors.secondary,
                                     borderWidth = 2.dp,
-                                    thumbSize = 6.dp)
+                                    thumbSize = 6.dp,
+                                    onClick = { uriHandler.openUri("https://www.gosuslugi.ru/") })
                             }
                         }
                     }
@@ -1438,7 +1493,7 @@ fun Menu(navController: NavHostController) {
                         .fillMaxWidth()
                         .height(50.dp),
                         shape = roundedRectangleShape,
-                        backgroundColor = white) {
+                        backgroundColor = MaterialTheme.colors.surface) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically) {
                             Image(
@@ -1451,7 +1506,7 @@ fun Menu(navController: NavHostController) {
                             Text(modifier = Modifier,
                                 text = stringResource(R.string.ok),
                                 style = MaterialTheme.typography.h4.copy(
-                                    color = black,
+                                    color = MaterialTheme.colors.secondary,
                                     fontSize = 14.sp,
                                     fontFamily = nunitoRegular
                                 ),
@@ -1463,10 +1518,11 @@ fun Menu(navController: NavHostController) {
                                 horizontalAlignment = Alignment.End) {
                                 CustomSwitch(width = 50.dp,
                                     height = 30.dp,
-                                    checkedTrackColor = greenMain,
-                                    uncheckedTrackColor = grey_black,
+                                    checkedTrackColor = MaterialTheme.colors.primary,
+                                    uncheckedTrackColor = MaterialTheme.colors.secondary,
                                     borderWidth = 2.dp,
-                                    thumbSize = 6.dp)
+                                    thumbSize = 6.dp,
+                                onClick = { uriHandler.openUri("https://ok.ru/") })
                             }
                         }
                     }
@@ -1478,7 +1534,7 @@ fun Menu(navController: NavHostController) {
                         .fillMaxWidth()
                         .height(50.dp),
                         shape = roundedRectangleShape,
-                        backgroundColor = white) {
+                        backgroundColor = MaterialTheme.colors.surface) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start,
                             verticalAlignment = Alignment.CenterVertically) {
                             Image(
@@ -1489,9 +1545,9 @@ fun Menu(navController: NavHostController) {
                                     .padding(start = 13.dp, end = 10.dp)
                             )
                             Text(modifier = Modifier,
-                                text = "Часто задаваемые вопросы",
+                                text = stringResource(R.string.FAQ),
                                 style = MaterialTheme.typography.h4.copy(
-                                    color = black,
+                                    color = MaterialTheme.colors.secondary,
                                     fontSize = 14.sp,
                                     fontFamily = nunitoRegular
                                 ),
@@ -1501,13 +1557,13 @@ fun Menu(navController: NavHostController) {
                                 .padding(end = 10.dp),
                                 verticalArrangement = Arrangement.Center,
                                 horizontalAlignment = Alignment.End) {
-                                Image(
+                                Icon(
                                     painter = painterResource(id = R.drawable.edit_arrow),
                                     contentDescription = null,
+                                    tint = MaterialTheme.colors.secondary,
                                     modifier = Modifier
                                         .size(48.dp)
                                         .padding(8.dp, end = 10.dp),
-                                    colorFilter = ColorFilter.tint(Color.Red)
                                 )
                             }
                         }
@@ -1518,11 +1574,12 @@ fun Menu(navController: NavHostController) {
                 .fillMaxWidth()
                 .padding(top = 10.dp, bottom = 5.dp),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally) {
+                horizontalAlignment = CenterHorizontally
+            ) {
                 Text(modifier = Modifier,
                     text = "v1.0",
                     style = MaterialTheme.typography.h4.copy(
-                        color = grey,
+                        color = MaterialTheme.colors.secondary,
                         fontSize = 14.sp,
                         fontFamily = nunitoRegular
                     ),
@@ -1539,7 +1596,7 @@ fun Menu(navController: NavHostController) {
                 )
                 .height(50.dp),
                 shape = roundedRectangleShape,
-                backgroundColor = white) {
+                backgroundColor = MaterialTheme.colors.surface) {
                 val mContext = LocalContext.current
                 Row(modifier = Modifier
                     .fillMaxWidth()
@@ -1552,13 +1609,12 @@ fun Menu(navController: NavHostController) {
                         )
                     }, horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically) {
-                    Image(
+                    Icon(
                         painter = painterResource(id = R.drawable.log_out),
                         contentDescription = null,
                         modifier = Modifier
                             .size(48.dp)
                             .padding(8.dp, end = 10.dp),
-                        colorFilter = ColorFilter.tint(Color.Red)
                     )
                     Text(modifier = Modifier,
                         text = stringResource(R.string.log_out),
@@ -1593,6 +1649,10 @@ fun Profile(navController: NavHostController) {
     val nunitoBold = FontFamily(Font(R.font.nunito_bold))
     val nunitoRegular = FontFamily(Font(R.font.nunito_regular))
     val profile_name = remember { mutableStateOf(TextFieldValue()) }
+    val profile_surname = remember { mutableStateOf(TextFieldValue()) }
+    val profile_phone = remember { mutableStateOf(TextFieldValue()) }
+    val profile_city = remember { mutableStateOf(TextFieldValue()) }
+    val profile_email = remember { mutableStateOf(TextFieldValue()) }
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -1601,6 +1661,7 @@ fun Profile(navController: NavHostController) {
             Icon(
                 painter = painterResource(R.drawable.go_back),
                 contentDescription = null,
+                tint = MaterialTheme.colors.secondary,
                 modifier = Modifier
                     .size(52.dp)
                     .padding(top = 15.dp, start = 20.dp)
@@ -1631,15 +1692,15 @@ fun Profile(navController: NavHostController) {
                     Text(modifier = Modifier,
                         text = stringResource(R.string.username),
                         style = MaterialTheme.typography.h4.copy(
-                            color = black,
+                            color = MaterialTheme.colors.secondary,
                             fontSize = 24.sp,
                             fontFamily = nunitoBold
                         ),
                     )
                     Text(modifier = Modifier,
-                        text = "Владивосток",
+                        text = stringResource(R.string.town),
                         style = MaterialTheme.typography.h4.copy(
-                            color = black,
+                            color = MaterialTheme.colors.secondary,
                             fontSize = 18.sp,
                             fontFamily = nunitoRegular
                         ),
@@ -1648,13 +1709,14 @@ fun Profile(navController: NavHostController) {
                         Icon(
                             painter = painterResource(R.drawable.star),
                             contentDescription = null,
+                            tint = MaterialTheme.colors.primary,
                             modifier = Modifier
                                 .size(22.dp)
                         )
                         Text(modifier = Modifier,
                             text = "12074",
                             style = MaterialTheme.typography.h4.copy(
-                                color = black,
+                                color = MaterialTheme.colors.secondary,
                                 fontSize = 16.sp,
                                 fontFamily = nunitoRegular
                             ),
@@ -1668,11 +1730,11 @@ fun Profile(navController: NavHostController) {
                 .padding(start = 30.dp, end = 30.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start) {
-                Text(text = "Имя", modifier = Modifier)
+                Text(text = stringResource(R.string.name), modifier = Modifier, color = MaterialTheme.colors.secondary)
                 OutlinedTextField(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        backgroundColor = white,
-                        textColor = greenMain,
+                        backgroundColor = MaterialTheme.colors.surface,
+                        textColor = MaterialTheme.colors.primary,
                         cursorColor = secGrey,
                     ),
                     textStyle = TextStyle(fontSize = 15.sp),
@@ -1683,7 +1745,7 @@ fun Profile(navController: NavHostController) {
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    placeholder = { Text(text = "Данил",
+                    placeholder = { Text(text = stringResource(R.string.nameprof),
                         fontFamily = nunitoBold,
                         fontSize = 15.sp,
                         color = secGrey
@@ -1696,22 +1758,22 @@ fun Profile(navController: NavHostController) {
                         onDone = { focusManager.clearFocus() }),
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
-                Text(text = "Фамилия", modifier = Modifier)
+                Text(text = stringResource(R.string.surname), modifier = Modifier, color = MaterialTheme.colors.secondary)
                 OutlinedTextField(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        backgroundColor = white,
-                        textColor = greenMain,
+                        backgroundColor = MaterialTheme.colors.surface,
+                        textColor = MaterialTheme.colors.primary,
                         cursorColor = secGrey,
                     ),
                     textStyle = TextStyle(fontSize = 15.sp),
-                    value = profile_name.value,
+                    value = profile_surname.value,
                     singleLine = true,
                     onValueChange = {
-                        profile_name.value = it
+                        profile_surname.value = it
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    placeholder = { Text(text = "Басов",
+                    placeholder = { Text(text = stringResource(R.string.surnameprof),
                         fontFamily = nunitoBold,
                         fontSize = 15.sp,
                         color = secGrey
@@ -1724,18 +1786,18 @@ fun Profile(navController: NavHostController) {
                         onDone = { focusManager.clearFocus() }),
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
-                Text(text = "Номер телефона", modifier = Modifier)
+                Text(text = stringResource(R.string.phone), modifier = Modifier, color = MaterialTheme.colors.secondary)
                 OutlinedTextField(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        backgroundColor = white,
-                        textColor = greenMain,
+                        backgroundColor = MaterialTheme.colors.surface,
+                        textColor = MaterialTheme.colors.primary,
                         cursorColor = secGrey,
                     ),
                     textStyle = TextStyle(fontSize = 15.sp),
-                    value = profile_name.value,
+                    value = profile_phone.value,
                     singleLine = true,
                     onValueChange = {
-                        profile_name.value = it
+                        profile_phone.value = it
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -1752,23 +1814,23 @@ fun Profile(navController: NavHostController) {
                         onDone = { focusManager.clearFocus() }),
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
-                Text(text = "Город", modifier = Modifier)
+                Text(text = stringResource(R.string.city), modifier = Modifier, color = MaterialTheme.colors.secondary)
                 OutlinedTextField(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        backgroundColor = white,
-                        textColor = greenMain,
+                        backgroundColor = MaterialTheme.colors.surface,
+                        textColor = MaterialTheme.colors.primary,
                         cursorColor = secGrey,
                     ),
                     textStyle = TextStyle(fontSize = 15.sp),
-                    value = profile_name.value,
+                    value = profile_city.value,
                     singleLine = true,
                     onValueChange = {
-                        profile_name.value = it
+                        profile_city.value = it
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
                     trailingIcon = { Icon(imageVector = FeatherIcons.User, contentDescription = "Lock Icon") },
-                    placeholder = { Text(text = "Владивосток",
+                    placeholder = { Text(text = stringResource(R.string.town),
                         fontFamily = nunitoBold,
                         fontSize = 15.sp,
                         color = secGrey
@@ -1781,22 +1843,22 @@ fun Profile(navController: NavHostController) {
                         onDone = { focusManager.clearFocus() }),
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
-                Text(text = "E-mail", modifier = Modifier)
+                Text(text = stringResource(R.string.email), modifier = Modifier, color = MaterialTheme.colors.secondary)
                 OutlinedTextField(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        backgroundColor = white,
-                        textColor = greenMain,
+                        backgroundColor = MaterialTheme.colors.surface,
+                        textColor = MaterialTheme.colors.primary,
                         cursorColor = secGrey,
                     ),
                     textStyle = TextStyle(fontSize = 15.sp),
-                    value = profile_name.value,
+                    value = profile_email.value,
                     singleLine = true,
                     onValueChange = {
-                        profile_name.value = it
+                        profile_email.value = it
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
-                    placeholder = { Text(text = "Artorius.81@yandex.ru",
+                    placeholder = { Text(text = stringResource(R.string.mail),
                         fontFamily = nunitoBold,
                         fontSize = 15.sp,
                         color = secGrey
@@ -1815,6 +1877,7 @@ fun Profile(navController: NavHostController) {
 
 @Composable
 fun CustomSwitch(
+    onClick: () -> Unit,
     width: Dp = 72.dp,
     height: Dp = 40.dp,
     checkedTrackColor: Color = Color(0xFF35898F),
@@ -1823,7 +1886,7 @@ fun CustomSwitch(
     borderWidth: Dp = 4.dp,
     cornerSize: Int = 50,
     iconInnerPadding: Dp = 4.dp,
-    thumbSize: Dp = 24.dp,
+    thumbSize: Dp = 24.dp
 ) {
 
     // this is to disable the ripple effect
@@ -1853,6 +1916,7 @@ fun CustomSwitch(
                 interactionSource = interactionSource
             ) {
                 switchOn = !switchOn
+                onClick()
             },
         contentAlignment = Alignment.Center
     ) {
@@ -1885,6 +1949,7 @@ fun CustomSwitch(
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 private fun animateAlignmentAsState(
     targetBiasValue: Float
