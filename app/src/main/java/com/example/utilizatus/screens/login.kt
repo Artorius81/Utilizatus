@@ -37,7 +37,6 @@ import com.example.utilizatus.notification.NotificationService
 import com.example.utilizatus.notification.OTPNumber
 import com.example.utilizatus.ui.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.talhafaki.composablesweettoast.theme.whiteBackground
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
 import com.togitech.ccp.component.TogiCountryCodePicker
 import compose.icons.FeatherIcons
@@ -69,9 +68,9 @@ fun LoginPage() {
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(MaterialTheme.colors.background)) {
+        .background(white)) {
         Box(modifier = Modifier
-            .background(MaterialTheme.colors.background)
+            .background(white)
         ){
             Column(modifier = Modifier
                 .fillMaxSize(),
@@ -448,10 +447,11 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                     TogiCountryCodePicker(
                                         text = phoneNumber,
                                         onValueChange = { phoneNumber = it },
-                                        unfocusedBorderColor = white,
+                                        unfocusedBorderColor = secGrey,
                                         modifier = Modifier
-                                            .width(315.dp),
-                                        focusedBorderColor = white,
+                                            .width(315.dp)
+                                            .background(grey_black),
+                                        focusedBorderColor = secGrey,
                                         cursorColor = secGrey,
                                         bottomStyle = false, //  if true the text-field is below the country code selector at the top.
                                         shape = RoundedCornerShape(8.dp)
