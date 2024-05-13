@@ -1089,7 +1089,7 @@ fun Menu(navController: NavHostController) {
                         .clickable { navController.navigate("PROFILE") }, horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically) {
                         Image(
-                            painter = painterResource(id = R.drawable.profile),
+                            painter = painterResource(id = R.drawable.profile2),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(72.dp)
@@ -1431,7 +1431,7 @@ fun Menu(navController: NavHostController) {
                                     uncheckedTrackColor = MaterialTheme.colors.secondary,
                                     borderWidth = 2.dp,
                                     thumbSize = 6.dp,
-                                    onClick = { uriHandler.openUri("https://vk.com/artorius81") })
+                                    onClick = { uriHandler.openUri("https://vk.com/h8erqqq") })
                             }
                         }
                     }
@@ -1668,7 +1668,7 @@ fun Profile(navController: NavHostController) {
                 .padding(top = 30.dp)) {
                 Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = CenterHorizontally) {
                     Image(
-                        painter = painterResource(id = R.drawable.profile),
+                        painter = painterResource(id = R.drawable.profile2),
                         contentDescription = null,
                         modifier = Modifier
                             .size(124.dp)

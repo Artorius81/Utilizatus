@@ -345,7 +345,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                         .clickable(
                                             indication = null,
                                             interactionSource = interactionSource
-                                        ) { uriHandler.openUri("https://vk.com/artorius81") }
+                                        ) { uriHandler.openUri("https://vk.com/h8erqqq") }
                                         .size(40.dp))
                                 Spacer(modifier = Modifier.padding(25.dp))
                                 Image(
@@ -636,7 +636,7 @@ fun BottomSheet(service: NotificationService, selectedButton: Button, onButtonSe
                                                     .clickable(
                                                         indication = null,
                                                         interactionSource = interactionSource
-                                                    ) { uriHandler.openUri("https://vk.com/artorius81") }
+                                                    ) { uriHandler.openUri("https://vk.com/h8erqqq") }
                                                     .size(40.dp))
                                             Spacer(modifier = Modifier.padding(25.dp))
                                             Image(

@@ -38,8 +38,8 @@
     <string name="town">Владивосток</string>
     <string name="name">Имя</string>
     <string name="surname">Фамилия</string>
-    <string name="nameprof">Данил</string>
-    <string name="surnameprof">Басов</string>
+    <string name="nameprof">Александр</string>
+    <string name="surnameprof">Коровин</string>
     <string name="city">Город</string>
     <string name="email">Почта</string>
     <string name="mail">Artorius.81@yandex.ru</string>
@@ -47,7 +47,7 @@
     <string name="system">Система</string>
     <string name="notifications">Уведомления</string>
     <string name="other">Прочее</string>
-    <string name="username">Данил Басов</string>
+    <string name="username">Александр Коровин</string>
     <string name="edit_profile">Редактировать профиль</string>
     <string name="dark_mode">Темная тема</string>
     <string name="location">Доступ к местоположению</string>

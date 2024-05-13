@@ -33,7 +33,7 @@ fun TopBar(navController: NavHostController) {
         backgroundColor = MaterialTheme.colors.background,
         modifier = Modifier.padding(top = 3.dp),
         elevation = 0.dp,
-        actions = { Image(painter = painterResource(id = R.drawable.profile),
+        actions = { Image(painter = painterResource(id = R.drawable.profile2),
             contentDescription = "logo",
             modifier = Modifier.run {
                 padding(top = 10.dp, end = 30.dp)
